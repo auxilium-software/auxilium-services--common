@@ -6,7 +6,6 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Configuration.Sections
 {
     public class DevelopmentConfigurationSection
     {
-        public bool DisableReCAPTCHA { get; set; } = false;
         public bool PHPAcceptSelfSignedCertificatesForAPI { get; set; } = false;
         
 

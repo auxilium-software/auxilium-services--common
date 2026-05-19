@@ -32,7 +32,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
             try
             {
                 // WARNING WARNING WARNING WARNING WARNING
-                if (_configuration.Development.DisableReCAPTCHA)
+                if (!_configuration.ReCAPTCHA.UseReCAPTCHA)
                 {
                     _logger.LogWarning("reCAPTCHA verification is disabled");
                     return true;
