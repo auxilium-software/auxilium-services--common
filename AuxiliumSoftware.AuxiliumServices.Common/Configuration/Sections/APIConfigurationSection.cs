@@ -8,7 +8,8 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Configuration.Sections
     public class APIConfigurationSection
     {
         public List<string> AvailableFrom { get; set; } = null!;
-        public string AvailableAt { get; set; } = null!;
+        public bool UseHttpsRedirection { get; set; } = false;
+        public string PrimarilyAvailableAt { get; set; } = null!;
         public APICORSConfigurationSection CORS { get; set; } = null!;
         
 
@@ -16,7 +17,8 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Configuration.Sections
         public void Validate()
         {
             if (AvailableFrom == null || AvailableFrom.Count == 0)  throw new InvalidOperationException("Configuration value 'API->AvailableFrom' is missing or empty.");
-            if (string.IsNullOrWhiteSpace(AvailableAt))             throw new InvalidOperationException("Configuration value 'API->AvailableAt' is missing.");
+            // UseHttpsRedirection
+            if (string.IsNullOrWhiteSpace(PrimarilyAvailableAt))    throw new InvalidOperationException("Configuration value 'API->PrimarilyAvailableAt' is missing.");
             if (CORS == null)                                       throw new InvalidOperationException("Configuration section 'API->CORS' is missing.");
 
             CORS.Validate();
