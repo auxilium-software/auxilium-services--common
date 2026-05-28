@@ -7,7 +7,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     
-    <Version>3.0.29.0</Version>
+    <Version>3.0.30.0</Version>
     <Company>Auxilium Software</Company>
     <Product>AuxiliumSoftware.AuxiliumServices.Common</Product>
     <Copyright>Copyright © 2026</Copyright>

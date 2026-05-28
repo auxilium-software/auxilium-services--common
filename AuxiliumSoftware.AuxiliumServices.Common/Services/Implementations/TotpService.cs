@@ -113,13 +113,13 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
             user.TotpEnabled = false;
             user.TotpEnabledAt = null;
 
-            var recoveryCodes = await _db.TotpRecoveryCodes
+            var recoveryCodes = await _db.UserTotpRecoveryCodes
                 .Where(r => r.CreatedBy == userId)
                 .ToListAsync();
 
             if (recoveryCodes.Count != 0)
             {
-                _db.TotpRecoveryCodes.RemoveRange(recoveryCodes);
+                _db.UserTotpRecoveryCodes.RemoveRange(recoveryCodes);
             }
 
             await _db.SaveChangesAsync();
@@ -157,7 +157,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
 
             var hash = HashRecoveryCode(code);
 
-            var match = await _db.TotpRecoveryCodes
+            var match = await _db.UserTotpRecoveryCodes
                 .FirstOrDefaultAsync(r =>
                     r.CreatedBy == userId &&
                     r.CodeHash == hash &&
@@ -191,13 +191,13 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
             var isValid = await ValidateUserTotpAsync(userId, totpCode);
             if (!isValid) return null;
 
-            var existing = await _db.TotpRecoveryCodes
+            var existing = await _db.UserTotpRecoveryCodes
                 .Where(r => r.CreatedBy == userId)
                 .ToListAsync();
 
             if (existing.Count != 0)
             {
-                _db.TotpRecoveryCodes.RemoveRange(existing);
+                _db.UserTotpRecoveryCodes.RemoveRange(existing);
             }
 
             var plaintextCodes = await GenerateRecoveryCodesForUser(userId);
@@ -214,7 +214,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
 
         public async Task<int> GetRemainingRecoveryCodeCountAsync(Guid userId)
         {
-            return await _db.TotpRecoveryCodes
+            return await _db.UserTotpRecoveryCodes
                 .CountAsync(r => r.CreatedBy == userId && !r.IsUsed);
         }
         #endregion
@@ -243,7 +243,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
                 plaintextCodes.Add(formatted);
 
                 // hash the formatted code - what the user sees is what they must enter
-                _db.TotpRecoveryCodes.Add(new TotpRecoveryCodeEntityModel
+                _db.UserTotpRecoveryCodes.Add(new TotpRecoveryCodeEntityModel
                 {
                     Id = Guid.NewGuid(),
                     CreatedBy = userId,
