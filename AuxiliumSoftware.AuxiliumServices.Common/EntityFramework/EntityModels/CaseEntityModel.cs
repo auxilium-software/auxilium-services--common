@@ -30,24 +30,22 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
 
 
 
-
         /// <summary>
         /// The title of the Case.
         /// </summary>
         public required string Title { get; set; }
         /// <summary>
-        /// An optional description of the Case.
+        /// A description of the Case.
         /// </summary>
-        public required string? Description { get; set; }
+        public required string Description { get; set; }
         /// <summary>
         /// The Sensitivity Level of the Case.
         /// </summary>
-        public required CaseSensitivityEnum? Sensitivity { get; set; }
+        public required CaseSensitivityEnum Sensitivity { get; set; }
         /// <summary>
         /// The current Status of the Case.
         /// </summary>
-        public required CaseStatusEnum? Status { get; set; }
-
+        public required CaseStatusEnum Status { get; set; }
 
 
 

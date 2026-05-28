@@ -208,9 +208,9 @@ public class AuxiliumDbContext : DbContext
             
             entity.HasOne(e => e.CreatedByUser)                     .WithMany()                                                 .HasForeignKey(e => e.CreatedBy)        .OnDelete(DeleteBehavior.SetNull);
             entity.HasOne(e => e.LastUpdatedByUser)                 .WithMany()                                                 .HasForeignKey(e => e.LastUpdatedBy)    .OnDelete(DeleteBehavior.SetNull);
-            entity.HasOne(e => e.Case)                              .WithMany(c => c.Todos)                                     .HasForeignKey(e => e.CaseId)           .OnDelete(DeleteBehavior.Restrict);
-            entity.HasOne(e => e.AssignedToUser)                    .WithMany(u => u.AssignedTodos)                             .HasForeignKey(e => e.AssignedTo)       .OnDelete(DeleteBehavior.Restrict);
-            entity.HasOne(e => e.CompletedByUser)                   .WithMany(u => u.CompletedTodos)                            .HasForeignKey(e => e.CompletedBy)      .OnDelete(DeleteBehavior.Restrict);
+            entity.HasOne(e => e.Case)                              .WithMany(c => c.Todos)                                     .HasForeignKey(e => e.CaseId)           .OnDelete(DeleteBehavior.Cascade);
+            entity.HasOne(e => e.AssignedToUser)                    .WithMany(u => u.AssignedTodos)                             .HasForeignKey(e => e.AssignedTo)       .OnDelete(DeleteBehavior.SetNull);
+            entity.HasOne(e => e.CompletedByUser)                   .WithMany(u => u.CompletedTodos)                            .HasForeignKey(e => e.CompletedBy)      .OnDelete(DeleteBehavior.SetNull);
         });
 
         // case__workers

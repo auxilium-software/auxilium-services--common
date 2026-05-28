@@ -34,9 +34,9 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
         public required Guid UserId { get; set; }
 
         /// <summary>
-        /// A reason for why the User Address was blocked.
+        /// A reason for why the User was blocked.
         /// </summary>
-        public string? JustificationForBlacklist { get; set; }
+        public required string JustificationForBlacklist { get; set; }
 
         /// <summary>
         /// Whether the User Block is permanent (i.e. does not expire and has to be manually removed) or temporary (i.e. expires at a certain date and time).
