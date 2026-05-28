@@ -40,14 +40,10 @@ public class AuxiliumDbContext : DbContext
     public DbSet<UserEntityModel> Users { get; set; }
     public DbSet<UserAdditionalPropertyEntityModel> UserAdditionalProperties { get; set; }
     public DbSet<UserFileEntityModel> UserFiles { get; set; }
-
-
-
-    public DbSet<RefreshTokenEntityModel> RefreshTokens { get; set; }
-    public DbSet<WemwbsAssessmentEntityModel> WemwbsAssessments { get; set; }
-    public DbSet<TotpRecoveryCodeEntityModel> TotpRecoveryCodes { get; set; }
-    public DbSet<PasswordSetTokenEntityModel> PasswordSetTokens { get; set; }
-
+    public DbSet<PasswordSetTokenEntityModel> UserPasswordSetTokens { get; set; }
+    public DbSet<RefreshTokenEntityModel> UserRefreshTokens { get; set; }
+    public DbSet<TotpRecoveryCodeEntityModel> UserTotpRecoveryCodes { get; set; }
+    public DbSet<WemwbsAssessmentEntityModel> UserWemwbsAssessments { get; set; }
 
 
 
@@ -639,28 +635,62 @@ public class AuxiliumDbContext : DbContext
             entity.HasOne(e => e.User)                              .WithMany(u => u.Files)                                     .HasForeignKey(e => e.UserId)           .OnDelete(DeleteBehavior.Cascade);
         });
 
+        // user_password_set_tokens
+        modelBuilder.Entity<PasswordSetTokenEntityModel>(entity =>
+        {
+            entity.ToTable("user_password_set_tokens");
+            entity.HasKey(e => e.Id);
+            
+            entity.Property(e => e.Id)                              .HasColumnName("id")                                        .HasColumnType("char(36)")                                                                                                          .IsRequired();
+            entity.Property(e => e.CreatedAt)                       .HasColumnName("created_at")                                .HasColumnType("datetime")                                                      .HasDefaultValueSql("UTC_TIMESTAMP()")              .IsRequired();
+            entity.Property(e => e.CreatedBy)                       .HasColumnName("created_by")                                .HasColumnType("char(36)")                                                                                                          .IsRequired();
+            
+            entity.Property(e => e.UserId)                          .HasColumnName("user_id")                                   .HasColumnType("char(36)")                                                                                                          .IsRequired();
+            entity.Property(e => e.TokenHash)                       .HasColumnName("token_hash")                                .HasColumnType("text")                                                                                                              .IsRequired();
+            entity.Property(e => e.ExpiresAt)                       .HasColumnName("expires_at")                                .HasColumnType("datetime")                                                                                                          .IsRequired();
+            entity.Property(e => e.UsedAt)                          .HasColumnName("used_at")                                   .HasColumnType("datetime");
+            entity.Property(e => e.Reason)                          .HasColumnName("reason")                                    .HasColumnType("text")                  .HasConversion(new JsonPropertyNameEnumConverter<PasswordSetTokenReasonEnum>())             .IsRequired();
 
+            entity.HasOne(e => e.CreatedByUser)                     .WithMany(u => u.PasswordSetTokens)                         .HasForeignKey(e => e.CreatedBy)        .OnDelete(DeleteBehavior.Cascade);
+        });
 
+        // user_refresh_tokens
+        modelBuilder.Entity<RefreshTokenEntityModel>(entity =>
+        {
+            entity.ToTable("refresh_tokens");
+            entity.HasKey(e => e.Id);
+            
+            entity.Property(e => e.Id)                              .HasColumnName("id")                                        .HasColumnType("char(36)")                                                                                                          .IsRequired();
+            entity.Property(e => e.CreatedAt)                       .HasColumnName("created_at")                                .HasColumnType("datetime")                                                      .HasDefaultValueSql("UTC_TIMESTAMP()")              .IsRequired();
+            entity.Property(e => e.CreatedBy)                       .HasColumnName("created_by")                                .HasColumnType("char(36)");
 
+            entity.Property(e => e.TokenHash)                       .HasColumnName("token_hash")                                .HasColumnType("text")                                                                                                              .IsRequired();
+            entity.Property(e => e.ExpiresAt)                       .HasColumnName("expires_at")                                .HasColumnType("datetime")                                                                                                          .IsRequired();
 
+            entity.HasOne(e => e.CreatedByUser)                     .WithMany(u => u.RefreshTokens)                             .HasForeignKey(e => e.CreatedBy)        .OnDelete(DeleteBehavior.Cascade);
+        });
 
+        // user_totp_recovery_codes
+        modelBuilder.Entity<TotpRecoveryCodeEntityModel>(entity =>
+        {
+            entity.ToTable("user_totp_recovery_codes");
+            entity.HasKey(e => e.Id);
+            
+            entity.Property(e => e.Id)                              .HasColumnName("id")                                        .HasColumnType("char(36)")                                                                                                          .IsRequired();
+            entity.Property(e => e.CreatedAt)                       .HasColumnName("created_at")                                .HasColumnType("datetime")                                                      .HasDefaultValueSql("UTC_TIMESTAMP()")              .IsRequired();
+            entity.Property(e => e.CreatedBy)                       .HasColumnName("created_by")                                .HasColumnType("char(36)")                                                                                                          .IsRequired();
+            
+            entity.Property(e => e.CodeHash)                        .HasColumnName("code_hash")                                 .HasColumnType("text")                                                                                                              .IsRequired();
+            entity.Property(e => e.IsUsed)                          .HasColumnName("is_used")                                   .HasColumnType("tinyint(1)")                                                    .HasDefaultValue(false)                             .IsRequired();
+            entity.Property(e => e.UsedAt)                          .HasColumnName("used_at")                                   .HasColumnType("datetime");
 
+            entity.HasOne(e => e.CreatedByUser)                     .WithMany(u => u.TotpRecoveryCodes)                         .HasForeignKey(e => e.CreatedBy)        .OnDelete(DeleteBehavior.Cascade);
+        });
 
-
-
-
-
-
-
-
-
-
-
-
-        // wemwbs_assessments
+        // user_wemwbs_assessments
         modelBuilder.Entity<WemwbsAssessmentEntityModel>(entity =>
         {
-            entity.ToTable("wemwbs_assessments");
+            entity.ToTable("user_wemwbs_assessments");
             entity.HasKey(e => e.Id);
 
 
@@ -687,58 +717,6 @@ public class AuxiliumDbContext : DbContext
 
 
             entity.HasOne(e => e.CreatedByUser)                     .WithMany(u => u.WEMWBSAssessments)                         .HasForeignKey(e => e.CreatedBy)        .OnDelete(DeleteBehavior.Cascade);
-        });
-
-        // refresh_tokens
-        modelBuilder.Entity<RefreshTokenEntityModel>(entity =>
-        {
-            entity.ToTable("refresh_tokens");
-            entity.HasKey(e => e.Id);
-            
-            entity.Property(e => e.Id)                              .HasColumnName("id")                                        .HasColumnType("char(36)")                                                                                                          .IsRequired();
-            entity.Property(e => e.CreatedAt)                       .HasColumnName("created_at")                                .HasColumnType("datetime")                                                      .HasDefaultValueSql("UTC_TIMESTAMP()")              .IsRequired();
-            entity.Property(e => e.CreatedBy)                       .HasColumnName("created_by")                                .HasColumnType("char(36)");
-
-            entity.Property(e => e.TokenHash)                       .HasColumnName("token_hash")                                .HasColumnType("text")                                                                                                              .IsRequired();
-            entity.Property(e => e.ExpiresAt)                       .HasColumnName("expires_at")                                .HasColumnType("datetime")                                                                                                          .IsRequired();
-
-            entity.HasOne(e => e.CreatedByUser)                     .WithMany(u => u.RefreshTokens)                             .HasForeignKey(e => e.CreatedBy)        .OnDelete(DeleteBehavior.Cascade);
-        });
-
-        // totp_recovery_codes
-        modelBuilder.Entity<TotpRecoveryCodeEntityModel>(entity =>
-        {
-            entity.ToTable("totp_recovery_codes");
-            entity.HasKey(e => e.Id);
-            
-            entity.Property(e => e.Id)                              .HasColumnName("id")                                        .HasColumnType("char(36)")                                                                                                          .IsRequired();
-            entity.Property(e => e.CreatedAt)                       .HasColumnName("created_at")                                .HasColumnType("datetime")                                                      .HasDefaultValueSql("UTC_TIMESTAMP()")              .IsRequired();
-            entity.Property(e => e.CreatedBy)                       .HasColumnName("created_by")                                .HasColumnType("char(36)")                                                                                                          .IsRequired();
-            
-            entity.Property(e => e.CodeHash)                        .HasColumnName("code_hash")                                 .HasColumnType("text")                                                                                                              .IsRequired();
-            entity.Property(e => e.IsUsed)                          .HasColumnName("is_used")                                   .HasColumnType("tinyint(1)")                                                    .HasDefaultValue(false)                             .IsRequired();
-            entity.Property(e => e.UsedAt)                          .HasColumnName("used_at")                                   .HasColumnType("datetime");
-
-            entity.HasOne(e => e.CreatedByUser)                     .WithMany(u => u.TotpRecoveryCodes)                         .HasForeignKey(e => e.CreatedBy)        .OnDelete(DeleteBehavior.Cascade);
-        });
-
-        // password_set_tokens
-        modelBuilder.Entity<PasswordSetTokenEntityModel>(entity =>
-        {
-            entity.ToTable("password_set_tokens");
-            entity.HasKey(e => e.Id);
-            
-            entity.Property(e => e.Id)                              .HasColumnName("id")                                        .HasColumnType("char(36)")                                                                                                          .IsRequired();
-            entity.Property(e => e.CreatedAt)                       .HasColumnName("created_at")                                .HasColumnType("datetime")                                                      .HasDefaultValueSql("UTC_TIMESTAMP()")              .IsRequired();
-            entity.Property(e => e.CreatedBy)                       .HasColumnName("created_by")                                .HasColumnType("char(36)")                                                                                                          .IsRequired();
-            
-            entity.Property(e => e.UserId)                          .HasColumnName("user_id")                                   .HasColumnType("char(36)")                                                                                                          .IsRequired();
-            entity.Property(e => e.TokenHash)                       .HasColumnName("token_hash")                                .HasColumnType("text")                                                                                                              .IsRequired();
-            entity.Property(e => e.ExpiresAt)                       .HasColumnName("expires_at")                                .HasColumnType("datetime")                                                                                                          .IsRequired();
-            entity.Property(e => e.UsedAt)                          .HasColumnName("used_at")                                   .HasColumnType("datetime");
-            entity.Property(e => e.Reason)                          .HasColumnName("reason")                                    .HasColumnType("text")                  .HasConversion(new JsonPropertyNameEnumConverter<PasswordSetTokenReasonEnum>())             .IsRequired();
-
-            entity.HasOne(e => e.CreatedByUser)                     .WithMany(u => u.PasswordSetTokens)                         .HasForeignKey(e => e.CreatedBy)        .OnDelete(DeleteBehavior.Cascade);
         });
     }
 }
