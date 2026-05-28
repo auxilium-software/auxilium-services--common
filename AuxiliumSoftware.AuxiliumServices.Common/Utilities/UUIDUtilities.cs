@@ -31,6 +31,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Utilities
             [DatabaseObjectTypeEnum.User_RefreshToken]                          = "/auxilium/3/database-object/mariadb/user/refresh-token",
             [DatabaseObjectTypeEnum.User_TotpRecoveryCode]                      = "/auxilium/3/database-object/mariadb/user/totp-recovery-code",
             [DatabaseObjectTypeEnum.User_WemwbsAssessment]                      = "/auxilium/3/database-object/mariadb/user/wemwbs-assessment",
+            [DatabaseObjectTypeEnum.User_PasswordSetToken]                      = "/auxilium/3/database-object/mariadb/user/password-set-token",
             
 
 
