@@ -53,12 +53,12 @@ public class AuxiliumDbContext : DbContext
     {
         base.OnModelCreating(modelBuilder);
 
-        
 
-        // cases
+
+        // case__cases
         modelBuilder.Entity<CaseEntityModel>(entity =>
         {
-            entity.ToTable("cases");
+            entity.ToTable("case__cases");
             entity.HasKey(e => e.Id);
 
 
@@ -87,10 +87,10 @@ public class AuxiliumDbContext : DbContext
             entity.HasMany(e => e.EventLog)                         .WithOne(t => t.Case)                                       .HasForeignKey(t => t.CaseId)           .OnDelete(DeleteBehavior.Cascade);
         });
 
-        // case_additional_properties
+        // case__additional_properties
         modelBuilder.Entity<CaseAdditionalPropertyEntityModel>(entity =>
         {
-            entity.ToTable("case_additional_properties");
+            entity.ToTable("case__additional_properties");
             entity.HasKey(e => e.Id);
             
             entity.Property(e => e.Id)                              .HasColumnName("id")                                        .HasColumnType("char(36)")                                                                                                          .IsRequired();
@@ -112,10 +112,10 @@ public class AuxiliumDbContext : DbContext
             entity.HasIndex(e => new { e.CaseId })       .IsUnique();
         });
 
-        // case_clients
+        // case__clients
         modelBuilder.Entity<CaseClientEntityModel>(entity =>
         {
-            entity.ToTable("case_clients");
+            entity.ToTable("case__clients");
             entity.HasKey(e => e.Id);
             
             entity.Property(e => e.Id)                              .HasColumnName("id")                                        .HasColumnType("char(36)")                                                                                                          .IsRequired();
@@ -132,10 +132,10 @@ public class AuxiliumDbContext : DbContext
             entity.HasIndex(e => new { e.CaseId, e.UserId })        .IsUnique();
         });
 
-        // case_files
+        // case__files
         modelBuilder.Entity<CaseFileEntityModel>(entity =>
         {
-            entity.ToTable("case_files");
+            entity.ToTable("case__files");
             entity.HasKey(e => e.Id);
             
             entity.Property(e => e.Id)                              .HasColumnName("id")                                        .HasColumnType("char(36)")                                                                                                          .IsRequired();
@@ -157,10 +157,10 @@ public class AuxiliumDbContext : DbContext
             entity.HasOne(e => e.Case)                              .WithMany(c => c.Files)                                     .HasForeignKey(e => e.CaseId)           .OnDelete(DeleteBehavior.Cascade);
         });
 
-        // case_messages
+        // case__messages
         modelBuilder.Entity<CaseMessageEntityModel>(entity =>
         {
-            entity.ToTable("case_messages");
+            entity.ToTable("case__messages");
             entity.HasKey(e => e.Id);
             
             entity.Property(e => e.Id)                              .HasColumnName("id")                                        .HasColumnType("char(36)")                                                                                                          .IsRequired();
@@ -182,10 +182,10 @@ public class AuxiliumDbContext : DbContext
             entity.HasMany(e => e.ReadBy)                           .WithOne(r => r.Message)                                    .HasForeignKey(r => r.MessageId)        .OnDelete(DeleteBehavior.Cascade);
         });
 
-        // case_todos
+        // case__todos
         modelBuilder.Entity<CaseTodoEntityModel>(entity =>
         {
-            entity.ToTable("case_todos");
+            entity.ToTable("case__todos");
             entity.HasKey(e => e.Id);
             
             entity.Property(e => e.Id)                              .HasColumnName("id")                                        .HasColumnType("char(36)")                                                                                                          .IsRequired();
@@ -213,10 +213,10 @@ public class AuxiliumDbContext : DbContext
             entity.HasOne(e => e.CompletedByUser)                   .WithMany(u => u.CompletedTodos)                            .HasForeignKey(e => e.CompletedBy)      .OnDelete(DeleteBehavior.Restrict);
         });
 
-        // case_workers
+        // case__workers
         modelBuilder.Entity<CaseWorkerEntityModel>(entity =>
         {
-            entity.ToTable("case_workers");
+            entity.ToTable("case__workers");
             entity.HasKey(e => e.Id);
 
 
@@ -509,10 +509,10 @@ public class AuxiliumDbContext : DbContext
             entity.HasOne(e => e.CreatedByUser)                     .WithMany()                                                 .HasForeignKey(e => e.CreatedBy)        .OnDelete(DeleteBehavior.SetNull);
         });
 
-        // users
+        // user__users
         modelBuilder.Entity<UserEntityModel>(entity =>
         {
-            entity.ToTable("users");
+            entity.ToTable("user__users");
             entity.HasKey(e => e.Id);
 
 
@@ -588,7 +588,7 @@ public class AuxiliumDbContext : DbContext
         // user_additional_properties
         modelBuilder.Entity<UserAdditionalPropertyEntityModel>(entity =>
         {
-            entity.ToTable("user_additional_properties");
+            entity.ToTable("user__additional_properties");
             entity.HasKey(e => e.Id);
             
             entity.Property(e => e.Id)                              .HasColumnName("id")                                        .HasColumnType("char(36)")                                                                                                          .IsRequired();
@@ -613,7 +613,7 @@ public class AuxiliumDbContext : DbContext
         // user_files
         modelBuilder.Entity<UserFileEntityModel>(entity =>
         {
-            entity.ToTable("user_files");
+            entity.ToTable("user__files");
             entity.HasKey(e => e.Id);
             
             entity.Property(e => e.Id)                              .HasColumnName("id")                                        .HasColumnType("char(36)")                                                                                                          .IsRequired();
@@ -638,7 +638,7 @@ public class AuxiliumDbContext : DbContext
         // user_password_set_tokens
         modelBuilder.Entity<PasswordSetTokenEntityModel>(entity =>
         {
-            entity.ToTable("user_password_set_tokens");
+            entity.ToTable("user__password_set_tokens");
             entity.HasKey(e => e.Id);
             
             entity.Property(e => e.Id)                              .HasColumnName("id")                                        .HasColumnType("char(36)")                                                                                                          .IsRequired();
@@ -654,10 +654,10 @@ public class AuxiliumDbContext : DbContext
             entity.HasOne(e => e.CreatedByUser)                     .WithMany(u => u.PasswordSetTokens)                         .HasForeignKey(e => e.CreatedBy)        .OnDelete(DeleteBehavior.Cascade);
         });
 
-        // user_refresh_tokens
+        // user__refresh_tokens
         modelBuilder.Entity<RefreshTokenEntityModel>(entity =>
         {
-            entity.ToTable("refresh_tokens");
+            entity.ToTable("user__refresh_tokens");
             entity.HasKey(e => e.Id);
             
             entity.Property(e => e.Id)                              .HasColumnName("id")                                        .HasColumnType("char(36)")                                                                                                          .IsRequired();
@@ -670,10 +670,10 @@ public class AuxiliumDbContext : DbContext
             entity.HasOne(e => e.CreatedByUser)                     .WithMany(u => u.RefreshTokens)                             .HasForeignKey(e => e.CreatedBy)        .OnDelete(DeleteBehavior.Cascade);
         });
 
-        // user_totp_recovery_codes
+        // user__totp_recovery_codes
         modelBuilder.Entity<TotpRecoveryCodeEntityModel>(entity =>
         {
-            entity.ToTable("user_totp_recovery_codes");
+            entity.ToTable("user__totp_recovery_codes");
             entity.HasKey(e => e.Id);
             
             entity.Property(e => e.Id)                              .HasColumnName("id")                                        .HasColumnType("char(36)")                                                                                                          .IsRequired();
@@ -687,10 +687,10 @@ public class AuxiliumDbContext : DbContext
             entity.HasOne(e => e.CreatedByUser)                     .WithMany(u => u.TotpRecoveryCodes)                         .HasForeignKey(e => e.CreatedBy)        .OnDelete(DeleteBehavior.Cascade);
         });
 
-        // user_wemwbs_assessments
+        // user__wemwbs_assessments
         modelBuilder.Entity<WemwbsAssessmentEntityModel>(entity =>
         {
-            entity.ToTable("user_wemwbs_assessments");
+            entity.ToTable("user__wemwbs_assessments");
             entity.HasKey(e => e.Id);
 
 
