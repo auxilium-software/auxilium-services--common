@@ -15,6 +15,9 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.Enumerators
         PasswordReset,
 
         [JsonPropertyName("password_expired")]
-        PasswordExpired
+        PasswordExpired,
+
+        [JsonPropertyName("auxilium_1_bcrypt_migration")]
+        Auxilium1BCryptMigration
     }
 }
