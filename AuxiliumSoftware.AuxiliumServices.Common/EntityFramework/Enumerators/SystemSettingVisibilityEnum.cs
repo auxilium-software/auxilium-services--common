@@ -9,9 +9,12 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.Enumerators
     public enum SystemSettingVisibilityEnum
     {
         [JsonPropertyName("public")]
-        Public,
-        
+        Public,          // unauthenticated - logos, contact info, branding
+
+        // [JsonPropertyName("authenticated")]
+        // Authenticated,   // any logged-in user - maybe UI preferences, feature flags
+
         [JsonPropertyName("administrator")]
-        Administrator
+        Administrator    // admin panel only - WAF config, security policies
     }
 }
