@@ -8,7 +8,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Messaging.Models
     public abstract class QueueMessage
     {
         public Guid MessageId { get; set; } = Guid.NewGuid();
-        public DateTimeOffset CreatedAt { get; set; } = DateTimeOffset.UtcNow;
+        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         public string? CorrelationId { get; set; }
 
         [JsonIgnore]
