@@ -25,18 +25,22 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Enumerators
 
 
 
-        [JsonPropertyName("Log.CaseMessageReadByEventEntry")]
-        Log_CaseMessageReadByEventEntry,
-        [JsonPropertyName("Log.CaseModificationEventEntry")]
-        Log_CaseModificationEventEntry,
-        [JsonPropertyName("Log.LoginAttemptEventEntry")]
-        Log_LoginAttemptEventEntry,
-        [JsonPropertyName("Log.SystemBulletinEntryDismissalEventEntry")]
-        Log_SystemBulletinEntryDismissalEventEntry,
-        [JsonPropertyName("Log.SystemBulletinEntryViewEventEntry")]
-        Log_SystemBulletinEntryViewEventEntry,
-        [JsonPropertyName("Log.UserModificationEventEntry")]
-        Log_UserModificationEventEntry,
+        [JsonPropertyName("Log.CaseMessageReadBy.EventEntry")]
+        Log_CaseMessageReadBy_EventEntry,
+        [JsonPropertyName("Log.CaseModification.EventEntry")]
+        Log_CaseModification_EventEntry,
+        [JsonPropertyName("Log.LoginAttempt.EventEntry")]
+        Log_LoginAttempt_EventEntry,
+        [JsonPropertyName("Log.SystemMessageQueue.EmailSent.EventEntry")]
+        Log_SystemMessageQueue_EmailSent_EventEntry,
+        [JsonPropertyName("Log.SystemMessageQueue.FailedAction.EventEntry")]
+        Log_SystemMessageQueue_FailedAction_EventEntry,
+        [JsonPropertyName("Log.SystemBulletin.EntryDismissal.EventEntry")]
+        Log_SystemBulletin_EntryDismissal_EventEntry,
+        [JsonPropertyName("Log.SystemBulletin.EntryView.EventEntry")]
+        Log_SystemBulletin_EntryView_EventEntry,
+        [JsonPropertyName("Log.UserModification.EventEntry")]
+        Log_UserModification_EventEntry,
 
 
 

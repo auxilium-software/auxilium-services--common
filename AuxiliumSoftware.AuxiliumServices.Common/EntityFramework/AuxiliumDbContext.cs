@@ -30,6 +30,8 @@ public class AuxiliumDbContext : DbContext
     public DbSet<LogLoginAttemptEventEntityModel> Log_LoginAttempts { get; set; }
     public DbSet<LogSystemBulletinEntryDismissalEventEntityModel> Log_SystemBulletinEntryDismissals { get; set; }
     public DbSet<LogSystemBulletinEntryViewEventEntityModel> Log_SystemBulletinEntryViews { get; set; }
+    public DbSet<LogSystemMessageQueueSentEmailEntityModel> Log_SystemMessageQueueSentEmail { get; set; }
+    public DbSet<LogSystemMessageQueueFailedActionEntityModel> Log_SystemMessageQueueFailedActions { get; set; }
     public DbSet<LogUserModificationEventEntityModel> Log_UserModificationEvents { get; set; }
     public DbSet<SystemBulletinEntryEntityModel> System_Bulletins { get; set; }
     public DbSet<SystemSettingEntityModel> System_Settings { get; set; }
@@ -325,6 +327,50 @@ public class AuxiliumDbContext : DbContext
 
             entity.HasOne(e => e.CreatedByUser)                     .WithMany(u => u.BulletinViews)                             .HasForeignKey(e => e.CreatedBy)        .OnDelete(DeleteBehavior.Cascade);
             entity.HasOne(e => e.SystemBulletin)                    .WithMany(b => b.Views)                                     .HasForeignKey(e => e.SystemBulletinId) .OnDelete(DeleteBehavior.Cascade);
+        });
+
+        // log__system_message_queue_sent_emails
+        modelBuilder.Entity<LogSystemMessageQueueSentEmailEntityModel>(entity =>
+        {
+            entity.ToTable("log__system_message_queue_sent_emails");
+            entity.HasKey(e => e.Id);
+            
+            entity.Property(e => e.Id)                              .HasColumnName("id")                                        .HasColumnType("char(36)")                                                                                                          .IsRequired();
+            entity.Property(e => e.CreatedAt)                       .HasColumnName("created_at")                                .HasColumnType("datetime")                                                      .HasDefaultValueSql("UTC_TIMESTAMP()")              .IsRequired();
+            
+            entity.Property(e => e.MessageId)                       .HasColumnName("message_id")                                .HasColumnType("char(36)")                                                                                                          .IsRequired();
+            entity.Property(e => e.MessageCreatedAt)                .HasColumnName("message_created_at")                        .HasColumnType("datetime")                                                                                                          .IsRequired();
+            entity.Property(e => e.MessageCorrelationId)            .HasColumnName("message_correlation_id")                    .HasColumnType("text")                                                                                                              .IsRequired();
+            entity.Property(e => e.MessageRoutingKey)               .HasColumnName("message_routing_key")                       .HasColumnType("text")                                                                                                              .IsRequired();
+            entity.Property(e => e.MessageJson)                     .HasColumnName("message_json")                              .HasColumnType("longtext")                                                                                                          .IsRequired();
+
+            entity.Property(e => e.EmailRecipientAddress)           .HasColumnName("email_recipient_address")                   .HasColumnType("text")                                                                                                              .IsRequired();
+            entity.Property(e => e.EmailRecipientName)              .HasColumnName("email_recipient_name")                      .HasColumnType("text")                                                                                                              .IsRequired();
+            entity.Property(e => e.EmailLanguage)                   .HasColumnName("email_language")                            .HasColumnType("text")                                                                                                              .IsRequired();
+            entity.Property(e => e.EmailTemplate)                   .HasColumnName("email_template")                            .HasColumnType("text")                                                                                                              .IsRequired();
+            entity.Property(e => e.EmailSubject)                    .HasColumnName("email_subject")                             .HasColumnType("longtext")                                                                                                          .IsRequired();
+            entity.Property(e => e.EmailBodyHtml)                   .HasColumnName("email_body_html")                           .HasColumnType("longtext")                                                                                                          .IsRequired();
+            entity.Property(e => e.EmailBodyTxt)                    .HasColumnName("email_body_txt")                            .HasColumnType("longtext")                                                                                                          .IsRequired();
+        });
+
+        // log__system_message_queue_failed_actions
+        modelBuilder.Entity<LogSystemMessageQueueFailedActionEntityModel>(entity =>
+        {
+            entity.ToTable("log__system_message_queue_failed_actions");
+            entity.HasKey(e => e.Id);
+            
+            entity.Property(e => e.Id)                              .HasColumnName("id")                                        .HasColumnType("char(36)")                                                                                                          .IsRequired();
+            entity.Property(e => e.CreatedAt)                       .HasColumnName("created_at")                                .HasColumnType("datetime")                                                      .HasDefaultValueSql("UTC_TIMESTAMP()")              .IsRequired();
+            
+            entity.Property(e => e.MessageId)                       .HasColumnName("message_id")                                .HasColumnType("char(36)")                                                                                                          .IsRequired();
+            entity.Property(e => e.MessageCreatedAt)                .HasColumnName("message_created_at")                        .HasColumnType("datetime")                                                                                                          .IsRequired();
+            entity.Property(e => e.MessageCorrelationId)            .HasColumnName("message_correlation_id")                    .HasColumnType("text")                                                                                                              .IsRequired();
+            entity.Property(e => e.MessageRoutingKey)               .HasColumnName("message_routing_key")                       .HasColumnType("text")                                                                                                              .IsRequired();
+            entity.Property(e => e.MessageJson)                     .HasColumnName("message_json")                              .HasColumnType("longtext")                                                                                                          .IsRequired();
+
+            entity.Property(e => e.ExceptionType)                   .HasColumnName("exception_type")                            .HasColumnType("longtext")                                                                                                          .IsRequired();
+            entity.Property(e => e.ExceptionMessage)                .HasColumnName("exception_message")                         .HasColumnType("longtext")                                                                                                          .IsRequired();
+            entity.Property(e => e.ExceptionStackTrace)             .HasColumnName("exception_stack_trace")                     .HasColumnType("longtext")                                                                                                          .IsRequired();
         });
 
         // log__user_modification_events
