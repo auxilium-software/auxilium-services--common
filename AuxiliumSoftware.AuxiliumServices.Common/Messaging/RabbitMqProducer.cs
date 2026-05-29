@@ -46,7 +46,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Messaging
                 CorrelationId = message.CorrelationId,
                 ContentType = "application/json",
                 DeliveryMode = DeliveryModes.Persistent,
-                Timestamp = new AmqpTimestamp(message.CreatedAt.ToUnixTimeSeconds()),
+                Timestamp = new AmqpTimestamp(((DateTimeOffset)message.CreatedAt).ToUnixTimeSeconds()),
                 Type = typeof(T).Name
             };
 
