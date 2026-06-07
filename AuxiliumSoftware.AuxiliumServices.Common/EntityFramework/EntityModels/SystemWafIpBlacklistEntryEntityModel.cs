@@ -18,7 +18,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
         /// <summary>
         /// The timestamp of when the IP Block was created.
         /// </summary>
-        public required DateTime CreatedAt { get; set; }
+        public required DateTime CreatedAtUtc { get; set; }
 
         /// <summary>
         /// The unique identifier of the User who created the IP Block.
@@ -52,14 +52,14 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
         /// When the IP Block expires, if it is not permanent.
         /// This MUST be null if the IP Block is permanent.
         /// </summary>
-        public DateTime? ExpiresAt { get; set; }
+        public DateTime? ExpiresAtUtc { get; set; }
 
         /// <summary>
         /// For a temporary block, this denotes when the Blacklist Entry was lifted (i.e. when the IP Address Blacklist Entry became inactive).
         /// This MUST be null if the IP Address Blacklist is permanent.
         /// This MUST be null if the IP Address Blacklist is temporary and has not yet been lifted.
         /// </summary>
-        public DateTime? UnblacklistedAt { get; set; }
+        public DateTime? UnblacklistedAtUtc { get; set; }
 
         /// <summary>
         /// The unique identifier of the User who lifted the block, if applicable.

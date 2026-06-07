@@ -13,7 +13,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
         /// <summary>
         /// The timestamp of when the Case Todo Entry was created.
         /// </summary>
-        public required DateTime CreatedAt { get; set; }
+        public required DateTime CreatedAtUtc { get; set; }
         /// <summary>
         /// The unique identifier of the User who created the Case Todo Entry.
         /// </summary>
@@ -21,7 +21,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
         /// <summary>
         /// The timestamp of when the Case Todo Entry was last updated.
         /// </summary>
-        public DateTime? LastUpdatedAt { get; set; }
+        public DateTime? LastUpdatedAtUtc { get; set; }
         /// <summary>
         /// The unique identifier of the User who last updated the Case Todo Entry.
         /// </summary>
@@ -67,11 +67,11 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
         /// <summary>
         /// An optional reminder timestamp for the Case Todo Entry.
         /// </summary>
-        public required DateTime? Reminder { get; set; }
+        public required DateTime? ReminderUtc { get; set; }
         /// <summary>
         /// The timestamp of when the Case Todo Entry was completed.
         /// </summary>
-        public DateTime? CompletedAt { get; set; }
+        public DateTime? CompletedAtUtc { get; set; }
         /// <summary>
         /// The unique identifier of the User who completed the Case Todo Entry.
         /// </summary>

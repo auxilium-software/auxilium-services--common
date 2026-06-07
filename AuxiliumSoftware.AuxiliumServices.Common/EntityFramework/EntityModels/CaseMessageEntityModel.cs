@@ -12,7 +12,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
         /// <summary>
         /// The timestamp of when the Case Message was created.
         /// </summary>
-        public required DateTime CreatedAt { get; set; }
+        public required DateTime CreatedAtUtc { get; set; }
         /// <summary>
         /// The unique identifier of the User who created the Case Message.
         /// </summary>
@@ -20,7 +20,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
         /// <summary>
         /// The timestamp of when the Case Message was last updated.
         /// </summary>
-        public DateTime? LastUpdatedAt { get; set; }
+        public DateTime? LastUpdatedAtUtc { get; set; }
         /// <summary>
         /// The unique identifier of the User who last updated the Case Message.
         /// </summary>

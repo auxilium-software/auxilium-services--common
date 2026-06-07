@@ -51,8 +51,8 @@ public class MessageDocumentService : IMessageDocumentService
                 Content = content,
                 IsUrgent = isUrgent,
                 CreatedBy = senderId,
-                CreatedAt = DateTime.UtcNow,
-                LastUpdatedAt = DateTime.UtcNow,
+                CreatedAtUtc = DateTime.UtcNow,
+                LastUpdatedAtUtc = DateTime.UtcNow,
                 LastUpdatedBy = senderId
             };
 
@@ -62,7 +62,7 @@ public class MessageDocumentService : IMessageDocumentService
             var caseEntity = await _db.Cases.FindAsync(caseId);
             if (caseEntity != null)
             {
-                caseEntity.LastUpdatedAt = DateTime.UtcNow;
+                caseEntity.LastUpdatedAtUtc = DateTime.UtcNow;
             }
 
             await _db.SaveChangesAsync();
@@ -103,7 +103,7 @@ public class MessageDocumentService : IMessageDocumentService
             return await _db.CaseMessages
                 .Include(m => m.Sender)
                 .Where(m => m.CaseId == caseId)
-                .OrderByDescending(m => m.CreatedAt)
+                .OrderByDescending(m => m.CreatedAtUtc)
                 .ToListAsync();
         }
         catch (Exception ex)
@@ -132,13 +132,13 @@ public class MessageDocumentService : IMessageDocumentService
                     Id = UUIDUtilities.GenerateV5(DatabaseObjectTypeEnum.Log_CaseMessageReadBy_EventEntry),
                     MessageId = messageId,
                     CreatedBy = userId,
-                    CreatedAt = DateTime.UtcNow
+                    CreatedAtUtc = DateTime.UtcNow
                 };
 
                 _db.Log_CaseMessageReadBys.Add(readBy);
 
                 // update the LastUpdatedAt timestamp for the case
-                message.LastUpdatedAt = DateTime.UtcNow;
+                message.LastUpdatedAtUtc = DateTime.UtcNow;
 
                 await _db.SaveChangesAsync();
 
@@ -190,7 +190,7 @@ public class MessageDocumentService : IMessageDocumentService
                 .Where(rb => rb.MessageId == messageId)
                 .ToDictionaryAsync(
                     rb => rb.CreatedBy,
-                    rb => rb.CreatedAt
+                    rb => rb.CreatedAtUtc
                 );
         }
         catch (Exception ex)
@@ -214,7 +214,7 @@ public class MessageDocumentService : IMessageDocumentService
             var caseEntity = await _db.Cases.FindAsync(message.CaseId);
             if (caseEntity != null)
             {
-                caseEntity.LastUpdatedAt = DateTime.UtcNow;
+                caseEntity.LastUpdatedAtUtc = DateTime.UtcNow;
             }
 
             await _db.SaveChangesAsync();

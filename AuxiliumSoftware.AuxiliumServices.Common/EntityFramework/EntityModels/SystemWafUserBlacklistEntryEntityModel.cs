@@ -17,7 +17,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
         /// <summary>
         /// The timestamp of when the User Block was created.
         /// </summary>
-        public required DateTime CreatedAt { get; set; }
+        public required DateTime CreatedAtUtc { get; set; }
 
         /// <summary>
         /// The unique identifier of the User who created the User Block.
@@ -51,14 +51,14 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
         /// When the User Block expires, if it is not permanent.
         /// This MUST be null if the User Block is permanent.
         /// </summary>
-        public DateTime? ExpiresAt { get; set; }
+        public DateTime? ExpiresAtUtc { get; set; }
 
         /// <summary>
         /// For a temporary block, this denotes when the block was lifted (i.e. when the User Block became inactive).
         /// This MUST be null if the User Block is permanent.
         /// This MUST be null if the User Block is temporary and has not yet been lifted.
         /// </summary>
-        public DateTime? UnblacklistedAt { get; set; }
+        public DateTime? UnblacklistedAtUtc { get; set; }
 
         /// <summary>
         /// The unique identifier of the User who lifted the block, if applicable.

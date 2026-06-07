@@ -148,8 +148,8 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
 
             SystemWafIpBlacklistEntryEntityModel? block = await _db.System_Waf_IpBlacklist
                 .Where(b => b.IpAddress == normalizedIp)
-                .Where(b => b.UnblacklistedAt == null && (b.ExpiresAt == null || b.ExpiresAt > DateTime.UtcNow))
-                .OrderBy(b => b.CreatedAt)
+                .Where(b => b.UnblacklistedAtUtc == null && (b.ExpiresAtUtc == null || b.ExpiresAtUtc > DateTime.UtcNow))
+                .OrderBy(b => b.CreatedAtUtc)
                 .FirstOrDefaultAsync(ct);
 
             if (block == null)
@@ -175,7 +175,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
             int numberOfRecentAttempts = await _db.Log_LoginAttempts
                 .CountAsync(
                     a => a.ClientIpAddress == normalizedIp
-                    && a.CreatedAt >= windowStart,
+                    && a.CreatedAtUtc >= windowStart,
                     ct
                 );
 
@@ -194,9 +194,9 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
 
             return await _db.System_Waf_UserBlacklist
                 .Where(b => b.UserId == user.Id)
-                .Where(b => b.UnblacklistedAt == null)
-                .Where(b => (b.ExpiresAt == null || b.ExpiresAt > now))
-                .OrderByDescending(b => b.CreatedAt)
+                .Where(b => b.UnblacklistedAtUtc == null)
+                .Where(b => (b.ExpiresAtUtc == null || b.ExpiresAtUtc > now))
+                .OrderByDescending(b => b.CreatedAtUtc)
                 .FirstOrDefaultAsync(ct);
         }
 
@@ -216,7 +216,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
                 DateTime now = DateTime.UtcNow;
                 SystemWafUserBlacklistEntryEntityModel? existingLock = await _db.System_Waf_UserBlacklist
                     .Where(b => b.UserId == user.Id)
-                    .Where(b => b.UnblacklistedAt == null && (b.ExpiresAt == null || b.ExpiresAt > now))
+                    .Where(b => b.UnblacklistedAtUtc == null && (b.ExpiresAtUtc == null || b.ExpiresAtUtc > now))
                     .FirstOrDefaultAsync(ct);
 
                 if (existingLock != null)
@@ -230,7 +230,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
                     .CountAsync(
                         a => a.TargetUserId == user.Id
                         && !a.WasLoginSuccessful
-                        && a.CreatedAt >= windowStart,
+                        && a.CreatedAtUtc >= windowStart,
                         ct
                     );
 
@@ -240,8 +240,8 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
                 bool recheck = await _db.System_Waf_UserBlacklist
                     .AnyAsync(
                         b => b.UserId == user.Id
-                        && b.UnblacklistedAt == null
-                        && (b.ExpiresAt == null || b.ExpiresAt > now),
+                        && b.UnblacklistedAtUtc == null
+                        && (b.ExpiresAtUtc == null || b.ExpiresAtUtc > now),
                         ct
                     );
 
@@ -252,11 +252,11 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
                 SystemWafUserBlacklistEntryEntityModel lockout = new()
                 {
                     Id = Guid.NewGuid(),
-                    CreatedAt = now,
+                    CreatedAtUtc = now,
                     UserId = user.Id,
                     JustificationForBlacklist = $"{WafLogPrefix}: Automatic lockout: {failedCount} failed login attempts in {await _settings.GetIntAsync(SystemSettingKeyEnum.Policies_WebApplicationFirewall_User_UserLockoutWindowInMinutes)} minutes",
                     IsPermanent = lockoutDuration == 0,
-                    ExpiresAt = lockoutDuration > 0 ? now.AddMinutes(lockoutDuration) : (DateTime?)null
+                    ExpiresAtUtc = lockoutDuration > 0 ? now.AddMinutes(lockoutDuration) : (DateTime?)null
                 };
 
                 _db.System_Waf_UserBlacklist.Add(lockout);
@@ -299,7 +299,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
             _db.Log_LoginAttempts.Add(new LogLoginAttemptEventEntityModel
             {
                 Id = Guid.NewGuid(),
-                CreatedAt = DateTime.UtcNow,
+                CreatedAtUtc = DateTime.UtcNow,
                 ClientIpAddress = NormaliseIpAddress(ipAddress),
                 AttemptedEmailAddress = attemptedEmail,
                 TargetUserId = user?.Id,
@@ -350,7 +350,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
                 _db.Log_LoginAttempts.Add(new LogLoginAttemptEventEntityModel
                 {
                     Id = Guid.NewGuid(),
-                    CreatedAt = DateTime.UtcNow,
+                    CreatedAtUtc = DateTime.UtcNow,
                     ClientIpAddress = normalizedIp,
                     AttemptedEmailAddress = email,
                     TargetUserId = user.Id,
@@ -387,7 +387,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
                 .CountAsync(
                     a => a.ClientIpAddress == normalizedIp
                     && !a.WasLoginSuccessful
-                    && a.CreatedAt >= DateTime.UtcNow.AddMinutes(-ipBlockWindow),
+                    && a.CreatedAtUtc >= DateTime.UtcNow.AddMinutes(-ipBlockWindow),
                     ct
                 );
 
@@ -416,7 +416,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
                 .CountAsync(
                     a => a.ClientIpAddress == normalizedIp
                     && !a.WasLoginSuccessful
-                    && a.CreatedAt >= windowStart,
+                    && a.CreatedAtUtc >= windowStart,
                     ct
                 );
 
@@ -434,10 +434,10 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
             int previousBlockCount = blockHistory.Count;
             int recentTempBlocks = blockHistory.Count(
                 b => !b.IsPermanent
-                && b.CreatedAt >= now.AddHours(-permananetBandWindow)
+                && b.CreatedAtUtc >= now.AddHours(-permananetBandWindow)
             );
             List<Guid> activeBlockIds = blockHistory
-                .Where(b => b.UnblacklistedAt == null && (b.ExpiresAt == null || b.ExpiresAt > now))
+                .Where(b => b.UnblacklistedAtUtc == null && (b.ExpiresAtUtc == null || b.ExpiresAtUtc > now))
                 .Select(b => b.Id)
                 .ToList();
 
@@ -446,7 +446,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
                 await _db.System_Waf_IpBlacklist
                     .Where(b => activeBlockIds.Contains(b.Id))
                     .ExecuteUpdateAsync(s => s
-                        .SetProperty(b => b.UnblacklistedAt, now)
+                        .SetProperty(b => b.UnblacklistedAtUtc, now)
                         .SetProperty(b => b.JustificationForUnblacklist, $"Superseded by new block"), ct);
             }
 
@@ -459,7 +459,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
                 _db.System_Waf_IpBlacklist.Add(new SystemWafIpBlacklistEntryEntityModel
                 {
                     Id = Guid.NewGuid(),
-                    CreatedAt = now,
+                    CreatedAtUtc = now,
                     IpAddress = ipAddress,
                     IsPermanent = true,
                     JustificationForBlacklist = $"{WafLogPrefix}: Automatic permanent ban: {previousBlockCount + 1} blocks within {permananetBandWindow} hours"
@@ -482,11 +482,11 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
                 _db.System_Waf_IpBlacklist.Add(new SystemWafIpBlacklistEntryEntityModel
                 {
                     Id = Guid.NewGuid(),
-                    CreatedAt = now,
+                    CreatedAtUtc = now,
                     IpAddress = ipAddress,
                     IsPermanent = false,
                     JustificationForBlacklist = $"{WafLogPrefix}: Automatic temp block: {recentFailures} failed logins in {await _settings.GetIntAsync(SystemSettingKeyEnum.Policies_WebApplicationFirewall_Ip_IpBlacklistWindowInMinutes)} minutes",
-                    ExpiresAt = now.AddMinutes(temporaryBlockDuration)
+                    ExpiresAtUtc = now.AddMinutes(temporaryBlockDuration)
                 });
 
                 await _db.SaveChangesAsync(ct);
@@ -524,7 +524,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
                 .Where(
                     a => a.TargetUserId == user.Id
                     && !a.WasLoginSuccessful
-                    && a.CreatedAt >= now.AddMinutes(-windowMinutes)
+                    && a.CreatedAtUtc >= now.AddMinutes(-windowMinutes)
                 )
                 .Select(a => a.ClientIpAddress)
                 .Distinct()
@@ -543,8 +543,8 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
             bool isUserAlreadyLocked = await _db.System_Waf_UserBlacklist
                 .AnyAsync(
                     b => b.UserId == user.Id
-                    && b.UnblacklistedAt == null
-                    && (b.ExpiresAt == null || b.ExpiresAt > now),
+                    && b.UnblacklistedAtUtc == null
+                    && (b.ExpiresAtUtc == null || b.ExpiresAtUtc > now),
                     ct
                 );
 
@@ -554,11 +554,11 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
             _db.System_Waf_UserBlacklist.Add(new SystemWafUserBlacklistEntryEntityModel
             {
                 Id = Guid.NewGuid(),
-                CreatedAt = now,
+                CreatedAtUtc = now,
                 UserId = user.Id,
                 JustificationForBlacklist = $"{WafLogPrefix}: Distributed attack detected: {distinctIps} distinct IPs in {windowMinutes} minutes",
                 IsPermanent = true,
-                ExpiresAt = null
+                ExpiresAtUtc = null
             });
 
             await _db.SaveChangesAsync(ct);
@@ -583,11 +583,11 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
             await _db.System_Waf_IpBlacklist
                 .Where(
                     b => b.IpAddress == normalizedIpObj
-                    && b.UnblacklistedAt == null
-                    && (b.ExpiresAt == null || b.ExpiresAt > now)
+                    && b.UnblacklistedAtUtc == null
+                    && (b.ExpiresAtUtc == null || b.ExpiresAtUtc > now)
                 )
                 .ExecuteUpdateAsync(s => s
-                    .SetProperty(b => b.UnblacklistedAt, now)
+                    .SetProperty(b => b.UnblacklistedAtUtc, now)
                     .SetProperty(b => b.JustificationForUnblacklist, $"{WafLogPrefix}: Superseded by manual block"), ct);
 
             int tempBlockDuration = await _settings.GetIntAsync(SystemSettingKeyEnum.Policies_WebApplicationFirewall_Listing_TemporaryIpBlacklistDurationInMinutes_Default);
@@ -595,12 +595,12 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
             _db.System_Waf_IpBlacklist.Add(new SystemWafIpBlacklistEntryEntityModel
             {
                 Id = Guid.NewGuid(),
-                CreatedAt = now,
+                CreatedAtUtc = now,
                 CreatedBy = adminUser.Id,
                 IpAddress = ipAddress,
                 IsPermanent = permanent,
                 JustificationForBlacklist = reason,
-                ExpiresAt = permanent ? null : now.AddMinutes(tempBlockDuration)
+                ExpiresAtUtc = permanent ? null : now.AddMinutes(tempBlockDuration)
             });
 
             await _db.SaveChangesAsync(ct);
@@ -623,14 +623,14 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
             int affected = await _db.System_Waf_IpBlacklist
                 .Where(
                     b => b.IpAddress == normalizedIpObj
-                    && b.UnblacklistedAt == null
+                    && b.UnblacklistedAtUtc == null
                     && (
-                        b.ExpiresAt == null
-                        || b.ExpiresAt > now
+                        b.ExpiresAtUtc == null
+                        || b.ExpiresAtUtc > now
                     )
                 )
                 .ExecuteUpdateAsync(s => s
-                    .SetProperty(b => b.UnblacklistedAt, now)
+                    .SetProperty(b => b.UnblacklistedAtUtc, now)
                     .SetProperty(b => b.UnblacklistedBy, adminUser.Id)
                     .SetProperty(b => b.JustificationForUnblacklist, "[Manual]: Manually removed from blacklist by administrator"), ct);
 
@@ -659,11 +659,11 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
             await _db.System_Waf_UserBlacklist
                 .Where(
                     b => b.UserId == user.Id
-                    && b.UnblacklistedAt == null
-                    && (b.ExpiresAt == null || b.ExpiresAt > now)
+                    && b.UnblacklistedAtUtc == null
+                    && (b.ExpiresAtUtc == null || b.ExpiresAtUtc > now)
                 )
                 .ExecuteUpdateAsync(s => s
-                    .SetProperty(b => b.UnblacklistedAt, now)
+                    .SetProperty(b => b.UnblacklistedAtUtc, now)
                     .SetProperty(b => b.JustificationForUnblacklist, $"{WafLogPrefix}: Superseded by manual block"), ct);
 
             int lockoutDuration = await _settings.GetIntAsync(SystemSettingKeyEnum.Policies_WebApplicationFirewall_User_UserLockoutDurationInMinutes);
@@ -671,12 +671,12 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
             _db.System_Waf_UserBlacklist.Add(new SystemWafUserBlacklistEntryEntityModel
             {
                 Id = Guid.NewGuid(),
-                CreatedAt = now,
+                CreatedAtUtc = now,
                 CreatedBy = adminUser.Id,
                 UserId = user.Id,
                 IsPermanent = permanent,
                 JustificationForBlacklist = reason,
-                ExpiresAt = permanent ? null : now.AddMinutes(lockoutDuration)
+                ExpiresAtUtc = permanent ? null : now.AddMinutes(lockoutDuration)
             });
 
             await _db.SaveChangesAsync(ct);
@@ -698,14 +698,14 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
             int affected = await _db.System_Waf_UserBlacklist
                 .Where(
                     b => b.UserId == user.Id
-                    && b.UnblacklistedAt == null
+                    && b.UnblacklistedAtUtc == null
                     && (
-                        b.ExpiresAt == null
-                        || b.ExpiresAt > now
+                        b.ExpiresAtUtc == null
+                        || b.ExpiresAtUtc > now
                     )
                 )
                 .ExecuteUpdateAsync(s => s
-                    .SetProperty(b => b.UnblacklistedAt, now)
+                    .SetProperty(b => b.UnblacklistedAtUtc, now)
                     .SetProperty(b => b.UnblacklistedBy, adminUser.Id)
                     .SetProperty(b => b.JustificationForUnblacklist, "[Manual]: Manually removed from blacklist by administrator"), ct);
 
@@ -736,11 +736,11 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
             await _db.System_Waf_IpWhitelist
                 .Where(
                     w => w.IpAddress == ipAddress
-                    && w.UnwhitelistedAt == null
-                    && (w.ExpiresAt == null || w.ExpiresAt > now)
+                    && w.UnwhitelistedAtUtc == null
+                    && (w.ExpiresAtUtc == null || w.ExpiresAtUtc > now)
                 )
                 .ExecuteUpdateAsync(s => s
-                    .SetProperty(w => w.UnwhitelistedAt, now)
+                    .SetProperty(w => w.UnwhitelistedAtUtc, now)
                     .SetProperty(w => w.JustificationForUnwhitelist, $"{WafLogPrefix}: Superseded by new whitelist entry"),
                 ct
             );
@@ -750,12 +750,12 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
             _db.System_Waf_IpWhitelist.Add(new SystemWafIpWhitelistEntryEntityModel
             {
                 Id = Guid.NewGuid(),
-                CreatedAt = now,
+                CreatedAtUtc = now,
                 CreatedBy = adminUser.Id,
                 IpAddress = ipAddress,
                 IsPermanent = permanent,
                 JustificationForWhitelist = reason,
-                ExpiresAt = permanent ? null : now.AddMinutes(whitelistDuration)
+                ExpiresAtUtc = permanent ? null : now.AddMinutes(whitelistDuration)
             });
 
             await _db.SaveChangesAsync(ct);
@@ -778,11 +778,11 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
             int affected = await _db.System_Waf_IpWhitelist
                 .Where(
                     w => w.IpAddress == ipAddress
-                    && w.UnwhitelistedAt == null
-                    && (w.ExpiresAt == null || w.ExpiresAt > now)
+                    && w.UnwhitelistedAtUtc == null
+                    && (w.ExpiresAtUtc == null || w.ExpiresAtUtc > now)
                 )
                 .ExecuteUpdateAsync(s => s
-                    .SetProperty(w => w.UnwhitelistedAt, now)
+                    .SetProperty(w => w.UnwhitelistedAtUtc, now)
                     .SetProperty(w => w.UnwhitelistedBy, adminUser.Id)
                     .SetProperty(w => w.JustificationForUnwhitelist, "[Manual]: Manually removed from whitelist by administrator"), ct);
 
@@ -811,11 +811,11 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
             await _db.System_Waf_UserWhitelist
                 .Where(
                     w => w.UserId == user.Id
-                    && w.UnwhitelistedAt == null
-                    && (w.ExpiresAt == null || w.ExpiresAt > now)
+                    && w.UnwhitelistedAtUtc == null
+                    && (w.ExpiresAtUtc == null || w.ExpiresAtUtc > now)
                 )
                 .ExecuteUpdateAsync(s => s
-                    .SetProperty(w => w.UnwhitelistedAt, now)
+                    .SetProperty(w => w.UnwhitelistedAtUtc, now)
                     .SetProperty(w => w.JustificationForUnwhitelist, $"{WafLogPrefix}: Superseded by new whitelist entry"), ct);
 
             int whitelistDuration = await _settings.GetIntAsync(SystemSettingKeyEnum.Policies_WebApplicationFirewall_Listing_TemporaryUserWhitelistDurationInMinutes_Default);
@@ -823,12 +823,12 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
             _db.System_Waf_UserWhitelist.Add(new SystemWafUserWhitelistEntryEntityModel
             {
                 Id = Guid.NewGuid(),
-                CreatedAt = now,
+                CreatedAtUtc = now,
                 CreatedBy = adminUser.Id,
                 UserId = user.Id,
                 IsPermanent = permanent,
                 JustificationForWhitelist = reason,
-                ExpiresAt = permanent ? null : now.AddMinutes(whitelistDuration)
+                ExpiresAtUtc = permanent ? null : now.AddMinutes(whitelistDuration)
             });
 
             await _db.SaveChangesAsync(ct);
@@ -850,11 +850,11 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
             int affected = await _db.System_Waf_UserWhitelist
                 .Where(
                     w => w.UserId == user.Id
-                    && w.UnwhitelistedAt == null
-                    && (w.ExpiresAt == null || w.ExpiresAt > now)
+                    && w.UnwhitelistedAtUtc == null
+                    && (w.ExpiresAtUtc == null || w.ExpiresAtUtc > now)
                 )
                 .ExecuteUpdateAsync(s => s
-                    .SetProperty(w => w.UnwhitelistedAt, now)
+                    .SetProperty(w => w.UnwhitelistedAtUtc, now)
                     .SetProperty(w => w.UnwhitelistedBy, adminUser.Id)
                     .SetProperty(w => w.JustificationForUnwhitelist, "[Manual]: Manually removed from whitelist by administrator"), ct);
 
@@ -881,15 +881,15 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
 
             if (!includeExpired)
                 query = query.Where(
-                    b => b.UnblacklistedAt == null
+                    b => b.UnblacklistedAtUtc == null
                     && (
-                        b.ExpiresAt == null
-                        || b.ExpiresAt > now
+                        b.ExpiresAtUtc == null
+                        || b.ExpiresAtUtc > now
                     )
                 );
 
             return await query
-                .OrderByDescending(b => b.CreatedAt)
+                .OrderByDescending(b => b.CreatedAtUtc)
                 .ToListAsync(ct);
         }
 
@@ -900,8 +900,8 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
             // query the whitelist table for active entries
             List<SystemWafIpWhitelistEntryEntityModel> whitelistedIps = await _db.System_Waf_IpWhitelist
                 .Where(
-                    w => w.UnwhitelistedAt == null
-                    && (w.ExpiresAt == null || w.ExpiresAt > now)
+                    w => w.UnwhitelistedAtUtc == null
+                    && (w.ExpiresAtUtc == null || w.ExpiresAtUtc > now)
                 )
                 .ToListAsync(ct);
 
@@ -957,7 +957,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
                 query = query.Where(a => a.WasLoginSuccessful == successFilter);
 
             return await query
-                .OrderByDescending(a => a.CreatedAt)
+                .OrderByDescending(a => a.CreatedAtUtc)
                 .Take(count)
                 .ToListAsync(ct);
         }

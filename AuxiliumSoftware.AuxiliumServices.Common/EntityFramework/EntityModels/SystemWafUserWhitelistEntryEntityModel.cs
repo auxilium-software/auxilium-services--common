@@ -16,7 +16,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
         /// <summary>
         /// The timestamp of when the User Whitelist Entry was created.
         /// </summary>
-        public required DateTime CreatedAt { get; set; }
+        public required DateTime CreatedAtUtc { get; set; }
         /// <summary>
         /// The unique identifier of the user who created the User Whitelist Entry.
         /// </summary>
@@ -48,14 +48,14 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
         /// When the User Whitelist expires, if it is not permanent.
         /// This MUST be null if the User Whitelist is permanent.
         /// </summary>
-        public DateTime? ExpiresAt { get; set; }
+        public DateTime? ExpiresAtUtc { get; set; }
 
         /// <summary>
         /// For a temporary Whitelist, this denotes when the whitelist was lifted (i.e. when the User Whitelist became inactive).
         /// This MUST be null if the User Whitelist is permanent.
         /// This MUST be null if the User Whitelist is temporary and has not yet been lifted.
         /// </summary>
-        public DateTime? UnwhitelistedAt { get; set; }
+        public DateTime? UnwhitelistedAtUtc { get; set; }
 
         /// <summary>
         /// The unique identifier of the User who lifted the Whitelist, if applicable.

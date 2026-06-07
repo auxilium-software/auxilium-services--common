@@ -16,7 +16,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
         /// <summary>
         /// The timestamp of when the Password Set Token was created.
         /// </summary>
-        public required DateTime CreatedAt { get; set; }
+        public required DateTime CreatedAtUtc { get; set; }
         /// <summary>
         /// The unique identifier of the User who issued the Password Set Token.
         /// </summary>
@@ -32,11 +32,11 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
         /// <summary>
         /// The expiration datetime of the Password Set Token.
         /// </summary>
-        public required DateTime ExpiresAt { get; set; }
+        public required DateTime ExpiresAtUtc { get; set; }
         /// <summary>
         /// When the Password Set Token was consumed. Null if unused.
         /// </summary>
-        public DateTime? UsedAt { get; set; } = null;
+        public DateTime? UsedAtUtc { get; set; } = null;
         /// <summary>
         /// The reason this Password Set Token was issued.
         /// </summary>

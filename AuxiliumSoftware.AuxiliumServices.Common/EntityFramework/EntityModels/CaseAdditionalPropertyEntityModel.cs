@@ -13,7 +13,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
         /// <summary>
         /// The timestamp of when the Additional Property was created.
         /// </summary>
-        public required DateTime CreatedAt { get; set; }
+        public required DateTime CreatedAtUtc { get; set; }
         /// <summary>
         /// The unique identifier of the user who created the Additional Property.
         /// </summary>
@@ -21,7 +21,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
         /// <summary>
         /// The timestamp of when the Additional Property was last updated.
         /// </summary>
-        public DateTime? LastUpdatedAt { get; set; }
+        public DateTime? LastUpdatedAtUtc { get; set; }
         /// <summary>
         /// The unique identifier of the user who last updated the Additional Property.
         /// </summary>

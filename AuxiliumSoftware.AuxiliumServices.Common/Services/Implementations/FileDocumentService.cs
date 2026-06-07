@@ -51,7 +51,7 @@ public class FileDocumentService : IFileDocumentService
             return await _db.CaseFiles
                 .Include(f => f.CreatedByUser)
                 .Where(f => f.CaseId == caseId)
-                .OrderByDescending(f => f.CreatedAt)
+                .OrderByDescending(f => f.CreatedAtUtc)
                 .ToListAsync();
         }
         catch (Exception ex)
@@ -97,8 +97,8 @@ public class FileDocumentService : IFileDocumentService
                 LfsPath = filePath,
                 Description = description ?? string.Empty,
                 CreatedBy = uploadedBy,
-                CreatedAt = DateTime.UtcNow,
-                LastUpdatedAt = DateTime.UtcNow,
+                CreatedAtUtc = DateTime.UtcNow,
+                LastUpdatedAtUtc = DateTime.UtcNow,
                 LastUpdatedBy = uploadedBy
             };
 
@@ -108,7 +108,7 @@ public class FileDocumentService : IFileDocumentService
             var caseEntity = await _db.Cases.FindAsync(caseId);
             if (caseEntity != null)
             {
-                caseEntity.LastUpdatedAt = DateTime.UtcNow;
+                caseEntity.LastUpdatedAtUtc = DateTime.UtcNow;
             }
 
             await _db.SaveChangesAsync();
@@ -139,7 +139,7 @@ public class FileDocumentService : IFileDocumentService
             var caseEntity = await _db.Cases.FindAsync(metadata.CaseId);
             if (caseEntity != null)
             {
-                caseEntity.LastUpdatedAt = DateTime.UtcNow;
+                caseEntity.LastUpdatedAtUtc = DateTime.UtcNow;
             }
 
             await _db.SaveChangesAsync();
@@ -185,7 +185,7 @@ public class FileDocumentService : IFileDocumentService
             return await _db.UserFiles
                 .Include(f => f.CreatedByUser)
                 .Where(f => f.UserId == userId)
-                .OrderByDescending(f => f.CreatedAt)
+                .OrderByDescending(f => f.CreatedAtUtc)
                 .ToListAsync();
         }
         catch (Exception ex)
@@ -231,8 +231,8 @@ public class FileDocumentService : IFileDocumentService
                 LfsPath = filePath,
                 Description = description ?? string.Empty,
                 CreatedBy = uploadedBy,
-                CreatedAt = DateTime.UtcNow,
-                LastUpdatedAt = DateTime.UtcNow,
+                CreatedAtUtc = DateTime.UtcNow,
+                LastUpdatedAtUtc = DateTime.UtcNow,
                 LastUpdatedBy = uploadedBy
             };
 
@@ -242,7 +242,7 @@ public class FileDocumentService : IFileDocumentService
             var userEntity = await _db.Users.FindAsync(userId);
             if (userEntity != null)
             {
-                userEntity.LastUpdatedAt = DateTime.UtcNow;
+                userEntity.LastUpdatedAtUtc = DateTime.UtcNow;
             }
 
             await _db.SaveChangesAsync();
@@ -273,7 +273,7 @@ public class FileDocumentService : IFileDocumentService
             var userEntity = await _db.Users.FindAsync(metadata.UserId);
             if (userEntity != null)
             {
-                userEntity.LastUpdatedAt = DateTime.UtcNow;
+                userEntity.LastUpdatedAtUtc = DateTime.UtcNow;
             }
 
             await _db.SaveChangesAsync();

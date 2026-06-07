@@ -16,7 +16,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
         /// <summary>
         /// The timestamp of when the TOTP Recovery Code was created.
         /// </summary>
-        public required DateTime CreatedAt { get; set; }
+        public required DateTime CreatedAtUtc { get; set; }
         /// <summary>
         /// The unique identifier of the User who created the TOTP Recovery Code (this is who the TOTP Recovery Code belongs to).
         /// </summary>
@@ -39,7 +39,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
         /// When the TOTP Recovery Code has been used.
         /// Null if unused.
         /// </summary>
-        public DateTime? UsedAt { get; set; }
+        public DateTime? UsedAtUtc { get; set; }
 
 
 

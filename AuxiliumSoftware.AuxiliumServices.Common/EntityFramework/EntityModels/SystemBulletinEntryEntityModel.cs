@@ -16,7 +16,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
         /// <summary>
         /// The timestamp of when the System Bulletin Entry was created.
         /// </summary>
-        public required DateTime CreatedAt { get; set; }
+        public required DateTime CreatedAtUtc { get; set; }
         /// <summary>
         /// The unique identifier for the User who created the System Bulletin Entry.
         /// </summary>
@@ -51,12 +51,12 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
         /// The DateTime representing when the System Bulletin Entry is due to go live, the default value in database is the current DateTime.
         /// This is useful for scheduling System Bulletin Entries.
         /// </summary>
-        public required DateTime StartsAt { get; set; }
+        public required DateTime StartsAtUtc { get; set; }
         /// <summary>
         /// An optional DateTime representing when the System Bulletin Entry is due to no longer be live.
         /// This is useful for scheduling System Bulletin Entries.
         /// </summary>
-        public DateTime? EndsAt { get; set; }
+        public DateTime? EndsAtUtc { get; set; }
         /// <summary>
         /// An enumerator representing who the Target Audience is.
         /// </summary>

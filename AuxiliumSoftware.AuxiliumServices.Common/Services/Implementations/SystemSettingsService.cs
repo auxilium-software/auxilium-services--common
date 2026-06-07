@@ -48,7 +48,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
                 .AsNoTracking()
                 .Where(s => enumKeys.Contains(s.ConfigKey))
                 .GroupBy(s => s.ConfigKey)
-                .Select(g => g.OrderByDescending(s => s.CreatedAt).First())
+                .Select(g => g.OrderByDescending(s => s.CreatedAtUtc).First())
                 .ToDictionaryAsync(s => s.ConfigKey, s => s, ct);
 
             return visibleKeys.Select(kvp =>
@@ -93,7 +93,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
             var setting = await _db.System_Settings
                 .AsNoTracking()
                 .Where(s => s.ConfigKey == key)
-                .OrderByDescending(s => s.CreatedAt)
+                .OrderByDescending(s => s.CreatedAtUtc)
                 .FirstOrDefaultAsync(ct);
 
             if (setting is not null)
@@ -164,7 +164,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
                 ConfigKey = key,
                 ConfigValue = jsonValue,
                 ValueType = valueType,
-                CreatedAt = DateTime.UtcNow,
+                CreatedAtUtc = DateTime.UtcNow,
                 CreatedBy = modifiedBy,
                 ReasonForModification = reasonForModification
             });

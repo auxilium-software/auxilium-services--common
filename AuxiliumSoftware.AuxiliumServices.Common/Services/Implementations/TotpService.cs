@@ -58,7 +58,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
             // (TotpEnabled remains false until the user proves they've set up their authenticator app by submitting a valid code)
             user.TotpSecret = secret;
             user.TotpEnabled = false;
-            user.TotpEnabledAt = null;
+            user.TotpEnabledAtUtc = null;
 
             await _db.SaveChangesAsync();
 
@@ -84,7 +84,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
                 return null;
 
             user.TotpEnabled = true;
-            user.TotpEnabledAt = DateTime.UtcNow;
+            user.TotpEnabledAtUtc = DateTime.UtcNow;
 
             var plaintextCodes = await GenerateRecoveryCodesForUser(userId);
 
@@ -111,7 +111,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
 
             user.TotpSecret = null;
             user.TotpEnabled = false;
-            user.TotpEnabledAt = null;
+            user.TotpEnabledAtUtc = null;
 
             var recoveryCodes = await _db.UserTotpRecoveryCodes
                 .Where(r => r.CreatedBy == userId)
@@ -172,7 +172,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
 
             // mark the code as used so that it can't be reused
             match.IsUsed = true;
-            match.UsedAt = DateTime.UtcNow;
+            match.UsedAtUtc = DateTime.UtcNow;
 
             await _db.SaveChangesAsync();
 
@@ -249,8 +249,8 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
                     CreatedBy = userId,
                     CodeHash = HashRecoveryCode(formatted),
                     IsUsed = false,
-                    CreatedAt = now,
-                    UsedAt = null
+                    CreatedAtUtc = now,
+                    UsedAtUtc = null
                 });
             }
 
