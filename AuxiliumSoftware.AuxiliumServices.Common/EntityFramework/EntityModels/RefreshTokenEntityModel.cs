@@ -12,7 +12,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
         /// <summary>
         /// The timestamp of when the Refresh Token was created.
         /// </summary>
-        public required DateTime CreatedAt { get; set; }
+        public required DateTime CreatedAtUtc { get; set; }
         /// <summary>
         /// The unique identifier of the User who created the Refresh Token.
         /// </summary>
@@ -29,7 +29,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
         /// <summary>
         /// The expiration datetime of the Refresh Token.
         /// </summary>
-        public required DateTime ExpiresAt { get; set; }
+        public required DateTime ExpiresAtUtc { get; set; }
 
 
 

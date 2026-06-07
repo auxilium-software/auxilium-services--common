@@ -12,7 +12,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
         /// <summary>
         /// The timestamp of when the User was created.
         /// </summary>
-        public required DateTime CreatedAt { get; set; }
+        public required DateTime CreatedAtUtc { get; set; }
         /// <summary>
         /// The unique identifier of the User who created the User.
         /// </summary>
@@ -20,7 +20,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
         /// <summary>
         /// The timestamp of when the User was last updated.
         /// </summary>
-        public DateTime? LastUpdatedAt { get; set; }
+        public DateTime? LastUpdatedAtUtc { get; set; }
         /// <summary>
         /// The unique identifier of the User who last updated the User.
         /// </summary>
@@ -121,7 +121,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
         /// A timestamp of when the TOTP was activated (after verifying the first code).
         /// MUST be null if not enabled.
         /// </summary>
-        public DateTime? TotpEnabledAt { get; set; }
+        public DateTime? TotpEnabledAtUtc { get; set; }
 
 
 

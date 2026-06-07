@@ -44,7 +44,7 @@ public class CaseDocumentService : ICaseDocumentService
 
     public async Task SaveDocumentAsync(CaseEntityModel caseDoc)
     {
-        caseDoc.LastUpdatedAt = DateTime.UtcNow;
+        caseDoc.LastUpdatedAtUtc = DateTime.UtcNow;
 
         // check if the entity is tracked
         var entry = _db.Entry(caseDoc);
@@ -79,7 +79,7 @@ public class CaseDocumentService : ICaseDocumentService
                 CaseId = caseId,
                 UserId = userId,
                 CreatedBy = userId, // TODO: pass through current user
-                CreatedAt = DateTime.UtcNow
+                CreatedAtUtc = DateTime.UtcNow
             };
 
             _db.CaseClients.Add(caseClient);
@@ -88,7 +88,7 @@ public class CaseDocumentService : ICaseDocumentService
             var caseEntity = await _db.Cases.FindAsync(caseId);
             if (caseEntity != null)
             {
-                caseEntity.LastUpdatedAt = DateTime.UtcNow;
+                caseEntity.LastUpdatedAtUtc = DateTime.UtcNow;
             }
 
             await _db.SaveChangesAsync();
@@ -117,7 +117,7 @@ public class CaseDocumentService : ICaseDocumentService
                 var caseEntity = await _db.Cases.FindAsync(caseId);
                 if (caseEntity != null)
                 {
-                    caseEntity.LastUpdatedAt = DateTime.UtcNow;
+                    caseEntity.LastUpdatedAtUtc = DateTime.UtcNow;
                 }
 
                 await _db.SaveChangesAsync();
@@ -153,7 +153,7 @@ public class CaseDocumentService : ICaseDocumentService
                 CaseId = caseId,
                 UserId = userId,
                 CreatedBy = userId, // TODO: pass through current user
-                CreatedAt = DateTime.UtcNow
+                CreatedAtUtc = DateTime.UtcNow
             };
 
             _db.CaseWorkers.Add(caseWorker);
@@ -162,7 +162,7 @@ public class CaseDocumentService : ICaseDocumentService
             var caseEntity = await _db.Cases.FindAsync(caseId);
             if (caseEntity != null)
             {
-                caseEntity.LastUpdatedAt = DateTime.UtcNow;
+                caseEntity.LastUpdatedAtUtc = DateTime.UtcNow;
             }
 
             await _db.SaveChangesAsync();
@@ -191,7 +191,7 @@ public class CaseDocumentService : ICaseDocumentService
                 var caseEntity = await _db.Cases.FindAsync(caseId);
                 if (caseEntity != null)
                 {
-                    caseEntity.LastUpdatedAt = DateTime.UtcNow;
+                    caseEntity.LastUpdatedAtUtc = DateTime.UtcNow;
                 }
 
                 await _db.SaveChangesAsync();
@@ -247,7 +247,7 @@ public class CaseDocumentService : ICaseDocumentService
                 CaseId = caseId,
                 ContentType = contentType ?? "text/plain",
                 CreatedBy = currentUser.Id,
-                CreatedAt = DateTime.UtcNow,
+                CreatedAtUtc = DateTime.UtcNow,
                 OriginalName = additionalPropertyOriginalName,
                 UrlSlug = additionalPropertyUrlSlug,
                 Content = additionalPropertyContent,
@@ -259,7 +259,7 @@ public class CaseDocumentService : ICaseDocumentService
             var caseEntity = await _db.Cases.FindAsync(caseId);
             if (caseEntity != null)
             {
-                caseEntity.LastUpdatedAt = DateTime.UtcNow;
+                caseEntity.LastUpdatedAtUtc = DateTime.UtcNow;
             }
 
             await _db.SaveChangesAsync();
@@ -288,7 +288,7 @@ public class CaseDocumentService : ICaseDocumentService
                 var caseEntity = await _db.Cases.FindAsync(caseId);
                 if (caseEntity != null)
                 {
-                    caseEntity.LastUpdatedAt = DateTime.UtcNow;
+                    caseEntity.LastUpdatedAtUtc = DateTime.UtcNow;
                 }
 
                 await _db.SaveChangesAsync();
@@ -333,10 +333,10 @@ public class CaseDocumentService : ICaseDocumentService
                 Status = TodoStatusEnum.NeedsAction,
                 Priority = priority,
                 CreatedBy = createdBy,
-                CreatedAt = DateTime.UtcNow,
+                CreatedAtUtc = DateTime.UtcNow,
                 DueDate = dueDate,
                 AssignedTo = assignedTo,
-                Reminder = reminder
+                ReminderUtc = reminder
             };
 
             _db.CaseTodos.Add(todo);
@@ -345,7 +345,7 @@ public class CaseDocumentService : ICaseDocumentService
             var caseEntity = await _db.Cases.FindAsync(caseId);
             if (caseEntity != null)
             {
-                caseEntity.LastUpdatedAt = DateTime.UtcNow;
+                caseEntity.LastUpdatedAtUtc = DateTime.UtcNow;
                 caseEntity.LastUpdatedBy = createdBy;
             }
 
@@ -388,7 +388,7 @@ public class CaseDocumentService : ICaseDocumentService
                 .Include(t => t.AssignedToUser)
                 .Include(t => t.CompletedByUser)
                 .Where(t => t.CaseId == caseId)
-                .OrderByDescending(t => t.CreatedAt)
+                .OrderByDescending(t => t.CreatedAtUtc)
                 .ToListAsync();
         }
         catch (Exception ex)
@@ -412,11 +412,11 @@ public class CaseDocumentService : ICaseDocumentService
                 ?? throw new KeyNotFoundException($"Todo {todoId} not found in case {caseId}");
 
             todo.Status = newStatus;
-            todo.LastUpdatedAt = DateTime.UtcNow;
+            todo.LastUpdatedAtUtc = DateTime.UtcNow;
 
             if (newStatus == TodoStatusEnum.Completed && completedBy != null)
             {
-                todo.CompletedAt = DateTime.UtcNow;
+                todo.CompletedAtUtc = DateTime.UtcNow;
                 todo.CompletedBy = completedBy;
                 todo.CompletionNote = completionNotes;
             }
@@ -425,7 +425,7 @@ public class CaseDocumentService : ICaseDocumentService
             var caseEntity = await _db.Cases.FindAsync(caseId);
             if (caseEntity != null)
             {
-                caseEntity.LastUpdatedAt = DateTime.UtcNow;
+                caseEntity.LastUpdatedAtUtc = DateTime.UtcNow;
             }
 
             await _db.SaveChangesAsync();
@@ -463,15 +463,15 @@ public class CaseDocumentService : ICaseDocumentService
             if (priority.HasValue) todo.Priority = priority.Value;
             if (dueDate.HasValue) todo.DueDate = dueDate;
             if (assignedTo.HasValue) todo.AssignedTo = assignedTo;
-            if (reminder.HasValue) todo.Reminder = reminder;
+            if (reminder.HasValue) todo.ReminderUtc = reminder;
 
-            todo.LastUpdatedAt = DateTime.UtcNow;
+            todo.LastUpdatedAtUtc = DateTime.UtcNow;
 
             // update the LastUpdatedAt timestamp for the case
             var caseEntity = await _db.Cases.FindAsync(caseId);
             if (caseEntity != null)
             {
-                caseEntity.LastUpdatedAt = DateTime.UtcNow;
+                caseEntity.LastUpdatedAtUtc = DateTime.UtcNow;
             }
 
             await _db.SaveChangesAsync();
@@ -499,7 +499,7 @@ public class CaseDocumentService : ICaseDocumentService
             var caseEntity = await _db.Cases.FindAsync(caseId);
             if (caseEntity != null)
             {
-                caseEntity.LastUpdatedAt = DateTime.UtcNow;
+                caseEntity.LastUpdatedAtUtc = DateTime.UtcNow;
             }
 
             await _db.SaveChangesAsync();
@@ -600,7 +600,7 @@ public class CaseDocumentService : ICaseDocumentService
         var logEntry = new LogCaseModificationEventEntityModel
         {
             Id = UUIDUtilities.GenerateV5(DatabaseObjectTypeEnum.Log_CaseModification_EventEntry),
-            CreatedAt = DateTime.UtcNow,
+            CreatedAtUtc = DateTime.UtcNow,
             CreatedBy = currentUser.Id,
             CaseId = targetCase.Id,
             EntityType = entityType,

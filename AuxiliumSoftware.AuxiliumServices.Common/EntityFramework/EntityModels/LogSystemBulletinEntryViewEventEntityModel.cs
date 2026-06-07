@@ -15,7 +15,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
         /// <summary>
         /// The timestamp of when the System Bulletin was viewed.
         /// </summary>
-        public required DateTime CreatedAt { get; set; }
+        public required DateTime CreatedAtUtc { get; set; }
         /// <summary>
         /// The unique identifier of the User who viewed the System Bulletin.
         /// </summary>

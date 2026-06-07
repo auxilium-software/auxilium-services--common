@@ -34,24 +34,17 @@ public class PasswordService : IPasswordService
             return false;
         }
 
-        try
+        if (passwordHash.StartsWith("$argon2", StringComparison.Ordinal))
         {
-            if (passwordHash.StartsWith("$argon2", StringComparison.Ordinal))
-            {
-                return VerifyPasswordArgon2(password, passwordHash);
-            }
-            else if (passwordHash.StartsWith("$2a$") || passwordHash.StartsWith("$2b$") || passwordHash.StartsWith("$2y$"))
-            {
-                return VerifyPasswordBCrypt(password, passwordHash);
-            }
-            else
-            {
-                return false;
-            }
+            return VerifyPasswordArgon2(password, passwordHash);
         }
-        catch
+        else if (passwordHash.StartsWith("$2a$") || passwordHash.StartsWith("$2b$") || passwordHash.StartsWith("$2y$"))
         {
-            return false;
+            return VerifyPasswordBCrypt(password, passwordHash);
+        }
+        else
+        {
+            throw new ArgumentException("Only Argon2 (preferred) and BCrypt (deprecated) are supported");
         }
     }
     public string NormalisePassword(string? rawPassword, string? passwordSha512)

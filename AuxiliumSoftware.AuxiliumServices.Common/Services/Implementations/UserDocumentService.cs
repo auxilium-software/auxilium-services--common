@@ -50,7 +50,7 @@ public class UserDocumentService : IUserDocumentService
     {
         try
         {
-            userDoc.LastUpdatedAt = DateTime.UtcNow;
+            userDoc.LastUpdatedAtUtc = DateTime.UtcNow;
 
             var entry = _db.Entry(userDoc);
             if (entry.State == EntityState.Detached)
@@ -109,7 +109,7 @@ public class UserDocumentService : IUserDocumentService
                 UserId = userId,
                 ContentType = contentType ?? "text/plain",
                 CreatedBy = currentUser.Id,
-                CreatedAt = DateTime.UtcNow,
+                CreatedAtUtc = DateTime.UtcNow,
                 OriginalName = additionalPropertyOriginalName,
                 UrlSlug = additionalPropertyUrlSlug,
                 Content = additionalPropertyContent,
@@ -121,7 +121,7 @@ public class UserDocumentService : IUserDocumentService
             var userEntity = await _db.Users.FindAsync(userId);
             if (userEntity != null)
             {
-                userEntity.LastUpdatedAt = DateTime.UtcNow;
+                userEntity.LastUpdatedAtUtc = DateTime.UtcNow;
             }
 
             await _db.SaveChangesAsync();
@@ -150,7 +150,7 @@ public class UserDocumentService : IUserDocumentService
                 var userEntity = await _db.Users.FindAsync(userId);
                 if (userEntity != null)
                 {
-                    userEntity.LastUpdatedAt = DateTime.UtcNow;
+                    userEntity.LastUpdatedAtUtc = DateTime.UtcNow;
                 }
 
                 await _db.SaveChangesAsync();
@@ -233,7 +233,7 @@ public class UserDocumentService : IUserDocumentService
         var logEntry = new LogUserModificationEventEntityModel
         {
             Id = UUIDUtilities.GenerateV5(DatabaseObjectTypeEnum.Log_UserModification_EventEntry),
-            CreatedAt = DateTime.UtcNow,
+            CreatedAtUtc = DateTime.UtcNow,
             CreatedBy = currentUser.Id,
             UserId = targetUser.Id,
             EntityType = entityType,

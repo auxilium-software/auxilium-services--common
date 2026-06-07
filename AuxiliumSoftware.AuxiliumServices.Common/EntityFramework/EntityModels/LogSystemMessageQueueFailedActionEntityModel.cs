@@ -13,7 +13,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
         public required Guid Id { get; set; }
         /// <summary>
         /// </summary>
-        public required DateTime CreatedAt { get; set; }
+        public required DateTime CreatedAtUtc { get; set; }
 
 
 
@@ -24,10 +24,10 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
         public required Guid MessageId { get; set; }
         /// <summary>
         /// </summary>
-        public required DateTime MessageCreatedAt { get; set; }
+        public required DateTime MessageCreatedAtUtc { get; set; }
         /// <summary>
         /// </summary>
-        public required string MessageCorrelationId { get; set; }
+        public required string? MessageCorrelationId { get; set; }
         /// <summary>
         /// </summary>
         public required string MessageRoutingKey { get; set; }

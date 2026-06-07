@@ -16,7 +16,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
         /// <summary>
         /// The timestamp of when the Log Entry was created.
         /// </summary>
-        public required DateTime CreatedAt { get; set; }
+        public required DateTime CreatedAtUtc { get; set; }
 
 
 

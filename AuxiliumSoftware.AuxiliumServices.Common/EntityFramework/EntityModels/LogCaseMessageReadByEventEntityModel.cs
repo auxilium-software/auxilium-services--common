@@ -12,7 +12,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
         /// <summary>
         /// The timestamp when the Message was read.
         /// </summary>
-        public required DateTime CreatedAt { get; set; }
+        public required DateTime CreatedAtUtc { get; set; }
         /// <summary>
         /// The unique identifier of the User who read the Message.
         /// </summary>
