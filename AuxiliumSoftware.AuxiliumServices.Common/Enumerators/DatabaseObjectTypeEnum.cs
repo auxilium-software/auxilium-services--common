@@ -48,6 +48,8 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Enumerators
 
         [JsonPropertyName("System.BulletinEntry")]
         System_BulletinEntry,
+        [JsonPropertyName("System.MetricEntry")]
+        System_Metrics,
         [JsonPropertyName("System.SettingEntry")]
         System_SettingEntry,
         [JsonPropertyName("System.Waf.IpBlacklistEntry")]
