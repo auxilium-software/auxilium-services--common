@@ -67,9 +67,9 @@ public class AuxiliumDbContext : DbContext
 
             
             entity.Property(e => e.Id)                              .HasColumnName("id")                                        .HasColumnType("char(36)")                                                                                                          .IsRequired();
-            entity.Property(e => e.CreatedAt)                       .HasColumnName("created_at")                                .HasColumnType("datetime")                                                      .HasDefaultValueSql("UTC_TIMESTAMP()")              .IsRequired();
+            entity.Property(e => e.CreatedAt)                       .HasColumnName("created_at_utc")                            .HasColumnType("datetime")                                                      .HasDefaultValueSql("UTC_TIMESTAMP()")              .IsRequired();
             entity.Property(e => e.CreatedBy)                       .HasColumnName("created_by")                                .HasColumnType("char(36)");
-            entity.Property(e => e.LastUpdatedAt)                   .HasColumnName("last_updated_at")                           .HasColumnType("datetime");
+            entity.Property(e => e.LastUpdatedAt)                   .HasColumnName("last_updated_at_utc")                       .HasColumnType("datetime");
             entity.Property(e => e.LastUpdatedBy)                   .HasColumnName("last_updated_by")                           .HasColumnType("char(36)");
 
             entity.Property(e => e.Title)                           .HasColumnName("title")                                     .HasColumnType("text")                                                                                                              .IsRequired();
@@ -97,9 +97,9 @@ public class AuxiliumDbContext : DbContext
             entity.HasKey(e => e.Id);
             
             entity.Property(e => e.Id)                              .HasColumnName("id")                                        .HasColumnType("char(36)")                                                                                                          .IsRequired();
-            entity.Property(e => e.CreatedAt)                       .HasColumnName("created_at")                                .HasColumnType("datetime")                                                      .HasDefaultValueSql("UTC_TIMESTAMP()")              .IsRequired();
+            entity.Property(e => e.CreatedAt)                       .HasColumnName("created_at_utc")                            .HasColumnType("datetime")                                                      .HasDefaultValueSql("UTC_TIMESTAMP()")              .IsRequired();
             entity.Property(e => e.CreatedBy)                       .HasColumnName("created_by")                                .HasColumnType("char(36)");
-            entity.Property(e => e.LastUpdatedAt)                   .HasColumnName("last_updated_at")                           .HasColumnType("datetime");
+            entity.Property(e => e.LastUpdatedAt)                   .HasColumnName("last_updated_at_utc")                       .HasColumnType("datetime");
             entity.Property(e => e.LastUpdatedBy)                   .HasColumnName("last_updated_by")                           .HasColumnType("char(36)");
 
             entity.Property(e => e.CaseId)                          .HasColumnName("case_id")                                   .HasColumnType("char(36)")                                                                                                          .IsRequired();
@@ -122,7 +122,7 @@ public class AuxiliumDbContext : DbContext
             entity.HasKey(e => e.Id);
             
             entity.Property(e => e.Id)                              .HasColumnName("id")                                        .HasColumnType("char(36)")                                                                                                          .IsRequired();
-            entity.Property(e => e.CreatedAt)                       .HasColumnName("created_at")                                .HasColumnType("datetime")                                                      .HasDefaultValueSql("UTC_TIMESTAMP()")              .IsRequired();
+            entity.Property(e => e.CreatedAt)                       .HasColumnName("created_at_utc")                            .HasColumnType("datetime")                                                      .HasDefaultValueSql("UTC_TIMESTAMP()")              .IsRequired();
             entity.Property(e => e.CreatedBy)                       .HasColumnName("created_by")                                .HasColumnType("char(36)");
 
             entity.Property(e => e.CaseId)                          .HasColumnName("case_id")                                   .HasColumnType("char(36)")                                                                                                          .IsRequired();
@@ -142,9 +142,9 @@ public class AuxiliumDbContext : DbContext
             entity.HasKey(e => e.Id);
             
             entity.Property(e => e.Id)                              .HasColumnName("id")                                        .HasColumnType("char(36)")                                                                                                          .IsRequired();
-            entity.Property(e => e.CreatedAt)                       .HasColumnName("created_at")                                .HasColumnType("datetime")                                                      .HasDefaultValueSql("UTC_TIMESTAMP()")              .IsRequired();
+            entity.Property(e => e.CreatedAt)                       .HasColumnName("created_at_utc")                            .HasColumnType("datetime")                                                      .HasDefaultValueSql("UTC_TIMESTAMP()")              .IsRequired();
             entity.Property(e => e.CreatedBy)                       .HasColumnName("created_by")                                .HasColumnType("char(36)");
-            entity.Property(e => e.LastUpdatedAt)                   .HasColumnName("last_updated_at")                           .HasColumnType("datetime");
+            entity.Property(e => e.LastUpdatedAt)                   .HasColumnName("last_updated_at_utc")                       .HasColumnType("datetime");
             entity.Property(e => e.LastUpdatedBy)                   .HasColumnName("last_updated_by")                           .HasColumnType("char(36)");
 
             entity.Property(e => e.CaseId)                          .HasColumnName("case_id")                                   .HasColumnType("char(36)")                                                                                                          .IsRequired();
@@ -167,9 +167,9 @@ public class AuxiliumDbContext : DbContext
             entity.HasKey(e => e.Id);
             
             entity.Property(e => e.Id)                              .HasColumnName("id")                                        .HasColumnType("char(36)")                                                                                                          .IsRequired();
-            entity.Property(e => e.CreatedAt)                       .HasColumnName("created_at")                                .HasColumnType("datetime")                                                      .HasDefaultValueSql("UTC_TIMESTAMP()")              .IsRequired();
+            entity.Property(e => e.CreatedAt)                       .HasColumnName("created_at_utc")                            .HasColumnType("datetime")                                                      .HasDefaultValueSql("UTC_TIMESTAMP()")              .IsRequired();
             entity.Property(e => e.CreatedBy)                       .HasColumnName("created_by")                                .HasColumnType("char(36)");
-            entity.Property(e => e.LastUpdatedAt)                   .HasColumnName("last_updated_at")                           .HasColumnType("datetime");
+            entity.Property(e => e.LastUpdatedAt)                   .HasColumnName("last_updated_at_utc")                       .HasColumnType("datetime");
             entity.Property(e => e.LastUpdatedBy)                   .HasColumnName("last_updated_by")                           .HasColumnType("char(36)");
 
             entity.Property(e => e.CaseId)                          .HasColumnName("case_id")                                   .HasColumnType("char(36)")                                                                                                          .IsRequired();
@@ -192,9 +192,9 @@ public class AuxiliumDbContext : DbContext
             entity.HasKey(e => e.Id);
             
             entity.Property(e => e.Id)                              .HasColumnName("id")                                        .HasColumnType("char(36)")                                                                                                          .IsRequired();
-            entity.Property(e => e.CreatedAt)                       .HasColumnName("created_at")                                .HasColumnType("datetime")                                                      .HasDefaultValueSql("UTC_TIMESTAMP()")              .IsRequired();
+            entity.Property(e => e.CreatedAt)                       .HasColumnName("created_at_utc")                            .HasColumnType("datetime")                                                      .HasDefaultValueSql("UTC_TIMESTAMP()")              .IsRequired();
             entity.Property(e => e.CreatedBy)                       .HasColumnName("created_by")                                .HasColumnType("char(36)");
-            entity.Property(e => e.LastUpdatedAt)                   .HasColumnName("last_updated_at")                           .HasColumnType("datetime");
+            entity.Property(e => e.LastUpdatedAt)                   .HasColumnName("last_updated_at_utc")                       .HasColumnType("datetime");
             entity.Property(e => e.LastUpdatedBy)                   .HasColumnName("last_updated_by")                           .HasColumnType("char(36)");
 
             entity.Property(e => e.CaseId)                          .HasColumnName("case_id")                                   .HasColumnType("char(36)")                                                                                                          .IsRequired();
@@ -202,10 +202,10 @@ public class AuxiliumDbContext : DbContext
             entity.Property(e => e.Description)                     .HasColumnName("description")                               .HasColumnType("text")                                                                                                              .IsRequired();
             entity.Property(e => e.Status)                          .HasColumnName("status")                                    .HasColumnType("text")                  .HasConversion(new JsonPropertyNameEnumConverter<TodoStatusEnum>())                         .IsRequired();
             entity.Property(e => e.Priority)                        .HasColumnName("priority")                                  .HasColumnType("text")                  .HasConversion(new JsonPropertyNameEnumConverter<TodoPriorityEnum>())                       .IsRequired();
-            entity.Property(e => e.DueDate)                         .HasColumnName("due_date")                                  .HasColumnType("datetime");
+            entity.Property(e => e.DueDate)                         .HasColumnName("due_date_utc")                              .HasColumnType("datetime");
             entity.Property(e => e.AssignedTo)                      .HasColumnName("assigned_to")                               .HasColumnType("char(36)");
-            entity.Property(e => e.Reminder)                        .HasColumnName("reminder")                                  .HasColumnType("datetime");
-            entity.Property(e => e.CompletedAt)                     .HasColumnName("completed_at")                              .HasColumnType("datetime");
+            entity.Property(e => e.Reminder)                        .HasColumnName("reminder_utc")                              .HasColumnType("datetime");
+            entity.Property(e => e.CompletedAt)                     .HasColumnName("completed_at_utc")                          .HasColumnType("datetime");
             entity.Property(e => e.CompletedBy)                     .HasColumnName("completed_by")                              .HasColumnType("char(36)");
             entity.Property(e => e.CompletionNote)                  .HasColumnName("completion_note")                           .HasColumnType("text");
             
@@ -225,7 +225,7 @@ public class AuxiliumDbContext : DbContext
 
             
             entity.Property(e => e.Id)                              .HasColumnName("id")                                        .HasColumnType("char(36)")                                                                                                          .IsRequired();
-            entity.Property(e => e.CreatedAt)                       .HasColumnName("created_at")                                .HasColumnType("datetime")                                                      .HasDefaultValueSql("UTC_TIMESTAMP()")              .IsRequired();
+            entity.Property(e => e.CreatedAt)                       .HasColumnName("created_at_utc")                            .HasColumnType("datetime")                                                      .HasDefaultValueSql("UTC_TIMESTAMP()")              .IsRequired();
             entity.Property(e => e.CreatedBy)                       .HasColumnName("created_by")                                .HasColumnType("char(36)");
 
             entity.Property(e => e.CaseId)                          .HasColumnName("case_id")                                   .HasColumnType("char(36)")                                                                                                          .IsRequired();
@@ -247,7 +247,7 @@ public class AuxiliumDbContext : DbContext
             entity.HasKey(e => e.Id);
             
             entity.Property(e => e.Id)                              .HasColumnName("id")                                        .HasColumnType("char(36)")                                                                                                          .IsRequired();
-            entity.Property(e => e.CreatedAt)                       .HasColumnName("created_at")                                .HasColumnType("datetime")                                                      .HasDefaultValueSql("UTC_TIMESTAMP()")              .IsRequired();
+            entity.Property(e => e.CreatedAt)                       .HasColumnName("created_at_utc")                            .HasColumnType("datetime")                                                      .HasDefaultValueSql("UTC_TIMESTAMP()")              .IsRequired();
             entity.Property(e => e.CreatedBy)                       .HasColumnName("created_by")                                .HasColumnType("char(36)")                                                                                                          .IsRequired();
 
             entity.Property(e => e.MessageId)                       .HasColumnName("message_id")                                .HasColumnType("char(36)")                                                                                                          .IsRequired();
@@ -263,7 +263,7 @@ public class AuxiliumDbContext : DbContext
             entity.HasKey(e => e.Id);
             
             entity.Property(e => e.Id)                              .HasColumnName("id")                                        .HasColumnType("char(36)")                                                                                                          .IsRequired();
-            entity.Property(e => e.CreatedAt)                       .HasColumnName("created_at")                                .HasColumnType("datetime")                                                      .HasDefaultValueSql("UTC_TIMESTAMP()")              .IsRequired();
+            entity.Property(e => e.CreatedAt)                       .HasColumnName("created_at_utc")                            .HasColumnType("datetime")                                                      .HasDefaultValueSql("UTC_TIMESTAMP()")              .IsRequired();
             entity.Property(e => e.CreatedBy)                       .HasColumnName("created_by")                                .HasColumnType("char(36)")                                                                                                          .IsRequired();
             
             entity.Property(e => e.CaseId)                          .HasColumnName("case_id")                                   .HasColumnType("char(36)")                                                                                                          .IsRequired();
@@ -286,7 +286,7 @@ public class AuxiliumDbContext : DbContext
             entity.HasKey(e => e.Id);
 
             entity.Property(e => e.Id)                              .HasColumnName("id")                                        .HasColumnType("char(36)")                                                                                                          .IsRequired();
-            entity.Property(e => e.CreatedAt)                       .HasColumnName("created_at")                                .HasColumnType("datetime")                                                      .HasDefaultValueSql("UTC_TIMESTAMP()")              .IsRequired();
+            entity.Property(e => e.CreatedAt)                       .HasColumnName("created_at_utc")                            .HasColumnType("datetime")                                                      .HasDefaultValueSql("UTC_TIMESTAMP()")              .IsRequired();
 
             entity.Property(e => e.AttemptedEmailAddress)           .HasColumnName("attempted_email_address")                   .HasColumnType("text")                                                                                                              .IsRequired();
             entity.Property(e => e.TargetUserId)                    .HasColumnName("target_user_id")                            .HasColumnType("char(36)");
@@ -305,7 +305,7 @@ public class AuxiliumDbContext : DbContext
             entity.HasKey(e => e.Id);
             
             entity.Property(e => e.Id)                              .HasColumnName("id")                                        .HasColumnType("char(36)")                                                                                                          .IsRequired();
-            entity.Property(e => e.CreatedAt)                       .HasColumnName("created_at")                                .HasColumnType("datetime")                                                      .HasDefaultValueSql("UTC_TIMESTAMP()")              .IsRequired();
+            entity.Property(e => e.CreatedAt)                       .HasColumnName("created_at_utc")                            .HasColumnType("datetime")                                                      .HasDefaultValueSql("UTC_TIMESTAMP()")              .IsRequired();
             entity.Property(e => e.CreatedBy)                       .HasColumnName("created_by")                                .HasColumnType("char(36)")                                                                                                          .IsRequired();
 
             entity.Property(e => e.SystemBulletinId)                .HasColumnName("system_bulletin_id")                        .HasColumnType("char(36)")                                                                                                          .IsRequired();
@@ -321,7 +321,7 @@ public class AuxiliumDbContext : DbContext
             entity.HasKey(e => e.Id);
             
             entity.Property(e => e.Id)                              .HasColumnName("id")                                        .HasColumnType("char(36)")                                                                                                          .IsRequired();
-            entity.Property(e => e.CreatedAt)                       .HasColumnName("created_at")                                .HasColumnType("datetime")                                                      .HasDefaultValueSql("UTC_TIMESTAMP()")              .IsRequired();
+            entity.Property(e => e.CreatedAt)                       .HasColumnName("created_at_utc")                            .HasColumnType("datetime")                                                      .HasDefaultValueSql("UTC_TIMESTAMP()")              .IsRequired();
             entity.Property(e => e.CreatedBy)                       .HasColumnName("created_by")                                .HasColumnType("char(36)")                                                                                                          .IsRequired();
 
             entity.Property(e => e.SystemBulletinId)                .HasColumnName("system_bulletin_id")                        .HasColumnType("char(36)")                                                                                                          .IsRequired();
@@ -337,10 +337,10 @@ public class AuxiliumDbContext : DbContext
             entity.HasKey(e => e.Id);
             
             entity.Property(e => e.Id)                              .HasColumnName("id")                                        .HasColumnType("char(36)")                                                                                                          .IsRequired();
-            entity.Property(e => e.CreatedAt)                       .HasColumnName("created_at")                                .HasColumnType("datetime")                                                      .HasDefaultValueSql("UTC_TIMESTAMP()")              .IsRequired();
+            entity.Property(e => e.CreatedAt)                       .HasColumnName("created_at_utc")                            .HasColumnType("datetime")                                                      .HasDefaultValueSql("UTC_TIMESTAMP()")              .IsRequired();
             
             entity.Property(e => e.MessageId)                       .HasColumnName("message_id")                                .HasColumnType("char(36)")                                                                                                          .IsRequired();
-            entity.Property(e => e.MessageCreatedAt)                .HasColumnName("message_created_at")                        .HasColumnType("datetime")                                                                                                          .IsRequired();
+            entity.Property(e => e.MessageCreatedAt)                .HasColumnName("message_created_at_utc")                    .HasColumnType("datetime")                                                                                                          .IsRequired();
             entity.Property(e => e.MessageCorrelationId)            .HasColumnName("message_correlation_id")                    .HasColumnType("text");
             entity.Property(e => e.MessageRoutingKey)               .HasColumnName("message_routing_key")                       .HasColumnType("text")                                                                                                              .IsRequired();
             entity.Property(e => e.MessageJson)                     .HasColumnName("message_json")                              .HasColumnType("longtext")                                                                                                          .IsRequired();
@@ -361,10 +361,10 @@ public class AuxiliumDbContext : DbContext
             entity.HasKey(e => e.Id);
             
             entity.Property(e => e.Id)                              .HasColumnName("id")                                        .HasColumnType("char(36)")                                                                                                          .IsRequired();
-            entity.Property(e => e.CreatedAt)                       .HasColumnName("created_at")                                .HasColumnType("datetime")                                                      .HasDefaultValueSql("UTC_TIMESTAMP()")              .IsRequired();
+            entity.Property(e => e.CreatedAt)                       .HasColumnName("created_at_utc")                            .HasColumnType("datetime")                                                      .HasDefaultValueSql("UTC_TIMESTAMP()")              .IsRequired();
             
             entity.Property(e => e.MessageId)                       .HasColumnName("message_id")                                .HasColumnType("char(36)")                                                                                                          .IsRequired();
-            entity.Property(e => e.MessageCreatedAt)                .HasColumnName("message_created_at")                        .HasColumnType("datetime")                                                                                                          .IsRequired();
+            entity.Property(e => e.MessageCreatedAt)                .HasColumnName("message_created_at_utc")                    .HasColumnType("datetime")                                                                                                          .IsRequired();
             entity.Property(e => e.MessageCorrelationId)            .HasColumnName("message_correlation_id")                    .HasColumnType("text");
             entity.Property(e => e.MessageRoutingKey)               .HasColumnName("message_routing_key")                       .HasColumnType("text")                                                                                                              .IsRequired();
             entity.Property(e => e.MessageJson)                     .HasColumnName("message_json")                              .HasColumnType("longtext")                                                                                                          .IsRequired();
@@ -381,7 +381,7 @@ public class AuxiliumDbContext : DbContext
             entity.HasKey(e => e.Id);
             
             entity.Property(e => e.Id)                              .HasColumnName("id")                                        .HasColumnType("char(36)")                                                                                                          .IsRequired();
-            entity.Property(e => e.CreatedAt)                       .HasColumnName("created_at")                                .HasColumnType("datetime")                                                      .HasDefaultValueSql("UTC_TIMESTAMP()")              .IsRequired();
+            entity.Property(e => e.CreatedAt)                       .HasColumnName("created_at_utc")                            .HasColumnType("datetime")                                                      .HasDefaultValueSql("UTC_TIMESTAMP()")              .IsRequired();
             entity.Property(e => e.CreatedBy)                       .HasColumnName("created_by")                                .HasColumnType("char(36)")                                                                                                          .IsRequired();
             
             entity.Property(e => e.UserId)                          .HasColumnName("user_id")                                   .HasColumnType("char(36)")                                                                                                          .IsRequired();
@@ -406,7 +406,7 @@ public class AuxiliumDbContext : DbContext
 
 
             entity.Property(e => e.Id)                              .HasColumnName("id")                                        .HasColumnType("char(36)")                                                                                                          .IsRequired();
-            entity.Property(e => e.CreatedAt)                       .HasColumnName("created_at")                                .HasColumnType("datetime")                                                      .HasDefaultValueSql("UTC_TIMESTAMP()")              .IsRequired();
+            entity.Property(e => e.CreatedAt)                       .HasColumnName("created_at_utc")                            .HasColumnType("datetime")                                                      .HasDefaultValueSql("UTC_TIMESTAMP()")              .IsRequired();
             entity.Property(e => e.CreatedBy)                       .HasColumnName("created_by")                                .HasColumnType("char(36)");
             
             entity.Property(e => e.Severity)                        .HasColumnName("severity")                                  .HasColumnType("text")                  .HasConversion(new JsonPropertyNameEnumConverter<SystemBulletinMessageSeverityEnum>())      .IsRequired();
@@ -414,8 +414,8 @@ public class AuxiliumDbContext : DbContext
             entity.Property(e => e.Content)                         .HasColumnName("content")                                   .HasColumnType("text")                                                                                                              .IsRequired();
             entity.Property(e => e.IsActive)                        .HasColumnName("is_active")                                 .HasColumnType("tinyint(1)")                                                    .HasDefaultValue(false)                             .IsRequired();
             entity.Property(e => e.IsDismissible)                   .HasColumnName("is_dismissible")                            .HasColumnType("tinyint(1)")                                                                                                        .IsRequired();
-            entity.Property(e => e.StartsAt)                        .HasColumnName("starts_at")                                 .HasColumnType("datetime")                                                      .HasDefaultValueSql("UTC_TIMESTAMP()")              .IsRequired();
-            entity.Property(e => e.EndsAt)                          .HasColumnName("ends_at")                                   .HasColumnType("datetime");
+            entity.Property(e => e.StartsAt)                        .HasColumnName("starts_at_utc")                             .HasColumnType("datetime")                                                      .HasDefaultValueSql("UTC_TIMESTAMP()")              .IsRequired();
+            entity.Property(e => e.EndsAt)                          .HasColumnName("ends_at_utc")                               .HasColumnType("datetime");
             entity.Property(e => e.TargetAudience)                  .HasColumnName("target_audience")                           .HasColumnType("text")                  .HasConversion(new JsonPropertyNameEnumConverter<SystemBulletinMessageTargetAudienceEnum>()).IsRequired();
             entity.Property(e => e.SpecificUserId)                  .HasColumnName("specific_user_id")                          .HasColumnType("char(36)");
 
@@ -427,7 +427,7 @@ public class AuxiliumDbContext : DbContext
             entity.HasMany(e => e.Views)                            .WithOne(v => v.SystemBulletin)                             .HasForeignKey(v => v.SystemBulletinId) .OnDelete(DeleteBehavior.Cascade);
         });
 
-        // system_settings
+        // system__metrics
         modelBuilder.Entity<SystemMetricEntityModel>(entity =>
         {
             entity.ToTable("system__metrics");
@@ -436,13 +436,13 @@ public class AuxiliumDbContext : DbContext
 
 
             entity.Property(e => e.Id)                              .HasColumnName("id")                                        .HasColumnType("char(36)")                                                                                                          .IsRequired();
-            entity.Property(e => e.CreatedAt)                       .HasColumnName("created_at")                                .HasColumnType("datetime")                                                      .HasDefaultValueSql("UTC_TIMESTAMP()")              .IsRequired();
+            entity.Property(e => e.CreatedAt)                       .HasColumnName("created_at_utc")                            .HasColumnType("datetime")                                                      .HasDefaultValueSql("UTC_TIMESTAMP()")              .IsRequired();
             
             entity.Property(e => e.MetricKey)                       .HasColumnName("metric_key")                                .HasColumnType("text")                  .HasConversion(new JsonPropertyNameEnumConverter<SystemMetricKeyEnum>())                    .IsRequired();
             entity.Property(e => e.MetricValue)                     .HasColumnName("metric_value")                              .HasColumnType("float")                                                                                                             .IsRequired();
         });
 
-        // system_settings
+        // system__settings
         modelBuilder.Entity<SystemSettingEntityModel>(entity =>
         {
             entity.ToTable("system__settings");
@@ -451,7 +451,7 @@ public class AuxiliumDbContext : DbContext
 
 
             entity.Property(e => e.Id)                              .HasColumnName("id")                                        .HasColumnType("char(36)")                                                                                                          .IsRequired();
-            entity.Property(e => e.CreatedAt)                       .HasColumnName("created_at")                                .HasColumnType("datetime")                                                      .HasDefaultValueSql("UTC_TIMESTAMP()")              .IsRequired();
+            entity.Property(e => e.CreatedAt)                       .HasColumnName("created_at_utc")                            .HasColumnType("datetime")                                                      .HasDefaultValueSql("UTC_TIMESTAMP()")              .IsRequired();
             entity.Property(e => e.CreatedBy)                       .HasColumnName("created_by")                                .HasColumnType("char(36)");
             
             entity.Property(e => e.ConfigKey)                       .HasColumnName("config_key")                                .HasColumnType("text")                  .HasConversion(new JsonPropertyNameEnumConverter<SystemSettingKeyEnum>())                   .IsRequired();
@@ -473,15 +473,15 @@ public class AuxiliumDbContext : DbContext
 
 
             entity.Property(e => e.Id)                              .HasColumnName("id")                                        .HasColumnType("char(36)")                                                                                                          .IsRequired();
-            entity.Property(e => e.CreatedAt)                       .HasColumnName("created_at")                                .HasColumnType("datetime")                                                      .HasDefaultValueSql("UTC_TIMESTAMP()")              .IsRequired();
+            entity.Property(e => e.CreatedAt)                       .HasColumnName("created_at_utc")                            .HasColumnType("datetime")                                                      .HasDefaultValueSql("UTC_TIMESTAMP()")              .IsRequired();
             entity.Property(e => e.CreatedBy)                       .HasColumnName("created_by")                                .HasColumnType("char(36)");
             
             entity.Property(e => e.IpAddress)                       .HasColumnName("ip_address")                                .HasColumnType("text")                  .HasConversion(new IpAddressConverter())                                                    .IsRequired();
             entity.Property(e => e.JustificationForBlacklist)       .HasColumnName("justification_for_blacklist")               .HasColumnType("text")                                                                                                              .IsRequired();
             entity.Property(e => e.IsPermanent)                     .HasColumnName("is_permanent")                              .HasColumnType("tinyint(1)")                                                                                                        .IsRequired();
             
-            entity.Property(e => e.ExpiresAt)                       .HasColumnName("expires_at")                                .HasColumnType("datetime");
-            entity.Property(e => e.UnblacklistedAt)                 .HasColumnName("unblacklisted_at")                          .HasColumnType("datetime");
+            entity.Property(e => e.ExpiresAt)                       .HasColumnName("expires_at_utc")                            .HasColumnType("datetime");
+            entity.Property(e => e.UnblacklistedAt)                 .HasColumnName("unblacklisted_at_utc")                      .HasColumnType("datetime");
             entity.Property(e => e.UnblacklistedBy)                 .HasColumnName("unblacklisted_by")                          .HasColumnType("char(36)");
             entity.Property(e => e.JustificationForUnblacklist)     .HasColumnName("justification_for_unblacklist")             .HasColumnType("text");
 
@@ -500,15 +500,15 @@ public class AuxiliumDbContext : DbContext
 
 
             entity.Property(e => e.Id)                              .HasColumnName("id")                                        .HasColumnType("char(36)")                                                                                                          .IsRequired();
-            entity.Property(e => e.CreatedAt)                       .HasColumnName("created_at")                                .HasColumnType("datetime")                                                      .HasDefaultValueSql("UTC_TIMESTAMP()")              .IsRequired();
+            entity.Property(e => e.CreatedAt)                       .HasColumnName("created_at_utc")                            .HasColumnType("datetime")                                                      .HasDefaultValueSql("UTC_TIMESTAMP()")              .IsRequired();
             entity.Property(e => e.CreatedBy)                       .HasColumnName("created_by")                                .HasColumnType("char(36)");
             
             entity.Property(e => e.IpAddress)                       .HasColumnName("ip_address")                                .HasColumnType("text")                  .HasConversion(new IpAddressConverter())                                                    .IsRequired();
             entity.Property(e => e.JustificationForWhitelist)       .HasColumnName("justification_for_whitelist")               .HasColumnType("text")                                                                                                              .IsRequired();
             entity.Property(e => e.IsPermanent)                     .HasColumnName("is_permanent")                              .HasColumnType("tinyint(1)")                                                                                                        .IsRequired();
             
-            entity.Property(e => e.ExpiresAt)                       .HasColumnName("expires_at")                                .HasColumnType("datetime");
-            entity.Property(e => e.UnwhitelistedAt)                 .HasColumnName("unwhitelisted_at")                          .HasColumnType("datetime");
+            entity.Property(e => e.ExpiresAt)                       .HasColumnName("expires_at_utc")                            .HasColumnType("datetime");
+            entity.Property(e => e.UnwhitelistedAt)                 .HasColumnName("unwhitelisted_at_utc")                      .HasColumnType("datetime");
             entity.Property(e => e.UnwhitelistedBy)                 .HasColumnName("unwhitelisted_by")                          .HasColumnType("char(36)");
             entity.Property(e => e.JustificationForUnwhitelist)     .HasColumnName("justification_for_unwhitelist")             .HasColumnType("text");
 
@@ -526,15 +526,15 @@ public class AuxiliumDbContext : DbContext
 
 
             entity.Property(e => e.Id)                              .HasColumnName("id")                                        .HasColumnType("char(36)")                                                                                                          .IsRequired();
-            entity.Property(e => e.CreatedAt)                       .HasColumnName("created_at")                                .HasColumnType("datetime")                                                      .HasDefaultValueSql("UTC_TIMESTAMP()")              .IsRequired();
+            entity.Property(e => e.CreatedAt)                       .HasColumnName("created_at_utc")                            .HasColumnType("datetime")                                                      .HasDefaultValueSql("UTC_TIMESTAMP()")              .IsRequired();
             entity.Property(e => e.CreatedBy)                       .HasColumnName("created_by")                                .HasColumnType("char(36)");
             
             entity.Property(e => e.UserId)                          .HasColumnName("user_id")                                   .HasColumnType("char(36)")                                                                                                          .IsRequired();
             entity.Property(e => e.JustificationForBlacklist)       .HasColumnName("justification_for_blacklist")               .HasColumnType("text")                                                                                                              .IsRequired();
             entity.Property(e => e.IsPermanent)                     .HasColumnName("is_permanent")                              .HasColumnType("tinyint(1)")                                                                                                        .IsRequired();
             
-            entity.Property(e => e.ExpiresAt)                       .HasColumnName("expires_at")                                .HasColumnType("datetime");
-            entity.Property(e => e.UnblacklistedAt)                 .HasColumnName("unblacklisted_at")                          .HasColumnType("datetime");
+            entity.Property(e => e.ExpiresAt)                       .HasColumnName("expires_at_utc")                            .HasColumnType("datetime");
+            entity.Property(e => e.UnblacklistedAt)                 .HasColumnName("unblacklisted_at_utc")                      .HasColumnType("datetime");
             entity.Property(e => e.UnblacklistedBy)                 .HasColumnName("unblacklisted_by")                          .HasColumnType("char(36)");
             entity.Property(e => e.JustificationForUnblacklist)     .HasColumnName("justification_for_unblacklist")             .HasColumnType("text");
 
@@ -554,15 +554,15 @@ public class AuxiliumDbContext : DbContext
 
 
             entity.Property(e => e.Id)                              .HasColumnName("id")                                        .HasColumnType("char(36)")                                                                                                          .IsRequired();
-            entity.Property(e => e.CreatedAt)                       .HasColumnName("created_at")                                .HasColumnType("datetime")                                                      .HasDefaultValueSql("UTC_TIMESTAMP()")              .IsRequired();
+            entity.Property(e => e.CreatedAt)                       .HasColumnName("created_at_utc")                            .HasColumnType("datetime")                                                      .HasDefaultValueSql("UTC_TIMESTAMP()")              .IsRequired();
             entity.Property(e => e.CreatedBy)                       .HasColumnName("created_by")                                .HasColumnType("char(36)");
             
             entity.Property(e => e.UserId)                          .HasColumnName("user_id")                                   .HasColumnType("char(36)")                                                                                                          .IsRequired();
             entity.Property(e => e.JustificationForWhitelist)       .HasColumnName("justification_for_whitelist")               .HasColumnType("text")                                                                                                              .IsRequired();
             entity.Property(e => e.IsPermanent)                     .HasColumnName("is_permanent")                              .HasColumnType("tinyint(1)")                                                                                                        .IsRequired();
             
-            entity.Property(e => e.ExpiresAt)                       .HasColumnName("expires_at")                                .HasColumnType("datetime");
-            entity.Property(e => e.UnwhitelistedAt)                 .HasColumnName("unwhitelisted_at")                          .HasColumnType("datetime");
+            entity.Property(e => e.ExpiresAt)                       .HasColumnName("expires_at_utc")                            .HasColumnType("datetime");
+            entity.Property(e => e.UnwhitelistedAt)                 .HasColumnName("unwhitelisted_at_utc")                      .HasColumnType("datetime");
             entity.Property(e => e.UnwhitelistedBy)                 .HasColumnName("unwhitelisted_by")                          .HasColumnType("char(36)");
             entity.Property(e => e.JustificationForUnwhitelist)     .HasColumnName("justification_for_unwhitelist")             .HasColumnType("text");
 
@@ -580,9 +580,9 @@ public class AuxiliumDbContext : DbContext
 
 
             entity.Property(e => e.Id)                              .HasColumnName("id")                                        .HasColumnType("char(36)")                                                                                                          .IsRequired();
-            entity.Property(e => e.CreatedAt)                       .HasColumnName("created_at")                                .HasColumnType("datetime")                                                      .HasDefaultValueSql("UTC_TIMESTAMP()")              .IsRequired();
+            entity.Property(e => e.CreatedAt)                       .HasColumnName("created_at_utc")                            .HasColumnType("datetime")                                                      .HasDefaultValueSql("UTC_TIMESTAMP()")              .IsRequired();
             entity.Property(e => e.CreatedBy)                       .HasColumnName("created_by")                                .HasColumnType("char(36)");
-            entity.Property(e => e.LastUpdatedAt)                   .HasColumnName("last_updated_at")                           .HasColumnType("datetime");
+            entity.Property(e => e.LastUpdatedAt)                   .HasColumnName("last_updated_at_utc")                       .HasColumnType("datetime");
             entity.Property(e => e.LastUpdatedBy)                   .HasColumnName("last_updated_by")                           .HasColumnType("char(36)");
 
             entity.Property(e => e.EmailAddress)                    .HasColumnName("email_address")                             .HasColumnType("text");
@@ -598,7 +598,7 @@ public class AuxiliumDbContext : DbContext
             
             entity.Property(e => e.TotpSecret)                      .HasColumnName("totp_secret")                               .HasColumnType("text");
             entity.Property(e => e.TotpEnabled)                     .HasColumnName("totp_enabled")                              .HasColumnType("tinyint(1)")                                                    .HasDefaultValue(false)                             .IsRequired();
-            entity.Property(e => e.TotpEnabledAt)                   .HasColumnName("totp_enabled_at")                           .HasColumnType("datetime");
+            entity.Property(e => e.TotpEnabledAt)                   .HasColumnName("totp_enabled_at_utc")                       .HasColumnType("datetime");
             
             entity.Property(e => e.HasEmailAddressBeenVerified)     .HasColumnName("has_email_address_been_verified")           .HasColumnType("tinyint(1)")                                                    .HasDefaultValue(false)                             .IsRequired();
             entity.Property(e => e.AllowLogin)                      .HasColumnName("allow_login")                               .HasColumnType("tinyint(1)")                                                    .HasDefaultValue(false)                             .IsRequired();
@@ -654,9 +654,9 @@ public class AuxiliumDbContext : DbContext
             entity.HasKey(e => e.Id);
             
             entity.Property(e => e.Id)                              .HasColumnName("id")                                        .HasColumnType("char(36)")                                                                                                          .IsRequired();
-            entity.Property(e => e.CreatedAt)                       .HasColumnName("created_at")                                .HasColumnType("datetime")                                                      .HasDefaultValueSql("UTC_TIMESTAMP()")              .IsRequired();
+            entity.Property(e => e.CreatedAt)                       .HasColumnName("created_at_utc")                            .HasColumnType("datetime")                                                      .HasDefaultValueSql("UTC_TIMESTAMP()")              .IsRequired();
             entity.Property(e => e.CreatedBy)                       .HasColumnName("created_by")                                .HasColumnType("char(36)");
-            entity.Property(e => e.LastUpdatedAt)                   .HasColumnName("last_updated_at")                           .HasColumnType("datetime");
+            entity.Property(e => e.LastUpdatedAt)                   .HasColumnName("last_updated_at_utc")                       .HasColumnType("datetime");
             entity.Property(e => e.LastUpdatedBy)                   .HasColumnName("last_updated_by")                           .HasColumnType("char(36)");
 
             entity.Property(e => e.UserId)                          .HasColumnName("user_id")                                   .HasColumnType("char(36)")                                                                                                          .IsRequired();
@@ -679,9 +679,9 @@ public class AuxiliumDbContext : DbContext
             entity.HasKey(e => e.Id);
             
             entity.Property(e => e.Id)                              .HasColumnName("id")                                        .HasColumnType("char(36)")                                                                                                          .IsRequired();
-            entity.Property(e => e.CreatedAt)                       .HasColumnName("created_at")                                .HasColumnType("datetime")                                                      .HasDefaultValueSql("UTC_TIMESTAMP()")              .IsRequired();
+            entity.Property(e => e.CreatedAt)                       .HasColumnName("created_at_utc")                            .HasColumnType("datetime")                                                      .HasDefaultValueSql("UTC_TIMESTAMP()")              .IsRequired();
             entity.Property(e => e.CreatedBy)                       .HasColumnName("created_by")                                .HasColumnType("char(36)");
-            entity.Property(e => e.LastUpdatedAt)                   .HasColumnName("last_updated_at")                           .HasColumnType("datetime");
+            entity.Property(e => e.LastUpdatedAt)                   .HasColumnName("last_updated_at_utc")                       .HasColumnType("datetime");
             entity.Property(e => e.LastUpdatedBy)                   .HasColumnName("last_updated_by")                           .HasColumnType("char(36)");
 
             entity.Property(e => e.UserId)                          .HasColumnName("user_id")                                   .HasColumnType("char(36)")                                                                                                          .IsRequired();
@@ -704,16 +704,16 @@ public class AuxiliumDbContext : DbContext
             entity.HasKey(e => e.Id);
             
             entity.Property(e => e.Id)                              .HasColumnName("id")                                        .HasColumnType("char(36)")                                                                                                          .IsRequired();
-            entity.Property(e => e.CreatedAt)                       .HasColumnName("created_at")                                .HasColumnType("datetime")                                                      .HasDefaultValueSql("UTC_TIMESTAMP()")              .IsRequired();
+            entity.Property(e => e.CreatedAt)                       .HasColumnName("created_at_utc")                            .HasColumnType("datetime")                                                      .HasDefaultValueSql("UTC_TIMESTAMP()")              .IsRequired();
             entity.Property(e => e.CreatedBy)                       .HasColumnName("created_by")                                .HasColumnType("char(36)");
             
             entity.Property(e => e.UserId)                          .HasColumnName("user_id")                                   .HasColumnType("char(36)")                                                                                                          .IsRequired();
             entity.Property(e => e.TokenHash)                       .HasColumnName("token_hash")                                .HasColumnType("text")                                                                                                              .IsRequired();
-            entity.Property(e => e.ExpiresAt)                       .HasColumnName("expires_at")                                .HasColumnType("datetime")                                                                                                          .IsRequired();
-            entity.Property(e => e.UsedAt)                          .HasColumnName("used_at")                                   .HasColumnType("datetime");
+            entity.Property(e => e.ExpiresAt)                       .HasColumnName("expires_at_utc")                            .HasColumnType("datetime")                                                                                                          .IsRequired();
+            entity.Property(e => e.UsedAt)                          .HasColumnName("used_at_utc")                               .HasColumnType("datetime");
             entity.Property(e => e.Reason)                          .HasColumnName("reason")                                    .HasColumnType("text")                  .HasConversion(new JsonPropertyNameEnumConverter<PasswordSetTokenReasonEnum>())             .IsRequired();
             
-            entity.HasOne(e => e.CreatedByUser)                     .WithMany(u => u.CreatedPasswordSetTokens)                         .HasForeignKey(e => e.CreatedBy)        .OnDelete(DeleteBehavior.SetNull);
+            entity.HasOne(e => e.CreatedByUser)                     .WithMany(u => u.CreatedPasswordSetTokens)                  .HasForeignKey(e => e.CreatedBy)        .OnDelete(DeleteBehavior.SetNull);
             entity.HasOne(e => e.User)                              .WithMany(u => u.PasswordSetTokens)                         .HasForeignKey(e => e.UserId)           .OnDelete(DeleteBehavior.Cascade);
         });
 
@@ -724,11 +724,11 @@ public class AuxiliumDbContext : DbContext
             entity.HasKey(e => e.Id);
             
             entity.Property(e => e.Id)                              .HasColumnName("id")                                        .HasColumnType("char(36)")                                                                                                          .IsRequired();
-            entity.Property(e => e.CreatedAt)                       .HasColumnName("created_at")                                .HasColumnType("datetime")                                                      .HasDefaultValueSql("UTC_TIMESTAMP()")              .IsRequired();
+            entity.Property(e => e.CreatedAt)                       .HasColumnName("created_at_utc")                            .HasColumnType("datetime")                                                      .HasDefaultValueSql("UTC_TIMESTAMP()")              .IsRequired();
             entity.Property(e => e.CreatedBy)                       .HasColumnName("created_by")                                .HasColumnType("char(36)");
 
             entity.Property(e => e.TokenHash)                       .HasColumnName("token_hash")                                .HasColumnType("text")                                                                                                              .IsRequired();
-            entity.Property(e => e.ExpiresAt)                       .HasColumnName("expires_at")                                .HasColumnType("datetime")                                                                                                          .IsRequired();
+            entity.Property(e => e.ExpiresAt)                       .HasColumnName("expires_at_utc")                            .HasColumnType("datetime")                                                                                                          .IsRequired();
 
             entity.HasOne(e => e.CreatedByUser)                     .WithMany(u => u.RefreshTokens)                             .HasForeignKey(e => e.CreatedBy)        .OnDelete(DeleteBehavior.Cascade);
         });
@@ -740,12 +740,12 @@ public class AuxiliumDbContext : DbContext
             entity.HasKey(e => e.Id);
             
             entity.Property(e => e.Id)                              .HasColumnName("id")                                        .HasColumnType("char(36)")                                                                                                          .IsRequired();
-            entity.Property(e => e.CreatedAt)                       .HasColumnName("created_at")                                .HasColumnType("datetime")                                                      .HasDefaultValueSql("UTC_TIMESTAMP()")              .IsRequired();
+            entity.Property(e => e.CreatedAt)                       .HasColumnName("created_at_utc")                            .HasColumnType("datetime")                                                      .HasDefaultValueSql("UTC_TIMESTAMP()")              .IsRequired();
             entity.Property(e => e.CreatedBy)                       .HasColumnName("created_by")                                .HasColumnType("char(36)")                                                                                                          .IsRequired();
             
             entity.Property(e => e.CodeHash)                        .HasColumnName("code_hash")                                 .HasColumnType("text")                                                                                                              .IsRequired();
             entity.Property(e => e.IsUsed)                          .HasColumnName("is_used")                                   .HasColumnType("tinyint(1)")                                                    .HasDefaultValue(false)                             .IsRequired();
-            entity.Property(e => e.UsedAt)                          .HasColumnName("used_at")                                   .HasColumnType("datetime");
+            entity.Property(e => e.UsedAt)                          .HasColumnName("used_at_utc")                               .HasColumnType("datetime");
 
             entity.HasOne(e => e.CreatedByUser)                     .WithMany(u => u.TotpRecoveryCodes)                         .HasForeignKey(e => e.CreatedBy)        .OnDelete(DeleteBehavior.Cascade);
         });
@@ -759,7 +759,7 @@ public class AuxiliumDbContext : DbContext
 
 
             entity.Property(e => e.Id)                              .HasColumnName("id")                                        .HasColumnType("char(36)")                                                                                                          .IsRequired();
-            entity.Property(e => e.CreatedAt)                       .HasColumnName("created_at")                                .HasColumnType("datetime")                                                      .HasDefaultValueSql("UTC_TIMESTAMP()")              .IsRequired();
+            entity.Property(e => e.CreatedAt)                       .HasColumnName("created_at_utc")                            .HasColumnType("datetime")                                                      .HasDefaultValueSql("UTC_TIMESTAMP()")              .IsRequired();
             entity.Property(e => e.CreatedBy)                       .HasColumnName("created_by")                                .HasColumnType("char(36)")                                                                                                          .IsRequired();
             
             entity.Property(e => e.OptimismScore)                   .HasColumnName("optimism_score")                            .HasColumnType("int")                                                                                                               .IsRequired();
