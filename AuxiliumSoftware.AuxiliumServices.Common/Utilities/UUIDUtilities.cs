@@ -14,14 +14,14 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Utilities
         /// </summary>
         private static readonly Dictionary<DatabaseObjectTypeEnum, string> NamespacePaths = new()
         {
-            [DatabaseObjectTypeEnum.System_SettingEntry]                            = "/auxilium/3/database-object/mariadb/system/setting-entry",
-            
             [DatabaseObjectTypeEnum.System_Waf_IpWhitelistEntry]                    = "/auxilium/3/database-object/mariadb/system/waf/ip-whitelist-entry",
             [DatabaseObjectTypeEnum.System_Waf_IpBlacklistEntry]                    = "/auxilium/3/database-object/mariadb/system/waf/ip-blacklist-entry",
             [DatabaseObjectTypeEnum.System_Waf_UserWhitelistEntry]                  = "/auxilium/3/database-object/mariadb/system/waf/user-whitelist-entry",
             [DatabaseObjectTypeEnum.System_Waf_UserBlacklistEntry]                  = "/auxilium/3/database-object/mariadb/system/waf/user-blacklist-entry",
             
             [DatabaseObjectTypeEnum.System_BulletinEntry]                           = "/auxilium/3/database-object/mariadb/system/bulletin-entry",
+            [DatabaseObjectTypeEnum.System_MetricEntry]                             = "/auxilium/3/database-object/mariadb/system/metric-entry",
+            [DatabaseObjectTypeEnum.System_SettingEntry]                            = "/auxilium/3/database-object/mariadb/system/setting-entry",
             
 
 
