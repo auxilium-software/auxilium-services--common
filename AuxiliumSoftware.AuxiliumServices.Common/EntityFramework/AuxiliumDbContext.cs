@@ -51,6 +51,15 @@ public class AuxiliumDbContext : DbContext
 
 
 
+    
+    protected override void ConfigureConventions(ModelConfigurationBuilder builder)
+    {
+        builder.Properties<DateTime>()
+            .HaveConversion<UtcDateTimeConverter>();
+    }
+
+
+
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
