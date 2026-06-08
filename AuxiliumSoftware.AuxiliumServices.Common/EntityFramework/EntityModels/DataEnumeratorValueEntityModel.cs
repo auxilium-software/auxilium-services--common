@@ -1,0 +1,65 @@
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Text;
+
+namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
+{
+    public class DataEnumeratorValueEntityModel
+    {
+        /// <summary>
+        /// </summary>
+        [Key]
+        public required Guid Id { get; set; }
+        /// <summary>
+        /// </summary>
+        public required DateTime CreatedAtUtc { get; set; }
+        /// <summary>
+        /// </summary>
+        public Guid? CreatedBy { get; set; }
+        /// <summary>
+        /// </summary>
+        public DateTime? LastUpdatedAtUtc { get; set; }
+        /// <summary>
+        /// </summary>
+        public Guid? LastUpdatedBy { get; set; }
+
+
+
+
+
+        /// <summary>
+        /// </summary>
+        public required Guid EnumTypeId { get; set; }
+
+
+
+
+
+        /// <summary>
+        /// </summary>
+        public required string DisplayName { get; set; }
+        /// <summary>
+        /// </summary>
+        public required string EnumValueJson { get; set; }
+        /// <summary>
+        /// </summary>
+        public required bool IsActive { get; set; }
+        /// <summary>
+        /// </summary>
+        public required int SortOrder { get; set; }
+
+
+
+
+        /// <summary>
+        /// </summary>
+        public UserEntityModel? CreatedByUser { get; set; }
+        /// <summary>
+        /// </summary>
+        public UserEntityModel? LastUpdatedByUser { get; set; }
+        /// <summary>
+        /// </summary>
+        public DataEnumeratorEntityModel? EnumType { get; set; }
+    }
+}
