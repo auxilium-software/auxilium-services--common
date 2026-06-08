@@ -53,6 +53,6 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
         public UserEntityModel? LastUpdatedByUser { get; set; }
         /// <summary>
         /// </summary>
-        public ICollection<DataEnumeratorValueEntityModel>? EnumValues { get; set; }
+        public ICollection<DataEnumeratorValueEntityModel>? EnumeratorValues { get; set; }
     }
 }

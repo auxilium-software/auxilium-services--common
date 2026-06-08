@@ -25,8 +25,8 @@ public class AuxiliumDbContext : DbContext
     public DbSet<CaseMessageEntityModel> CaseMessages { get; set; }
     public DbSet<CaseTodoEntityModel> CaseTodos { get; set; }
     public DbSet<CaseWorkerEntityModel> CaseWorkers { get; set; }
-    public DbSet<DataEnumeratorEntityModel> DataEnumerators { get; set; }
-    public DbSet<DataEnumeratorValueEntityModel> DataEnumeratorValues { get; set; }
+    public DbSet<DataEnumeratorEntityModel> DataEnumerator_Enumerators { get; set; }
+    public DbSet<DataEnumeratorValueEntityModel> DataEnumerator_EnumeratorValues { get; set; }
     public DbSet<LogCaseMessageReadByEventEntityModel> Log_CaseMessageReadBys { get; set; }
     public DbSet<LogCaseModificationEventEntityModel> Log_CaseModificationEvents { get; set; }
     public DbSet<LogLoginAttemptEventEntityModel> Log_LoginAttempts { get; set; }
@@ -304,7 +304,7 @@ public class AuxiliumDbContext : DbContext
             
             entity.HasOne(e => e.CreatedByUser)                     .WithMany()                                                 .HasForeignKey(e => e.CreatedBy)        .OnDelete(DeleteBehavior.SetNull);
             entity.HasOne(e => e.LastUpdatedByUser)                 .WithMany()                                                 .HasForeignKey(e => e.LastUpdatedBy)    .OnDelete(DeleteBehavior.SetNull);
-            entity.HasOne(e => e.EnumType)                          .WithMany(e=> e.EnumValues)                                 .HasForeignKey(e => e.EnumTypeId)       .OnDelete(DeleteBehavior.Cascade);
+            entity.HasOne(e => e.EnumType)                          .WithMany(e=> e.EnumeratorValues)                                 .HasForeignKey(e => e.EnumTypeId)       .OnDelete(DeleteBehavior.Cascade);
 
 
 
