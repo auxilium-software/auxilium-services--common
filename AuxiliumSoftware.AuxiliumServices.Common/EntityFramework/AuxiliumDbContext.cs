@@ -25,6 +25,8 @@ public class AuxiliumDbContext : DbContext
     public DbSet<CaseMessageEntityModel> CaseMessages { get; set; }
     public DbSet<CaseTodoEntityModel> CaseTodos { get; set; }
     public DbSet<CaseWorkerEntityModel> CaseWorkers { get; set; }
+    public DbSet<DataEnumeratorEntityModel> DataEnumerators { get; set; }
+    public DbSet<DataEnumeratorValueEntityModel> DataEnumeratorValues { get; set; }
     public DbSet<LogCaseMessageReadByEventEntityModel> Log_CaseMessageReadBys { get; set; }
     public DbSet<LogCaseModificationEventEntityModel> Log_CaseModificationEvents { get; set; }
     public DbSet<LogLoginAttemptEventEntityModel> Log_LoginAttempts { get; set; }
@@ -247,6 +249,66 @@ public class AuxiliumDbContext : DbContext
             entity.HasOne(e => e.User)                              .WithMany(u => u.WorkerOnCases)                             .HasForeignKey(e => e.UserId)           .OnDelete(DeleteBehavior.Restrict);
 
             entity.HasIndex(e => new { e.CaseId, e.UserId })        .IsUnique();
+        });
+
+        // enumerator__enumerators
+        modelBuilder.Entity<DataEnumeratorEntityModel>(entity =>
+        {
+            entity.ToTable("enumerator__enumerators");
+            entity.HasKey(e => e.Id);
+
+
+
+            entity.Property(e => e.Id)                              .HasColumnName("id")                                        .HasColumnType("char(36)")                                                                                                          .IsRequired();
+            entity.Property(e => e.CreatedAtUtc)                    .HasColumnName("created_at_utc")                            .HasColumnType("datetime")                                                      .HasDefaultValueSql("UTC_TIMESTAMP()")              .IsRequired();
+            entity.Property(e => e.CreatedBy)                       .HasColumnName("created_by")                                .HasColumnType("char(36)");
+            entity.Property(e => e.LastUpdatedAtUtc)                .HasColumnName("last_updated_at_utc")                       .HasColumnType("datetime");
+            entity.Property(e => e.LastUpdatedBy)                   .HasColumnName("last_updated_by")                           .HasColumnType("char(36)");
+
+            entity.Property(e => e.Name)                            .HasColumnName("name")                                      .HasColumnType("text")                                                                                                              .IsRequired();
+            entity.Property(e => e.Description)                     .HasColumnName("description")                               .HasColumnType("text");
+            entity.Property(e => e.DataType)                        .HasColumnName("data_type")                                 .HasColumnType("text")                  .HasConversion(new JsonPropertyNameEnumConverter<EnumDataTypeEnum>())                       .IsRequired();
+            entity.Property(e => e.IsActive)                        .HasColumnName("is_active")                                 .HasColumnType("tinyint(1)")                                                                                                        .IsRequired();
+
+
+            
+            entity.HasOne(e => e.CreatedByUser)                     .WithMany()                                                 .HasForeignKey(e => e.CreatedBy)        .OnDelete(DeleteBehavior.SetNull);
+            entity.HasOne(e => e.LastUpdatedByUser)                 .WithMany()                                                 .HasForeignKey(e => e.LastUpdatedBy)    .OnDelete(DeleteBehavior.SetNull);
+
+
+
+            entity.HasIndex(e => e.Name)                            .IsUnique();
+        });
+
+        // enumerator__enumerator_values
+        modelBuilder.Entity<DataEnumeratorValueEntityModel>(entity =>
+        {
+            entity.ToTable("enumerator__enumerator_values");
+            entity.HasKey(e => e.Id);
+
+
+
+            entity.Property(e => e.Id)                              .HasColumnName("id")                                        .HasColumnType("char(36)")                                                                                                          .IsRequired();
+            entity.Property(e => e.CreatedAtUtc)                    .HasColumnName("created_at_utc")                            .HasColumnType("datetime")                                                      .HasDefaultValueSql("UTC_TIMESTAMP()")              .IsRequired();
+            entity.Property(e => e.CreatedBy)                       .HasColumnName("created_by")                                .HasColumnType("char(36)");
+            entity.Property(e => e.LastUpdatedAtUtc)                .HasColumnName("last_updated_at_utc")                       .HasColumnType("datetime");
+            entity.Property(e => e.LastUpdatedBy)                   .HasColumnName("last_updated_by")                           .HasColumnType("char(36)");
+
+            entity.Property(e => e.EnumTypeId)                      .HasColumnName("enum_type_id")                              .HasColumnType("char(36)")                                                                                                          .IsRequired();
+            entity.Property(e => e.DisplayName)                     .HasColumnName("display_name")                              .HasColumnType("text")                                                                                                              .IsRequired();
+            entity.Property(e => e.EnumValueJson)                   .HasColumnName("enum_value_json")                           .HasColumnType("text")                                                                                                              .IsRequired();
+            entity.Property(e => e.IsActive)                        .HasColumnName("is_active")                                 .HasColumnType("tinyint(1)")                                                                                                        .IsRequired();
+            entity.Property(e => e.SortOrder)                       .HasColumnName("sort_order")                                .HasColumnType("int")                                                                                                               .IsRequired();
+
+
+            
+            entity.HasOne(e => e.CreatedByUser)                     .WithMany()                                                 .HasForeignKey(e => e.CreatedBy)        .OnDelete(DeleteBehavior.SetNull);
+            entity.HasOne(e => e.LastUpdatedByUser)                 .WithMany()                                                 .HasForeignKey(e => e.LastUpdatedBy)    .OnDelete(DeleteBehavior.SetNull);
+            entity.HasOne(e => e.EnumType)                          .WithMany(e=> e.EnumValues)                                 .HasForeignKey(e => e.EnumTypeId)       .OnDelete(DeleteBehavior.Cascade);
+
+
+
+            entity.HasIndex(e => new { e.EnumTypeId, e.EnumValueJson }).IsUnique();
         });
 
         // log__case_messages_read_bys
