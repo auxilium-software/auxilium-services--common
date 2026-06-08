@@ -121,7 +121,7 @@ public class AuxiliumDbContext : DbContext
             entity.HasOne(e => e.LastUpdatedByUser)                 .WithMany()                                                 .HasForeignKey(e => e.LastUpdatedBy)    .OnDelete(DeleteBehavior.SetNull);
             entity.HasOne(e => e.Case)                              .WithMany(c => c.AdditionalProperties)                      .HasForeignKey(e => e.CaseId);
 
-            entity.HasIndex(e => new { e.CaseId, e.UrlSlug });
+            // entity.HasIndex(e => new { e.CaseId, e.UrlSlug }).IsUnique();
         });
 
         // case__clients
@@ -678,7 +678,7 @@ public class AuxiliumDbContext : DbContext
             entity.HasOne(e => e.LastUpdatedByUser)                 .WithMany()                                                 .HasForeignKey(e => e.LastUpdatedBy)    .OnDelete(DeleteBehavior.SetNull);
             entity.HasOne(e => e.User)                              .WithMany(u => u.AdditionalProperties)                      .HasForeignKey(e => e.UserId);
 
-            entity.HasIndex(e => new { e.UserId, e.UrlSlug });
+            // entity.HasIndex(e => new { e.UserId, e.UrlSlug }).IsUnique();
         });
 
         // user_files
