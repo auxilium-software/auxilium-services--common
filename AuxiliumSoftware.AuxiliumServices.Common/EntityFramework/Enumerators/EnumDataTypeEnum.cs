@@ -16,5 +16,8 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.Enumerators
 
         [JsonPropertyName("decimal")]
         Decimal,
+
+        [JsonPropertyName("boolean")]
+        Boolean,
     }
 }
