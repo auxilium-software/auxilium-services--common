@@ -234,14 +234,19 @@ public class DataEnumeratorService : IDataEnumeratorService
     {
         try
         {
-            var enumeratorExists = await _db.DataEnumerator_Enumerators
-                .AnyAsync(e => e.Id == enumeratorId, ct);
-
-            if (!enumeratorExists)
-                throw new KeyNotFoundException($"Enumerator {enumeratorId} not found");
+            var enumerator = await _db.DataEnumerator_Enumerators.FindAsync([enumeratorId], ct)
+                ?? throw new KeyNotFoundException($"Enumerator {enumeratorId} not found");
 
             var canonical = EnumValueUtilities.Canonicalise(storedValue);
+            EnumValueUtilities.ValidateAgainstType(canonical, enumerator.DataType);
             var hash = EnumValueUtilities.Hash(canonical);
+
+            var alreadyExists = await _db.DataEnumerator_EnumeratorValues
+                .AnyAsync(v => v.EnumTypeId == enumeratorId && v.ValueHash == hash, ct);
+
+            if (alreadyExists)
+                throw new InvalidOperationException(
+                    $"A value equal to '{canonical}' already exists under enumerator {enumeratorId}");
 
             // default sort order to end of list
             if (sortOrder == null)
