@@ -48,6 +48,9 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
         /// <summary>
         /// </summary>
         public required int SortOrder { get; set; }
+        /// <summary>
+        /// </summary>
+        public required string ValueHash { get; set; }
 
 
 
