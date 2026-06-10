@@ -1,6 +1,7 @@
 ﻿using AuxiliumSoftware.AuxiliumServices.Common.EntityFramework;
 using AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels;
 using AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.Enumerators;
+using AuxiliumSoftware.AuxiliumServices.Common.Utilities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
@@ -160,7 +161,7 @@ public class DataEnumeratorService : IDataEnumeratorService
     {
         try
         {
-            var enumerator = await _db.DataEnumerator_EnumeratorValues.FindAsync([id], ct)
+            var enumerator = await _db.DataEnumerator_Enumerators.FindAsync([id], ct)
                 ?? throw new KeyNotFoundException($"Enumerator {id} not found");
 
             enumerator.IsActive = isActive;
@@ -239,6 +240,9 @@ public class DataEnumeratorService : IDataEnumeratorService
             if (!enumeratorExists)
                 throw new KeyNotFoundException($"Enumerator {enumeratorId} not found");
 
+            var canonical = EnumValueUtilities.Canonicalise(storedValue);
+            var hash = EnumValueUtilities.Hash(canonical);
+
             // default sort order to end of list
             if (sortOrder == null)
             {
@@ -256,7 +260,8 @@ public class DataEnumeratorService : IDataEnumeratorService
                 CreatedBy = createdBy.Id,
                 EnumTypeId = enumeratorId,
                 DisplayName = displayName,
-                EnumValueJson = storedValue,
+                EnumValueJson = canonical,
+                ValueHash = hash,
                 IsActive = true,
                 SortOrder = sortOrder.Value,
             };
@@ -290,7 +295,11 @@ public class DataEnumeratorService : IDataEnumeratorService
                 ?? throw new KeyNotFoundException($"Enumerator value {valueId} not found");
 
             if (displayName != null) value.DisplayName = displayName;
-            if (storedValue != null) value.EnumValueJson = storedValue;
+            if (storedValue != null)
+            {
+                value.EnumValueJson = EnumValueUtilities.Canonicalise(storedValue);
+                value.ValueHash = EnumValueUtilities.Hash(value.EnumValueJson);
+            }
             value.LastUpdatedAtUtc = DateTime.UtcNow;
             value.LastUpdatedBy = updatedBy.Id;
 
