@@ -386,4 +386,148 @@ public class DataEnumeratorService : IDataEnumeratorService
         }
     }
     #endregion
+
+    #region ========================= TRANSLATION OPERATIONS =========================
+    public async Task<List<DataEnumeratorValueTranslationEntityModel>> GetTranslationsAsync(
+        Guid valueId,
+        CancellationToken ct = default)
+    {
+        try
+        {
+            return await _db.DataEnumerator_EnumeratorValueTranslations
+                .Where(t => t.DataEnumeratorValueId == valueId)
+                .OrderBy(t => t.LanguageCode)
+                .ToListAsync(ct);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Failed to get translations for value {ValueId}", valueId);
+            throw;
+        }
+    }
+
+    public async Task<DataEnumeratorValueTranslationEntityModel> CreateTranslationAsync(
+        Guid valueId,
+        string languageCode,
+        string translation,
+        UserEntityModel createdBy,
+        CancellationToken ct = default)
+    {
+        try
+        {
+            var valueExists = await _db.DataEnumerator_EnumeratorValues
+                .AnyAsync(v => v.Id == valueId, ct);
+
+            if (!valueExists)
+                throw new KeyNotFoundException($"Enumerator value {valueId} not found");
+
+            var lang = EnumValueUtilities.NormaliseLanguageCode(languageCode);
+
+            // one translation per (value, language) - checking it here instead of getting a duplicate key error
+            var alreadyExists = await _db.DataEnumerator_EnumeratorValueTranslations
+                .AnyAsync(t => t.DataEnumeratorValueId == valueId && t.LanguageCode == lang, ct);
+
+            if (alreadyExists)
+                throw new InvalidOperationException(
+                    $"Value {valueId} already has a translation for '{lang}'");
+
+            var entity = new DataEnumeratorValueTranslationEntityModel
+            {
+                Id = Guid.NewGuid(),
+                CreatedAtUtc = DateTime.UtcNow,
+                CreatedBy = createdBy.Id,
+                DataEnumeratorValueId = valueId,
+                LanguageCode = lang,
+                Translation = translation,
+            };
+
+            _db.DataEnumerator_EnumeratorValueTranslations.Add(entity);
+            await _db.SaveChangesAsync(ct);
+
+            _logger.LogInformation(
+                "Created translation {TranslationId} ({Language}) for value {ValueId} by user {UserId}",
+                entity.Id, lang, valueId, createdBy.Id);
+
+            return entity;
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Failed to create translation for value {ValueId}", valueId);
+            throw;
+        }
+    }
+
+    public async Task<DataEnumeratorValueTranslationEntityModel> UpdateTranslationAsync(
+        Guid translationId,
+        string? languageCode,
+        string? translation,
+        UserEntityModel updatedBy,
+        CancellationToken ct = default)
+    {
+        try
+        {
+            var entity = await _db.DataEnumerator_EnumeratorValueTranslations.FindAsync([translationId], ct)
+                ?? throw new KeyNotFoundException($"Translation {translationId} not found");
+
+            if (languageCode != null)
+            {
+                var lang = EnumValueUtilities.NormaliseLanguageCode(languageCode);
+
+                // only guard the unique (value, language) index if the language actually changes
+                if (lang != entity.LanguageCode)
+                {
+                    var clash = await _db.DataEnumerator_EnumeratorValueTranslations
+                        .AnyAsync(t => t.DataEnumeratorValueId == entity.DataEnumeratorValueId
+                                    && t.LanguageCode == lang
+                                    && t.Id != translationId, ct);
+
+                    if (clash)
+                        throw new InvalidOperationException(
+                            $"Value {entity.DataEnumeratorValueId} already has a translation for '{lang}'");
+
+                    entity.LanguageCode = lang;
+                }
+            }
+
+            if (translation != null) entity.Translation = translation;
+
+            entity.LastUpdatedAtUtc = DateTime.UtcNow;
+            entity.LastUpdatedBy = updatedBy.Id;
+
+            await _db.SaveChangesAsync(ct);
+
+            _logger.LogInformation(
+                "Updated translation {TranslationId} by user {UserId}",
+                translationId, updatedBy.Id);
+
+            return entity;
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Failed to update translation {TranslationId}", translationId);
+            throw;
+        }
+    }
+
+    public async Task DeleteTranslationAsync(
+        Guid translationId,
+        CancellationToken ct = default)
+    {
+        try
+        {
+            var entity = await _db.DataEnumerator_EnumeratorValueTranslations.FindAsync([translationId], ct)
+                ?? throw new KeyNotFoundException($"Translation {translationId} not found");
+
+            _db.DataEnumerator_EnumeratorValueTranslations.Remove(entity);
+            await _db.SaveChangesAsync(ct);
+
+            _logger.LogInformation("Deleted translation {TranslationId}", translationId);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Failed to delete translation {TranslationId}", translationId);
+            throw;
+        }
+    }
+    #endregion
 }
