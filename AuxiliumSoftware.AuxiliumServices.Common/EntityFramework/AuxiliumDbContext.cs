@@ -27,6 +27,7 @@ public class AuxiliumDbContext : DbContext
     public DbSet<CaseWorkerEntityModel> CaseWorkers { get; set; }
     public DbSet<DataEnumeratorEntityModel> DataEnumerator_Enumerators { get; set; }
     public DbSet<DataEnumeratorValueEntityModel> DataEnumerator_EnumeratorValues { get; set; }
+    public DbSet<DataEnumeratorValueTranslationEntityModel> DataEnumerator_EnumeratorValueTranslations    { get; set; }
     public DbSet<LogCaseMessageReadByEventEntityModel> Log_CaseMessageReadBys { get; set; }
     public DbSet<LogCaseModificationEventEntityModel> Log_CaseModificationEvents { get; set; }
     public DbSet<LogLoginAttemptEventEntityModel> Log_LoginAttempts { get; set; }
@@ -309,6 +310,35 @@ public class AuxiliumDbContext : DbContext
 
 
             entity.HasIndex(e => new { e.EnumTypeId, e.EnumValueJson }).IsUnique();
+        });
+
+        // enumerator__enumerator_value_translations
+        modelBuilder.Entity<DataEnumeratorValueTranslationEntityModel>(entity =>
+        {
+            entity.ToTable("enumerator__enumerator_value_translations");
+            entity.HasKey(e => e.Id);
+
+
+
+            entity.Property(e => e.Id)                              .HasColumnName("id")                                        .HasColumnType("char(36)")                                                                                                          .IsRequired();
+            entity.Property(e => e.CreatedAtUtc)                    .HasColumnName("created_at_utc")                            .HasColumnType("datetime")                                                      .HasDefaultValueSql("UTC_TIMESTAMP()")              .IsRequired();
+            entity.Property(e => e.CreatedBy)                       .HasColumnName("created_by")                                .HasColumnType("char(36)");
+            entity.Property(e => e.LastUpdatedAtUtc)                .HasColumnName("last_updated_at_utc")                       .HasColumnType("datetime");
+            entity.Property(e => e.LastUpdatedBy)                   .HasColumnName("last_updated_by")                           .HasColumnType("char(36)");
+
+            entity.Property(e => e.DataEnumeratorValueId)           .HasColumnName("data_enumerator_value_id")                  .HasColumnType("char(36)")                                                                                                          .IsRequired();
+            entity.Property(e => e.LanguageCode)                    .HasColumnName("language_code")                             .HasColumnType("text")                                                                                                              .IsRequired();
+            entity.Property(e => e.Translation)                     .HasColumnName("translation")                               .HasColumnType("text")                                                                                                              .IsRequired();
+
+
+            
+            entity.HasOne(e => e.CreatedByUser)                     .WithMany()                                                 .HasForeignKey(e => e.CreatedBy)        .OnDelete(DeleteBehavior.SetNull);
+            entity.HasOne(e => e.LastUpdatedByUser)                 .WithMany()                                                 .HasForeignKey(e => e.LastUpdatedBy)    .OnDelete(DeleteBehavior.SetNull);
+            entity.HasOne(e => e.EnumValue)                         .WithMany(e=> e.Translations)                               .HasForeignKey(e => e.DataEnumeratorValueId)       .OnDelete(DeleteBehavior.Cascade);
+
+
+
+            entity.HasIndex(e => new { e.DataEnumeratorValueId, e.LanguageCode }).IsUnique();
         });
 
         // log__case_messages_read_bys

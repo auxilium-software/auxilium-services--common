@@ -5,7 +5,7 @@ using System.Text;
 
 namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
 {
-    public class DataEnumeratorValueEntityModel
+    public class DataEnumeratorValueTranslationEntityModel
     {
         /// <summary>
         /// </summary>
@@ -30,7 +30,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
 
         /// <summary>
         /// </summary>
-        public required Guid EnumTypeId { get; set; }
+        public required Guid DataEnumeratorValueId { get; set; }
 
 
 
@@ -38,16 +38,10 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
 
         /// <summary>
         /// </summary>
-        public required string DisplayName { get; set; }
+        public required string LanguageCode { get; set; }
         /// <summary>
         /// </summary>
-        public required string EnumValueJson { get; set; }
-        /// <summary>
-        /// </summary>
-        public required bool IsActive { get; set; }
-        /// <summary>
-        /// </summary>
-        public required int SortOrder { get; set; }
+        public required string Translation { get; set; }
 
 
 
@@ -60,9 +54,6 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
         public UserEntityModel? LastUpdatedByUser { get; set; }
         /// <summary>
         /// </summary>
-        public DataEnumeratorEntityModel? EnumType { get; set; }
-        /// <summary>
-        /// </summary>
-        public ICollection<DataEnumeratorValueTranslationEntityModel>? Translations { get; set; }
+        public DataEnumeratorValueEntityModel? EnumValue { get; set; }
     }
 }
