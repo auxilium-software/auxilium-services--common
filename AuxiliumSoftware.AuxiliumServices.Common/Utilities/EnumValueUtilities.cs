@@ -64,5 +64,17 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Utilities
                 throw new InvalidOperationException(
                     $"Value '{canonicalJson}' is not valid for enumerator data type {dataType} (got JSON kind {kind})");
         }
+
+        public static string NormaliseLanguageCode(string code)
+        {
+            if (string.IsNullOrWhiteSpace(code))
+                throw new ArgumentException("Language code must not be empty", nameof(code));
+
+            var parts = code.Trim().Split('-');
+            parts[0] = parts[0].ToLowerInvariant(); // language subtag: cy, en
+            if (parts.Length > 1)
+                parts[1] = parts[1].ToUpperInvariant(); // region subtag: GB
+            return string.Join('-', parts); // cy-gb -> cy-GB
+        }
     }
 }
