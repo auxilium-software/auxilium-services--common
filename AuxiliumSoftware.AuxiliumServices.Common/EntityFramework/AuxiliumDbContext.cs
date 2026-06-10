@@ -271,14 +271,10 @@ public class AuxiliumDbContext : DbContext
             entity.Property(e => e.DataType)                        .HasColumnName("data_type")                                 .HasColumnType("text")                  .HasConversion(new JsonPropertyNameEnumConverter<EnumDataTypeEnum>())                       .IsRequired();
             entity.Property(e => e.IsActive)                        .HasColumnName("is_active")                                 .HasColumnType("tinyint(1)")                                                                                                        .IsRequired();
 
+            entity.HasOne(e => e.CreatedByUser)                     .WithMany().HasForeignKey(e => e.CreatedBy)                                                         .OnDelete(DeleteBehavior.SetNull);
+            entity.HasOne(e => e.LastUpdatedByUser)                 .WithMany().HasForeignKey(e => e.LastUpdatedBy)                                                     .OnDelete(DeleteBehavior.SetNull);
 
-            
-            entity.HasOne(e => e.CreatedByUser)                     .WithMany()                                                 .HasForeignKey(e => e.CreatedBy)        .OnDelete(DeleteBehavior.SetNull);
-            entity.HasOne(e => e.LastUpdatedByUser)                 .WithMany()                                                 .HasForeignKey(e => e.LastUpdatedBy)    .OnDelete(DeleteBehavior.SetNull);
-
-
-
-            entity.HasIndex(e => e.Name)                            .IsUnique();
+            entity.HasIndex(e => e.Name).IsUnique();
         });
 
         // enumerator__enumerator_values
@@ -298,6 +294,7 @@ public class AuxiliumDbContext : DbContext
             entity.Property(e => e.EnumTypeId)                      .HasColumnName("enum_type_id")                              .HasColumnType("char(36)")                                                                                                          .IsRequired();
             entity.Property(e => e.DisplayName)                     .HasColumnName("display_name")                              .HasColumnType("text")                                                                                                              .IsRequired();
             entity.Property(e => e.EnumValueJson)                   .HasColumnName("enum_value_json")                           .HasColumnType("text")                                                                                                              .IsRequired();
+            entity.Property(e => e.ValueHash)                       .HasColumnName("value_hash")                                .HasColumnType("text")                                                                                                              .IsRequired();
             entity.Property(e => e.IsActive)                        .HasColumnName("is_active")                                 .HasColumnType("tinyint(1)")                                                                                                        .IsRequired();
             entity.Property(e => e.SortOrder)                       .HasColumnName("sort_order")                                .HasColumnType("int")                                                                                                               .IsRequired();
 
@@ -305,11 +302,9 @@ public class AuxiliumDbContext : DbContext
             
             entity.HasOne(e => e.CreatedByUser)                     .WithMany()                                                 .HasForeignKey(e => e.CreatedBy)        .OnDelete(DeleteBehavior.SetNull);
             entity.HasOne(e => e.LastUpdatedByUser)                 .WithMany()                                                 .HasForeignKey(e => e.LastUpdatedBy)    .OnDelete(DeleteBehavior.SetNull);
-            entity.HasOne(e => e.EnumType)                          .WithMany(e=> e.EnumeratorValues)                                 .HasForeignKey(e => e.EnumTypeId)       .OnDelete(DeleteBehavior.Cascade);
+            entity.HasOne(e => e.EnumType)                          .WithMany(t => t.EnumeratorValues)                          .HasForeignKey(e => e.EnumTypeId)       .OnDelete(DeleteBehavior.Cascade);
 
-
-
-            entity.HasIndex(e => new { e.EnumTypeId, e.EnumValueJson }).IsUnique();
+            entity.HasIndex(e => new { e.EnumTypeId, e.ValueHash }).IsUnique();
         });
 
         // enumerator__enumerator_value_translations
@@ -334,9 +329,7 @@ public class AuxiliumDbContext : DbContext
             
             entity.HasOne(e => e.CreatedByUser)                     .WithMany()                                                 .HasForeignKey(e => e.CreatedBy)        .OnDelete(DeleteBehavior.SetNull);
             entity.HasOne(e => e.LastUpdatedByUser)                 .WithMany()                                                 .HasForeignKey(e => e.LastUpdatedBy)    .OnDelete(DeleteBehavior.SetNull);
-            entity.HasOne(e => e.EnumValue)                         .WithMany(e=> e.Translations)                               .HasForeignKey(e => e.DataEnumeratorValueId)       .OnDelete(DeleteBehavior.Cascade);
-
-
+            entity.HasOne(e => e.EnumValue)                         .WithMany(v => v.Translations)                              .HasForeignKey(e => e.DataEnumeratorValueId).OnDelete(DeleteBehavior.Cascade);
 
             entity.HasIndex(e => new { e.DataEnumeratorValueId, e.LanguageCode }).IsUnique();
         });
