@@ -291,7 +291,7 @@ public class AuxiliumDbContext : DbContext
             entity.Property(e => e.LastUpdatedBy)                   .HasColumnName("last_updated_by")                           .HasColumnType("char(36)");
 
             entity.Property(e => e.EnumTypeId)                      .HasColumnName("enum_type_id")                              .HasColumnType("char(36)")                                                                                                          .IsRequired();
-            entity.Property(e => e.Description)                     .HasColumnName("description")                               .HasColumnType("text")                                                                                                              .IsRequired();
+            entity.Property(e => e.CanonicalName )                  .HasColumnName("canonical_name")                            .HasColumnType("text")                                                                                                              .IsRequired();
             entity.Property(e => e.IsActive)                        .HasColumnName("is_active")                                 .HasColumnType("tinyint(1)")                                                                                                        .IsRequired();
             entity.Property(e => e.SortOrder)                       .HasColumnName("sort_order")                                .HasColumnType("int")                                                                                                               .IsRequired();
 

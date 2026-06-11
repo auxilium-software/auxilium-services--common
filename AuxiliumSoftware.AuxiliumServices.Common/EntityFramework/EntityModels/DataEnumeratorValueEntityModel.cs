@@ -38,7 +38,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
 
         /// <summary>
         /// </summary>
-        public required string Description { get; set; }
+        public required string CanonicalName { get; set; }
         /// <summary>
         /// </summary>
         public required bool IsActive { get; set; }
