@@ -38,19 +38,13 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
 
         /// <summary>
         /// </summary>
-        public required string DisplayName { get; set; }
-        /// <summary>
-        /// </summary>
-        public required string EnumValueJson { get; set; }
+        public required string Description { get; set; }
         /// <summary>
         /// </summary>
         public required bool IsActive { get; set; }
         /// <summary>
         /// </summary>
         public required int SortOrder { get; set; }
-        /// <summary>
-        /// </summary>
-        public required string ValueHash { get; set; }
 
 
 
