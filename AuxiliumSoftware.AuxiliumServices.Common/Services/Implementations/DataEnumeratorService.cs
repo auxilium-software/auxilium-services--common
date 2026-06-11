@@ -88,7 +88,6 @@ public class DataEnumeratorService : IDataEnumeratorService
     public async Task<DataEnumeratorEntityModel> CreateEnumeratorAsync(
         string name,
         string? description,
-        EnumDataTypeEnum dataType,
         UserEntityModel createdBy,
         CancellationToken ct = default)
     {
@@ -101,7 +100,6 @@ public class DataEnumeratorService : IDataEnumeratorService
                 CreatedBy = createdBy.Id,
                 Name = name,
                 Description = description,
-                DataType = dataType,
                 IsActive = true,
             };
 
@@ -226,27 +224,26 @@ public class DataEnumeratorService : IDataEnumeratorService
 
     public async Task<DataEnumeratorValueEntityModel> CreateValueAsync(
         Guid enumeratorId,
-        string displayName,
-        string storedValue,
+        string canonicalName,
         UserEntityModel createdBy,
         int? sortOrder = null,
         CancellationToken ct = default)
     {
         try
         {
-            var enumerator = await _db.DataEnumerator_Enumerators.FindAsync([enumeratorId], ct)
-                ?? throw new KeyNotFoundException($"Enumerator {enumeratorId} not found");
+            var enumeratorExists = await _db.DataEnumerator_Enumerators
+                .AnyAsync(e => e.Id == enumeratorId, ct);
 
-            var canonical = EnumValueUtilities.Canonicalise(storedValue);
-            EnumValueUtilities.ValidateAgainstType(canonical, enumerator.DataType);
-            var hash = EnumValueUtilities.Hash(canonical);
+            if (!enumeratorExists)
+                throw new KeyNotFoundException($"Enumerator {enumeratorId} not found");
 
+            // one value per (enumerator, canonical name) - clean error instead of a raw 1062
             var alreadyExists = await _db.DataEnumerator_EnumeratorValues
-                .AnyAsync(v => v.EnumTypeId == enumeratorId && v.ValueHash == hash, ct);
+                .AnyAsync(v => v.EnumTypeId == enumeratorId && v.CanonicalName == canonicalName, ct);
 
             if (alreadyExists)
                 throw new InvalidOperationException(
-                    $"A value equal to '{canonical}' already exists under enumerator {enumeratorId}");
+                    $"A value named '{canonicalName}' already exists under enumerator {enumeratorId}");
 
             // default sort order to end of list
             if (sortOrder == null)
@@ -264,9 +261,7 @@ public class DataEnumeratorService : IDataEnumeratorService
                 CreatedAtUtc = DateTime.UtcNow,
                 CreatedBy = createdBy.Id,
                 EnumTypeId = enumeratorId,
-                DisplayName = displayName,
-                EnumValueJson = canonical,
-                ValueHash = hash,
+                CanonicalName = canonicalName,
                 IsActive = true,
                 SortOrder = sortOrder.Value,
             };
@@ -275,8 +270,8 @@ public class DataEnumeratorService : IDataEnumeratorService
             await _db.SaveChangesAsync(ct);
 
             _logger.LogInformation(
-                "Created enumerator value {ValueId} ({DisplayName}) under enumerator {EnumeratorId} by user {UserId}",
-                value.Id, displayName, enumeratorId, createdBy.Id);
+                "Created enumerator value {ValueId} ({CanonicalName}) under enumerator {EnumeratorId} by user {UserId}",
+                value.Id, canonicalName, enumeratorId, createdBy.Id);
 
             return value;
         }
@@ -289,8 +284,7 @@ public class DataEnumeratorService : IDataEnumeratorService
 
     public async Task<DataEnumeratorValueEntityModel> UpdateValueAsync(
         Guid valueId,
-        string? displayName,
-        string? storedValue,
+        string? canonicalName,
         UserEntityModel updatedBy,
         CancellationToken ct = default)
     {
@@ -299,12 +293,21 @@ public class DataEnumeratorService : IDataEnumeratorService
             var value = await _db.DataEnumerator_EnumeratorValues.FindAsync([valueId], ct)
                 ?? throw new KeyNotFoundException($"Enumerator value {valueId} not found");
 
-            if (displayName != null) value.DisplayName = displayName;
-            if (storedValue != null)
+            if (canonicalName != null && canonicalName != value.CanonicalName)
             {
-                value.EnumValueJson = EnumValueUtilities.Canonicalise(storedValue);
-                value.ValueHash = EnumValueUtilities.Hash(value.EnumValueJson);
+                // guard the unique (enumerator, canonical name) index on rename
+                var clash = await _db.DataEnumerator_EnumeratorValues
+                    .AnyAsync(v => v.EnumTypeId == value.EnumTypeId
+                                && v.CanonicalName == canonicalName
+                                && v.Id != valueId, ct);
+
+                if (clash)
+                    throw new InvalidOperationException(
+                        $"A value named '{canonicalName}' already exists under enumerator {value.EnumTypeId}");
+
+                value.CanonicalName = canonicalName;
             }
+
             value.LastUpdatedAtUtc = DateTime.UtcNow;
             value.LastUpdatedBy = updatedBy.Id;
 
