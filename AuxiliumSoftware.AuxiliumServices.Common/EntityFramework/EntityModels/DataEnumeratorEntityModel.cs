@@ -37,9 +37,6 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
         public string? Description { get; set; }
         /// <summary>
         /// </summary>
-        public required EnumDataTypeEnum DataType { get; set; }
-        /// <summary>
-        /// </summary>
         public required bool IsActive { get; set; }
 
 
