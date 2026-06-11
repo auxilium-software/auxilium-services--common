@@ -25,5 +25,14 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services
         Task<DataEnumeratorValueEntityModel> UpdateValueAsync(Guid valueId, string? displayName, string? storedValue, UserEntityModel updatedBy, CancellationToken ct = default);
         Task SetValueActiveAsync(Guid valueId, bool isActive, UserEntityModel updatedBy, CancellationToken ct = default);
         Task ReorderValuesAsync(Guid enumeratorId, List<Guid> orderedValueIds, UserEntityModel updatedBy, CancellationToken ct = default);
+
+
+
+
+
+        Task<List<DataEnumeratorValueTranslationEntityModel>> GetTranslationsAsync(Guid valueId, CancellationToken ct = default);
+        Task<DataEnumeratorValueTranslationEntityModel> CreateTranslationAsync(Guid valueId, string languageCode, string translation, UserEntityModel createdBy, CancellationToken ct = default);
+        Task<DataEnumeratorValueTranslationEntityModel> UpdateTranslationAsync(Guid translationId, string? languageCode, string? translation, UserEntityModel updatedBy, CancellationToken ct = default);
+        Task DeleteTranslationAsync(Guid translationId, CancellationToken ct = default);
     }
 }
