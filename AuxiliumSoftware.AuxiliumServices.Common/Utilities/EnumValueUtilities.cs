@@ -45,26 +45,6 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Utilities
         public static string Hash(string canonicalJson) =>
             Convert.ToHexString(SHA512.HashData(Encoding.UTF8.GetBytes(canonicalJson))).ToLowerInvariant();
 
-        public static void ValidateAgainstType(string canonicalJson, EnumDataTypeEnum dataType)
-        {
-            using var doc = JsonDocument.Parse(canonicalJson);
-            var kind = doc.RootElement.ValueKind;
-
-            var ok = dataType switch
-            {
-                EnumDataTypeEnum.String => kind == JsonValueKind.String,
-                EnumDataTypeEnum.Integer => kind == JsonValueKind.Number
-                                            && doc.RootElement.TryGetInt64(out _),
-                EnumDataTypeEnum.Decimal => kind == JsonValueKind.Number,
-                EnumDataTypeEnum.Boolean => kind is JsonValueKind.True or JsonValueKind.False,
-                _ => throw new ArgumentOutOfRangeException(nameof(dataType), dataType, "Unhandled enumerator data type")
-            };
-
-            if (!ok)
-                throw new InvalidOperationException(
-                    $"Value '{canonicalJson}' is not valid for enumerator data type {dataType} (got JSON kind {kind})");
-        }
-
         public static string NormaliseLanguageCode(string code)
         {
             if (string.IsNullOrWhiteSpace(code))
