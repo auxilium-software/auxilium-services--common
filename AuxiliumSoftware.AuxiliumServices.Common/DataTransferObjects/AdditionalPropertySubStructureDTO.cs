@@ -34,5 +34,18 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.DataTransferObjects
 
         [JsonPropertyName("contentType")]
         public required string ContentType { get; set; }
+
+
+
+
+
+        [JsonPropertyName("dataEnumeratorId")]
+        public Guid? DataEnumeratorId { get; set; }
+
+        [JsonPropertyName("displayValue")]
+        public string? DisplayValue { get; set; }
+
+        [JsonPropertyName("dataEnumeratorDisplayName")]
+        public string? DataEnumeratorDisplayName { get; set; }
     }
 }
