@@ -1,6 +1,5 @@
 ﻿using AuxiliumSoftware.AuxiliumServices.Common.EntityFramework;
 using AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels;
-using AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.Enumerators;
 using AuxiliumSoftware.AuxiliumServices.Common.Utilities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -33,7 +32,7 @@ public class DataEnumeratorService : IDataEnumeratorService
                 query = query.Where(e => e.IsActive);
 
             return await query
-                .OrderBy(e => e.Name)
+                .OrderBy(e => e.CanonicalName)
                 .ToListAsync(ct);
         }
         catch (Exception ex)
@@ -69,7 +68,7 @@ public class DataEnumeratorService : IDataEnumeratorService
         {
             var query = _db.DataEnumerator_Enumerators
                 .Include(e => e.EnumeratorValues.OrderBy(v => v.SortOrder))
-                .Where(e => e.Name == name && e.IsActive);
+                .Where(e => e.CanonicalName == name && e.IsActive);
 
             var enumerator = await query.FirstOrDefaultAsync(ct);
 
@@ -98,7 +97,7 @@ public class DataEnumeratorService : IDataEnumeratorService
                 Id = Guid.NewGuid(),
                 CreatedAtUtc = DateTime.UtcNow,
                 CreatedBy = createdBy.Id,
-                Name = name,
+                CanonicalName = name,
                 Description = description,
                 IsActive = true,
             };
@@ -131,7 +130,7 @@ public class DataEnumeratorService : IDataEnumeratorService
             var enumerator = await _db.DataEnumerator_Enumerators.FindAsync([id], ct)
                 ?? throw new KeyNotFoundException($"Enumerator {id} not found");
 
-            if (name != null) enumerator.Name = name;
+            if (name != null) enumerator.CanonicalName = name;
             if (description != null) enumerator.Description = description;
             enumerator.LastUpdatedAtUtc = DateTime.UtcNow;
             enumerator.LastUpdatedBy = updatedBy.Id;
@@ -175,6 +174,150 @@ public class DataEnumeratorService : IDataEnumeratorService
         catch (Exception ex)
         {
             _logger.LogError(ex, "Failed to set active state on enumerator {EnumeratorId}", id);
+            throw;
+        }
+    }
+    #endregion
+
+    #region ========================= ENUMERATOR TYPE TRANSLATION OPERATIONS =========================
+    public async Task<List<DataEnumeratorTranslationEntityModel>> GetEnumeratorTranslationsAsync(
+        Guid enumeratorId,
+        CancellationToken ct = default)
+    {
+        try
+        {
+            return await _db.DataEnumerator_EnumeratorTranslations
+                .Where(t => t.DataEnumeratorId == enumeratorId)
+                .OrderBy(t => t.LanguageCode)
+                .ToListAsync(ct);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Failed to get translations for enumerator {EnumeratorId}", enumeratorId);
+            throw;
+        }
+    }
+
+    public async Task<DataEnumeratorTranslationEntityModel> CreateEnumeratorTranslationAsync(
+        Guid enumeratorId,
+        string languageCode,
+        string translation,
+        UserEntityModel createdBy,
+        CancellationToken ct = default)
+    {
+        try
+        {
+            var enumeratorExists = await _db.DataEnumerator_Enumerators
+                .AnyAsync(e => e.Id == enumeratorId, ct);
+
+            if (!enumeratorExists)
+                throw new KeyNotFoundException($"Enumerator {enumeratorId} not found");
+
+            var lang = EnumValueUtilities.NormaliseLanguageCode(languageCode);
+
+            // one translation per (enumerator, language) - checking it here instead of getting a duplicate key error
+            var alreadyExists = await _db.DataEnumerator_EnumeratorTranslations
+                .AnyAsync(t => t.DataEnumeratorId == enumeratorId && t.LanguageCode == lang, ct);
+
+            if (alreadyExists)
+                throw new InvalidOperationException(
+                    $"Enumerator {enumeratorId} already has a translation for '{lang}'");
+
+            var entity = new DataEnumeratorTranslationEntityModel
+            {
+                Id = Guid.NewGuid(),
+                CreatedAtUtc = DateTime.UtcNow,
+                CreatedBy = createdBy.Id,
+                DataEnumeratorId = enumeratorId,
+                LanguageCode = lang,
+                Translation = translation,
+            };
+
+            _db.DataEnumerator_EnumeratorTranslations.Add(entity);
+            await _db.SaveChangesAsync(ct);
+
+            _logger.LogInformation(
+                "Created enumerator translation {TranslationId} ({Language}) for enumerator {EnumeratorId} by user {UserId}",
+                entity.Id, lang, enumeratorId, createdBy.Id);
+
+            return entity;
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Failed to create translation for enumerator {EnumeratorId}", enumeratorId);
+            throw;
+        }
+    }
+
+    public async Task<DataEnumeratorTranslationEntityModel> UpdateEnumeratorTranslationAsync(
+        Guid translationId,
+        string? languageCode,
+        string? translation,
+        UserEntityModel updatedBy,
+        CancellationToken ct = default)
+    {
+        try
+        {
+            var entity = await _db.DataEnumerator_EnumeratorTranslations.FindAsync([translationId], ct)
+                ?? throw new KeyNotFoundException($"Translation {translationId} not found");
+
+            if (languageCode != null)
+            {
+                var lang = EnumValueUtilities.NormaliseLanguageCode(languageCode);
+
+                // only guard the unique (enumerator, language) index if the language actually changes
+                if (lang != entity.LanguageCode)
+                {
+                    var clash = await _db.DataEnumerator_EnumeratorTranslations
+                        .AnyAsync(t => t.DataEnumeratorId == entity.DataEnumeratorId
+                                    && t.LanguageCode == lang
+                                    && t.Id != translationId, ct);
+
+                    if (clash)
+                        throw new InvalidOperationException(
+                            $"Enumerator {entity.DataEnumeratorId} already has a translation for '{lang}'");
+
+                    entity.LanguageCode = lang;
+                }
+            }
+
+            if (translation != null) entity.Translation = translation;
+
+            entity.LastUpdatedAtUtc = DateTime.UtcNow;
+            entity.LastUpdatedBy = updatedBy.Id;
+
+            await _db.SaveChangesAsync(ct);
+
+            _logger.LogInformation(
+                "Updated enumerator translation {TranslationId} by user {UserId}",
+                translationId, updatedBy.Id);
+
+            return entity;
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Failed to update enumerator translation {TranslationId}", translationId);
+            throw;
+        }
+    }
+
+    public async Task DeleteEnumeratorTranslationAsync(
+        Guid translationId,
+        CancellationToken ct = default)
+    {
+        try
+        {
+            var entity = await _db.DataEnumerator_EnumeratorTranslations.FindAsync([translationId], ct)
+                ?? throw new KeyNotFoundException($"Translation {translationId} not found");
+
+            _db.DataEnumerator_EnumeratorTranslations.Remove(entity);
+            await _db.SaveChangesAsync(ct);
+
+            _logger.LogInformation("Deleted enumerator translation {TranslationId}", translationId);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Failed to delete enumerator translation {TranslationId}", translationId);
             throw;
         }
     }

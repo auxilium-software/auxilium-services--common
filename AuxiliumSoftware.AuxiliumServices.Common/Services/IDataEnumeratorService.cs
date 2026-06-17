@@ -19,6 +19,15 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services
 
 
 
+        Task<List<DataEnumeratorTranslationEntityModel>> GetEnumeratorTranslationsAsync(Guid enumeratorId, CancellationToken ct = default);
+        Task<DataEnumeratorTranslationEntityModel> CreateEnumeratorTranslationAsync(Guid enumeratorId, string languageCode, string translation, UserEntityModel createdBy, CancellationToken ct = default);
+        Task<DataEnumeratorTranslationEntityModel> UpdateEnumeratorTranslationAsync(Guid translationId, string? languageCode, string? translation, UserEntityModel updatedBy, CancellationToken ct = default);
+        Task DeleteEnumeratorTranslationAsync(Guid translationId, CancellationToken ct = default);
+
+
+
+
+
         Task<List<DataEnumeratorValueEntityModel>> GetValuesAsync(Guid enumeratorId, bool includeInactive = false, CancellationToken ct = default);
         Task<DataEnumeratorValueEntityModel?> GetValueAsync(Guid valueId, CancellationToken ct = default);
         Task<DataEnumeratorValueEntityModel> CreateValueAsync(Guid enumeratorId, string canonicalName, UserEntityModel createdBy, int? sortOrder = null, CancellationToken ct = default);

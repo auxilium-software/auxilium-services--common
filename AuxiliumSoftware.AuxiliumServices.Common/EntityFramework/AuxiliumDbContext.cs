@@ -26,6 +26,7 @@ public class AuxiliumDbContext : DbContext
     public DbSet<CaseTodoEntityModel> CaseTodos { get; set; }
     public DbSet<CaseWorkerEntityModel> CaseWorkers { get; set; }
     public DbSet<DataEnumeratorEntityModel> DataEnumerator_Enumerators { get; set; }
+    public DbSet<DataEnumeratorTranslationEntityModel> DataEnumerator_EnumeratorTranslations { get; set; }
     public DbSet<DataEnumeratorValueEntityModel> DataEnumerator_EnumeratorValues { get; set; }
     public DbSet<DataEnumeratorValueTranslationEntityModel> DataEnumerator_EnumeratorValueTranslations { get; set; }
     public DbSet<LogCaseMessageReadByEventEntityModel> Log_CaseMessageReadBys { get; set; }
@@ -266,14 +267,41 @@ public class AuxiliumDbContext : DbContext
             entity.Property(e => e.LastUpdatedAtUtc)                .HasColumnName("last_updated_at_utc")                       .HasColumnType("datetime");
             entity.Property(e => e.LastUpdatedBy)                   .HasColumnName("last_updated_by")                           .HasColumnType("char(36)");
 
-            entity.Property(e => e.Name)                            .HasColumnName("name")                                      .HasColumnType("text")                                                                                                              .IsRequired();
+            entity.Property(e => e.CanonicalName)                   .HasColumnName("canonical_name")                            .HasColumnType("text")                                                                                                              .IsRequired();
             entity.Property(e => e.Description)                     .HasColumnName("description")                               .HasColumnType("text");
             entity.Property(e => e.IsActive)                        .HasColumnName("is_active")                                 .HasColumnType("tinyint(1)")                                                                                                        .IsRequired();
 
             entity.HasOne(e => e.CreatedByUser)                     .WithMany().HasForeignKey(e => e.CreatedBy)                                                         .OnDelete(DeleteBehavior.SetNull);
             entity.HasOne(e => e.LastUpdatedByUser)                 .WithMany().HasForeignKey(e => e.LastUpdatedBy)                                                     .OnDelete(DeleteBehavior.SetNull);
 
-            entity.HasIndex(e => e.Name).IsUnique();
+            entity.HasIndex(e => e.CanonicalName).IsUnique();
+        });
+
+        // enumerator__enumerator_value
+        modelBuilder.Entity<DataEnumeratorTranslationEntityModel>(entity =>
+        {
+            entity.ToTable("enumerator__enumerator_translations");
+            entity.HasKey(e => e.Id);
+
+
+
+            entity.Property(e => e.Id)                              .HasColumnName("id")                                        .HasColumnType("char(36)")                                                                                                          .IsRequired();
+            entity.Property(e => e.CreatedAtUtc)                    .HasColumnName("created_at_utc")                            .HasColumnType("datetime")                                                      .HasDefaultValueSql("UTC_TIMESTAMP()")              .IsRequired();
+            entity.Property(e => e.CreatedBy)                       .HasColumnName("created_by")                                .HasColumnType("char(36)");
+            entity.Property(e => e.LastUpdatedAtUtc)                .HasColumnName("last_updated_at_utc")                       .HasColumnType("datetime");
+            entity.Property(e => e.LastUpdatedBy)                   .HasColumnName("last_updated_by")                           .HasColumnType("char(36)");
+
+            entity.Property(e => e.DataEnumeratorId)                .HasColumnName("data_enumerator_id")                        .HasColumnType("char(36)")                                                                                                          .IsRequired();
+            entity.Property(e => e.LanguageCode)                    .HasColumnName("language_code")                             .HasColumnType("text")                                                                                                              .IsRequired();
+            entity.Property(e => e.Translation)                     .HasColumnName("translation")                               .HasColumnType("text")                                                                                                              .IsRequired();
+
+
+            
+            entity.HasOne(e => e.CreatedByUser)                     .WithMany()                                                 .HasForeignKey(e => e.CreatedBy)        .OnDelete(DeleteBehavior.SetNull);
+            entity.HasOne(e => e.LastUpdatedByUser)                 .WithMany()                                                 .HasForeignKey(e => e.LastUpdatedBy)    .OnDelete(DeleteBehavior.SetNull);
+            entity.HasOne(e => e.Enum)                              .WithMany(v => v.Translations)                              .HasForeignKey(e => e.DataEnumeratorId).OnDelete(DeleteBehavior.Cascade);
+
+            entity.HasIndex(e => new { e.DataEnumeratorId, e.LanguageCode }).IsUnique();
         });
 
         // enumerator__enumerator_values
