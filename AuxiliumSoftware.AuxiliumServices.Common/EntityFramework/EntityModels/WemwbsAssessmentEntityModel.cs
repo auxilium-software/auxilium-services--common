@@ -20,6 +20,12 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
 
 
 
+        /// <summary>
+        /// </summary>
+        public required Guid UserId { get; set; }
+
+
+
         public required int OptimismScore { get; set; }
         public required int UsefulnessScore { get; set; }
         public required int RelaxedScore { get; set; }
@@ -41,5 +47,8 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
         /// The User who completed the WEMWBS Assessment.
         /// </summary>
         public UserEntityModel? CreatedByUser { get; set; }
+        /// <summary>
+        /// </summary>
+        public UserEntityModel? User { get; set; }
     }
 }

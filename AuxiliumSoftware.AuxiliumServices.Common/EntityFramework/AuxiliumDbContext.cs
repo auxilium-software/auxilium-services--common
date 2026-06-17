@@ -753,7 +753,8 @@ public class AuxiliumDbContext : DbContext
             entity.HasMany(e => e.CompletedTodos)                   .WithOne(t => t.CompletedByUser)                            .HasForeignKey(t => t.CompletedBy)      .OnDelete(DeleteBehavior.Restrict);
 
             // assessment collections
-            entity.HasMany(e => e.WEMWBSAssessments)                .WithOne(w => w.CreatedByUser)                              .HasForeignKey(w => w.CreatedBy)        .OnDelete(DeleteBehavior.Cascade);
+            entity.HasMany(e => e.WEMWBSAssessments)                .WithOne(w => w.User)                                       .HasForeignKey(w => w.UserId)           .OnDelete(DeleteBehavior.Cascade);
+            entity.HasMany(e => e.CreatedWEMWBSAssessments)         .WithOne(w => w.CreatedByUser)                              .HasForeignKey(w => w.CreatedBy)        .OnDelete(DeleteBehavior.Cascade);
 
             // system bulletin collections
             entity.HasMany(e => e.TargetedBulletins)                .WithOne(b => b.SpecificUser)                               .HasForeignKey(b => b.SpecificUserId)   .OnDelete(DeleteBehavior.SetNull);
@@ -898,7 +899,8 @@ public class AuxiliumDbContext : DbContext
 
 
 
-            entity.HasOne(e => e.CreatedByUser)                     .WithMany(u => u.WEMWBSAssessments)                         .HasForeignKey(e => e.CreatedBy)        .OnDelete(DeleteBehavior.Cascade);
+            entity.HasOne(e => e.CreatedByUser)                     .WithMany(u => u.CreatedWEMWBSAssessments)                  .HasForeignKey(e => e.CreatedBy)        .OnDelete(DeleteBehavior.Cascade);
+            entity.HasOne(e => e.User)                              .WithMany(u => u.WEMWBSAssessments)                         .HasForeignKey(e => e.UserId)           .OnDelete(DeleteBehavior.Cascade);
         });
     }
 }
