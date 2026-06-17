@@ -1,4 +1,5 @@
-﻿using AuxiliumSoftware.AuxiliumServices.Common.EntityFramework;
+﻿using AuxiliumSoftware.AuxiliumServices.Common.DataTransferObjects;
+using AuxiliumSoftware.AuxiliumServices.Common.EntityFramework;
 using AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels;
 using AuxiliumSoftware.AuxiliumServices.Common.Utilities;
 using Microsoft.EntityFrameworkCore;
@@ -676,4 +677,55 @@ public class DataEnumeratorService : IDataEnumeratorService
         }
     }
     #endregion
+
+
+    public async Task<Dictionary<Guid, ResolvedDataEnumeratorValueDTO>> ResolveValueDisplaysAsync(
+        IEnumerable<Guid> valueIds,
+        string? locale,
+        CancellationToken ct = default
+    )
+    {
+        var ids = valueIds.Distinct().ToList();
+        var result = new Dictionary<Guid, ResolvedDataEnumeratorValueDTO>();
+        if (ids.Count == 0) return result;
+
+        var lang = locale != null ? EnumValueUtilities.NormaliseLanguageCode(locale) : null;
+
+        var values = await _db.DataEnumerator_EnumeratorValues
+            .Include(v => v.Translations)
+            .Include(v => v.EnumType)
+                .ThenInclude(t => t.Translations)
+            .Where(v => ids.Contains(v.Id))
+            .ToListAsync(ct);
+
+        foreach (var v in values)
+        {
+            var valueDisplay = v.CanonicalName;
+            if (lang != null)
+            {
+                var tr = v.Translations?.FirstOrDefault(t => t.LanguageCode == lang);
+                if (tr != null) valueDisplay = tr.Translation;
+            }
+
+            var enumCanonical = v.EnumType?.CanonicalName ?? string.Empty;
+            var enumDisplay = enumCanonical;
+            if (lang != null && v.EnumType?.Translations != null)
+            {
+                var et = v.EnumType.Translations.FirstOrDefault(t => t.LanguageCode == lang);
+                if (et != null) enumDisplay = et.Translation;
+            }
+
+            result[v.Id] = new ResolvedDataEnumeratorValueDTO
+            {
+                ValueId = v.Id,
+                EnumTypeId = v.EnumTypeId,
+                ValueCanonicalName = v.CanonicalName,
+                ValueDisplay = valueDisplay,
+                EnumCanonicalName = enumCanonical,
+                EnumDisplay = enumDisplay,
+            };
+        }
+
+        return result;
+    }
 }

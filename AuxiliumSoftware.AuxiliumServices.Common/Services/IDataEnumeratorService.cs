@@ -1,4 +1,5 @@
-﻿using AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels;
+﻿using AuxiliumSoftware.AuxiliumServices.Common.DataTransferObjects;
+using AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels;
 using AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.Enumerators;
 using System;
 using System.Collections.Generic;
@@ -43,5 +44,11 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services
         Task<DataEnumeratorValueTranslationEntityModel> CreateTranslationAsync(Guid valueId, string languageCode, string translation, UserEntityModel createdBy, CancellationToken ct = default);
         Task<DataEnumeratorValueTranslationEntityModel> UpdateTranslationAsync(Guid translationId, string? languageCode, string? translation, UserEntityModel updatedBy, CancellationToken ct = default);
         Task DeleteTranslationAsync(Guid translationId, CancellationToken ct = default);
+
+
+
+
+
+        Task<Dictionary<Guid, ResolvedDataEnumeratorValueDTO>> ResolveValueDisplaysAsync(IEnumerable<Guid> valueIds, string? locale, CancellationToken ct = default);
     }
 }
