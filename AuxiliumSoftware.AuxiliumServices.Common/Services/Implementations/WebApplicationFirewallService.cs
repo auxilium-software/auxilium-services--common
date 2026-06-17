@@ -596,7 +596,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
             {
                 Id = Guid.NewGuid(),
                 CreatedAtUtc = now,
-                CreatedBy = adminUser.Id,
+                CreatedByUserId = adminUser.Id,
                 IpAddress = ipAddress,
                 IsPermanent = permanent,
                 JustificationForBlacklist = reason,
@@ -672,7 +672,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
             {
                 Id = Guid.NewGuid(),
                 CreatedAtUtc = now,
-                CreatedBy = adminUser.Id,
+                CreatedByUserId = adminUser.Id,
                 UserId = user.Id,
                 IsPermanent = permanent,
                 JustificationForBlacklist = reason,
@@ -751,7 +751,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
             {
                 Id = Guid.NewGuid(),
                 CreatedAtUtc = now,
-                CreatedBy = adminUser.Id,
+                CreatedByUserId = adminUser.Id,
                 IpAddress = ipAddress,
                 IsPermanent = permanent,
                 JustificationForWhitelist = reason,
@@ -824,7 +824,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
             {
                 Id = Guid.NewGuid(),
                 CreatedAtUtc = now,
-                CreatedBy = adminUser.Id,
+                CreatedByUserId = adminUser.Id,
                 UserId = user.Id,
                 IsPermanent = permanent,
                 JustificationForWhitelist = reason,

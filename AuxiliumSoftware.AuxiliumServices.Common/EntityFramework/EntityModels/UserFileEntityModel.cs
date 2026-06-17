@@ -16,7 +16,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
         /// <summary>
         /// The unique identifier of the User who created the Case File.
         /// </summary>
-        public Guid? CreatedBy { get; set; }
+        public Guid? CreatedByUserId { get; set; }
         /// <summary>
         /// The timestamp of when the Case File was last updated.
         /// </summary>
@@ -24,7 +24,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
         /// <summary>
         /// The unique identifier of the User who last updated the Case File.
         /// </summary>
-        public Guid? LastUpdatedBy { get; set; }
+        public Guid? LastUpdatedByUserId { get; set; }
 
 
 

@@ -19,7 +19,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
         /// <summary>
         /// The unique identifier of the User who dismissed the System Bulletin.
         /// </summary>
-        public Guid CreatedBy { get; set; }
+        public Guid CreatedByUserId { get; set; }
 
 
 

@@ -46,14 +46,14 @@ public class MessageDocumentService : IMessageDocumentService
             {
                 Id = UUIDUtilities.GenerateV5(DatabaseObjectTypeEnum.Case_Message),
                 CaseId = caseId,
-                SenderId = senderId,
+                SenderUserId = senderId,
                 Subject = subject,
                 Content = content,
                 IsUrgent = isUrgent,
-                CreatedBy = senderId,
+                CreatedByUserId = senderId,
                 CreatedAtUtc = DateTime.UtcNow,
                 LastUpdatedAtUtc = DateTime.UtcNow,
-                LastUpdatedBy = senderId
+                LastUpdatedByUserId = senderId
             };
 
             _db.CaseMessages.Add(message);
@@ -122,7 +122,7 @@ public class MessageDocumentService : IMessageDocumentService
 
             // check if it's already marked as read
             var alreadyRead = await _db.Log_CaseMessageReadBys
-                .AnyAsync(rb => rb.MessageId == messageId && rb.CreatedBy == userId);
+                .AnyAsync(rb => rb.MessageId == messageId && rb.CreatedByUserId == userId);
 
             if (!alreadyRead)
             {
@@ -131,7 +131,7 @@ public class MessageDocumentService : IMessageDocumentService
                 {
                     Id = UUIDUtilities.GenerateV5(DatabaseObjectTypeEnum.Log_CaseMessageReadBy_EventEntry),
                     MessageId = messageId,
-                    CreatedBy = userId,
+                    CreatedByUserId = userId,
                     CreatedAtUtc = DateTime.UtcNow
                 };
 
@@ -157,7 +157,7 @@ public class MessageDocumentService : IMessageDocumentService
         try
         {
             return await _db.Log_CaseMessageReadBys
-                .AnyAsync(rb => rb.MessageId == messageId && rb.CreatedBy == userId);
+                .AnyAsync(rb => rb.MessageId == messageId && rb.CreatedByUserId == userId);
         }
         catch (Exception ex)
         {
@@ -172,7 +172,7 @@ public class MessageDocumentService : IMessageDocumentService
         {
             return await _db.Log_CaseMessageReadBys
                 .Where(rb => rb.MessageId == messageId)
-                .Select(rb => rb.CreatedBy)
+                .Select(rb => rb.CreatedByUserId)
                 .ToListAsync();
         }
         catch (Exception ex)
@@ -189,7 +189,7 @@ public class MessageDocumentService : IMessageDocumentService
             return await _db.Log_CaseMessageReadBys
                 .Where(rb => rb.MessageId == messageId)
                 .ToDictionaryAsync(
-                    rb => rb.CreatedBy,
+                    rb => rb.CreatedByUserId,
                     rb => rb.CreatedAtUtc
                 );
         }

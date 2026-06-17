@@ -165,7 +165,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
                 ConfigValue = jsonValue,
                 ValueType = valueType,
                 CreatedAtUtc = DateTime.UtcNow,
-                CreatedBy = modifiedBy,
+                CreatedByUserId = modifiedBy,
                 ReasonForModification = reasonForModification
             });
 

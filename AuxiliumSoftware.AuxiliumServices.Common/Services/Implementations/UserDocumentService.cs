@@ -108,7 +108,7 @@ public class UserDocumentService : IUserDocumentService
                 Id = UUIDUtilities.GenerateV5(DatabaseObjectTypeEnum.User_AdditionalProperty),
                 UserId = userId,
                 ContentType = contentType ?? "text/plain",
-                CreatedBy = currentUser.Id,
+                CreatedByUserId = currentUser.Id,
                 CreatedAtUtc = DateTime.UtcNow,
                 OriginalName = additionalPropertyOriginalName,
                 UrlSlug = additionalPropertyUrlSlug,
@@ -234,7 +234,7 @@ public class UserDocumentService : IUserDocumentService
         {
             Id = UUIDUtilities.GenerateV5(DatabaseObjectTypeEnum.Log_UserModification_EventEntry),
             CreatedAtUtc = DateTime.UtcNow,
-            CreatedBy = currentUser.Id,
+            CreatedByUserId = currentUser.Id,
             UserId = targetUser.Id,
             EntityType = entityType,
             EntityId = entityId,
