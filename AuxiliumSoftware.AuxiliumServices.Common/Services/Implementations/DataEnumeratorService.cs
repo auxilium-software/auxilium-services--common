@@ -96,7 +96,7 @@ public class DataEnumeratorService : IDataEnumeratorService
             {
                 Id = Guid.NewGuid(),
                 CreatedAtUtc = DateTime.UtcNow,
-                CreatedBy = createdBy.Id,
+                CreatedByUserId = createdBy.Id,
                 CanonicalName = name,
                 Description = description,
                 IsActive = true,
@@ -133,7 +133,7 @@ public class DataEnumeratorService : IDataEnumeratorService
             if (name != null) enumerator.CanonicalName = name;
             if (description != null) enumerator.Description = description;
             enumerator.LastUpdatedAtUtc = DateTime.UtcNow;
-            enumerator.LastUpdatedBy = updatedBy.Id;
+            enumerator.LastUpdatedByUserId = updatedBy.Id;
 
             await _db.SaveChangesAsync(ct);
 
@@ -163,7 +163,7 @@ public class DataEnumeratorService : IDataEnumeratorService
 
             enumerator.IsActive = isActive;
             enumerator.LastUpdatedAtUtc = DateTime.UtcNow;
-            enumerator.LastUpdatedBy = updatedBy.Id;
+            enumerator.LastUpdatedByUserId = updatedBy.Id;
 
             await _db.SaveChangesAsync(ct);
 
@@ -227,7 +227,7 @@ public class DataEnumeratorService : IDataEnumeratorService
             {
                 Id = Guid.NewGuid(),
                 CreatedAtUtc = DateTime.UtcNow,
-                CreatedBy = createdBy.Id,
+                CreatedByUserId = createdBy.Id,
                 DataEnumeratorId = enumeratorId,
                 LanguageCode = lang,
                 Translation = translation,
@@ -284,7 +284,7 @@ public class DataEnumeratorService : IDataEnumeratorService
             if (translation != null) entity.Translation = translation;
 
             entity.LastUpdatedAtUtc = DateTime.UtcNow;
-            entity.LastUpdatedBy = updatedBy.Id;
+            entity.LastUpdatedByUserId = updatedBy.Id;
 
             await _db.SaveChangesAsync(ct);
 
@@ -402,7 +402,7 @@ public class DataEnumeratorService : IDataEnumeratorService
             {
                 Id = Guid.NewGuid(),
                 CreatedAtUtc = DateTime.UtcNow,
-                CreatedBy = createdBy.Id,
+                CreatedByUserId = createdBy.Id,
                 EnumTypeId = enumeratorId,
                 CanonicalName = canonicalName,
                 IsActive = true,
@@ -452,7 +452,7 @@ public class DataEnumeratorService : IDataEnumeratorService
             }
 
             value.LastUpdatedAtUtc = DateTime.UtcNow;
-            value.LastUpdatedBy = updatedBy.Id;
+            value.LastUpdatedByUserId = updatedBy.Id;
 
             await _db.SaveChangesAsync(ct);
 
@@ -482,7 +482,7 @@ public class DataEnumeratorService : IDataEnumeratorService
 
             value.IsActive = isActive;
             value.LastUpdatedAtUtc = DateTime.UtcNow;
-            value.LastUpdatedBy = updatedBy.Id;
+            value.LastUpdatedByUserId = updatedBy.Id;
 
             await _db.SaveChangesAsync(ct);
 
@@ -516,7 +516,7 @@ public class DataEnumeratorService : IDataEnumeratorService
 
                 value.SortOrder = i;
                 value.LastUpdatedAtUtc = DateTime.UtcNow;
-                value.LastUpdatedBy = updatedBy.Id;
+                value.LastUpdatedByUserId = updatedBy.Id;
             }
 
             await _db.SaveChangesAsync(ct);
@@ -581,7 +581,7 @@ public class DataEnumeratorService : IDataEnumeratorService
             {
                 Id = Guid.NewGuid(),
                 CreatedAtUtc = DateTime.UtcNow,
-                CreatedBy = createdBy.Id,
+                CreatedByUserId = createdBy.Id,
                 DataEnumeratorValueId = valueId,
                 LanguageCode = lang,
                 Translation = translation,
@@ -638,7 +638,7 @@ public class DataEnumeratorService : IDataEnumeratorService
             if (translation != null) entity.Translation = translation;
 
             entity.LastUpdatedAtUtc = DateTime.UtcNow;
-            entity.LastUpdatedBy = updatedBy.Id;
+            entity.LastUpdatedByUserId = updatedBy.Id;
 
             await _db.SaveChangesAsync(ct);
 

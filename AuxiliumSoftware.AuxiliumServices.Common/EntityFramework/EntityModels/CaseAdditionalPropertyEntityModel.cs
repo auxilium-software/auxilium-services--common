@@ -17,7 +17,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
         /// <summary>
         /// The unique identifier of the user who created the Additional Property.
         /// </summary>
-        public Guid? CreatedBy { get; set; }
+        public Guid? CreatedByUserId { get; set; }
         /// <summary>
         /// The timestamp of when the Additional Property was last updated.
         /// </summary>
@@ -25,7 +25,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
         /// <summary>
         /// The unique identifier of the user who last updated the Additional Property.
         /// </summary>
-        public Guid? LastUpdatedBy { get; set; }
+        public Guid? LastUpdatedByUserId { get; set; }
 
 
 

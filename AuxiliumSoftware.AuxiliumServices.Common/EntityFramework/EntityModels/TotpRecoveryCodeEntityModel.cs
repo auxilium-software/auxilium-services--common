@@ -20,7 +20,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
         /// <summary>
         /// The unique identifier of the User who created the TOTP Recovery Code (this is who the TOTP Recovery Code belongs to).
         /// </summary>
-        public required Guid CreatedBy { get; set; }
+        public required Guid CreatedByUserId { get; set; }
 
 
 

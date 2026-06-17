@@ -20,7 +20,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
         /// <summary>
         /// The unique identifier of the user who created the Additional Property.
         /// </summary>
-        public required Guid CreatedBy { get; set; }
+        public required Guid CreatedByUserId { get; set; }
 
 
 

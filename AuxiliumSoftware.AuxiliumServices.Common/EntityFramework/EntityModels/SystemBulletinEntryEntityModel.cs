@@ -20,7 +20,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
         /// <summary>
         /// The unique identifier for the User who created the System Bulletin Entry.
         /// </summary>
-        public Guid? CreatedBy { get; set; }
+        public Guid? CreatedByUserId { get; set; }
 
 
 

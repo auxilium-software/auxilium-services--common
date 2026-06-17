@@ -114,7 +114,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
             user.TotpEnabledAtUtc = null;
 
             var recoveryCodes = await _db.UserTotpRecoveryCodes
-                .Where(r => r.CreatedBy == userId)
+                .Where(r => r.CreatedByUserId == userId)
                 .ToListAsync();
 
             if (recoveryCodes.Count != 0)
@@ -159,7 +159,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
 
             var match = await _db.UserTotpRecoveryCodes
                 .FirstOrDefaultAsync(r =>
-                    r.CreatedBy == userId &&
+                    r.CreatedByUserId == userId &&
                     r.CodeHash == hash &&
                     !r.IsUsed
                 );
@@ -192,7 +192,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
             if (!isValid) return null;
 
             var existing = await _db.UserTotpRecoveryCodes
-                .Where(r => r.CreatedBy == userId)
+                .Where(r => r.CreatedByUserId == userId)
                 .ToListAsync();
 
             if (existing.Count != 0)
@@ -215,7 +215,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
         public async Task<int> GetRemainingRecoveryCodeCountAsync(Guid userId)
         {
             return await _db.UserTotpRecoveryCodes
-                .CountAsync(r => r.CreatedBy == userId && !r.IsUsed);
+                .CountAsync(r => r.CreatedByUserId == userId && !r.IsUsed);
         }
         #endregion
         #region Status Queries
@@ -246,7 +246,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
                 _db.UserTotpRecoveryCodes.Add(new TotpRecoveryCodeEntityModel
                 {
                     Id = Guid.NewGuid(),
-                    CreatedBy = userId,
+                    CreatedByUserId = userId,
                     CodeHash = HashRecoveryCode(formatted),
                     IsUsed = false,
                     CreatedAtUtc = now,

@@ -20,7 +20,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
         /// <summary>
         /// The unique identifier of the User who issued the Password Set Token.
         /// </summary>
-        public Guid? CreatedBy { get; set; }
+        public Guid? CreatedByUserId { get; set; }
         /// <summary>
         /// The unique identifier of the User the Password Set Token is for.
         /// </summary>

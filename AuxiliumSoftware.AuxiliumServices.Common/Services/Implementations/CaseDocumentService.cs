@@ -78,7 +78,7 @@ public class CaseDocumentService : ICaseDocumentService
                 Id = UUIDUtilities.GenerateV5(DatabaseObjectTypeEnum.Case_Client),
                 CaseId = caseId,
                 UserId = userId,
-                CreatedBy = userId, // TODO: pass through current user
+                CreatedByUserId = userId, // TODO: pass through current user
                 CreatedAtUtc = DateTime.UtcNow
             };
 
@@ -152,7 +152,7 @@ public class CaseDocumentService : ICaseDocumentService
                 Id = UUIDUtilities.GenerateV5(DatabaseObjectTypeEnum.Case_Worker),
                 CaseId = caseId,
                 UserId = userId,
-                CreatedBy = userId, // TODO: pass through current user
+                CreatedByUserId = userId, // TODO: pass through current user
                 CreatedAtUtc = DateTime.UtcNow
             };
 
@@ -246,7 +246,7 @@ public class CaseDocumentService : ICaseDocumentService
                 Id = UUIDUtilities.GenerateV5(DatabaseObjectTypeEnum.Case_AdditionalProperty),
                 CaseId = caseId,
                 ContentType = contentType ?? "text/plain",
-                CreatedBy = currentUser.Id,
+                CreatedByUserId = currentUser.Id,
                 CreatedAtUtc = DateTime.UtcNow,
                 OriginalName = additionalPropertyOriginalName,
                 UrlSlug = additionalPropertyUrlSlug,
@@ -332,10 +332,10 @@ public class CaseDocumentService : ICaseDocumentService
                 Description = description ?? string.Empty,
                 Status = TodoStatusEnum.NeedsAction,
                 Priority = priority,
-                CreatedBy = createdBy,
+                CreatedByUserId = createdBy,
                 CreatedAtUtc = DateTime.UtcNow,
                 DueDate = dueDate,
-                AssignedTo = assignedTo,
+                AssignedToUserId = assignedTo,
                 ReminderUtc = reminder
             };
 
@@ -346,7 +346,7 @@ public class CaseDocumentService : ICaseDocumentService
             if (caseEntity != null)
             {
                 caseEntity.LastUpdatedAtUtc = DateTime.UtcNow;
-                caseEntity.LastUpdatedBy = createdBy;
+                caseEntity.LastUpdatedByUserId = createdBy;
             }
 
             await _db.SaveChangesAsync();
@@ -417,7 +417,7 @@ public class CaseDocumentService : ICaseDocumentService
             if (newStatus == TodoStatusEnum.Completed && completedBy != null)
             {
                 todo.CompletedAtUtc = DateTime.UtcNow;
-                todo.CompletedBy = completedBy;
+                todo.CompletedByUserId = completedBy;
                 todo.CompletionNote = completionNotes;
             }
 
@@ -462,7 +462,7 @@ public class CaseDocumentService : ICaseDocumentService
             if (description != null) todo.Description = description;
             if (priority.HasValue) todo.Priority = priority.Value;
             if (dueDate.HasValue) todo.DueDate = dueDate;
-            if (assignedTo.HasValue) todo.AssignedTo = assignedTo;
+            if (assignedTo.HasValue) todo.AssignedToUserId = assignedTo;
             if (reminder.HasValue) todo.ReminderUtc = reminder;
 
             todo.LastUpdatedAtUtc = DateTime.UtcNow;
@@ -601,7 +601,7 @@ public class CaseDocumentService : ICaseDocumentService
         {
             Id = UUIDUtilities.GenerateV5(DatabaseObjectTypeEnum.Log_CaseModification_EventEntry),
             CreatedAtUtc = DateTime.UtcNow,
-            CreatedBy = currentUser.Id,
+            CreatedByUserId = currentUser.Id,
             CaseId = targetCase.Id,
             EntityType = entityType,
             EntityId = entityId,

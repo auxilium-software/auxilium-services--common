@@ -20,7 +20,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
         /// <summary>
         /// The unique identifier of the user who created the User Whitelist Entry.
         /// </summary>
-        public Guid? CreatedBy { get; set; }
+        public Guid? CreatedByUserId { get; set; }
 
 
 

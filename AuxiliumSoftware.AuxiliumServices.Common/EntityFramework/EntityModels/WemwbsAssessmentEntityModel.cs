@@ -16,7 +16,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
         /// <summary>
         /// The unique identifier of the User who created/completed the WEMWBS Assessment.
         /// </summary>
-        public required Guid CreatedBy { get; set; }
+        public required Guid CreatedByUserId { get; set; }
 
 
 

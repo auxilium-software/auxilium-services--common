@@ -16,13 +16,13 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
         public required DateTime CreatedAtUtc { get; set; }
         /// <summary>
         /// </summary>
-        public Guid? CreatedBy { get; set; }
+        public Guid? CreatedByUserId { get; set; }
         /// <summary>
         /// </summary>
         public DateTime? LastUpdatedAtUtc { get; set; }
         /// <summary>
         /// </summary>
-        public Guid? LastUpdatedBy { get; set; }
+        public Guid? LastUpdatedByUserId { get; set; }
 
 
 

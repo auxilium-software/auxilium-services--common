@@ -96,10 +96,10 @@ public class FileDocumentService : IFileDocumentService
                 Hash = hash,
                 LfsPath = filePath,
                 Description = description ?? string.Empty,
-                CreatedBy = uploadedBy,
+                CreatedByUserId = uploadedBy,
                 CreatedAtUtc = DateTime.UtcNow,
                 LastUpdatedAtUtc = DateTime.UtcNow,
-                LastUpdatedBy = uploadedBy
+                LastUpdatedByUserId = uploadedBy
             };
 
             _db.CaseFiles.Add(fileMetadata);
@@ -230,10 +230,10 @@ public class FileDocumentService : IFileDocumentService
                 Hash = hash,
                 LfsPath = filePath,
                 Description = description ?? string.Empty,
-                CreatedBy = uploadedBy,
+                CreatedByUserId = uploadedBy,
                 CreatedAtUtc = DateTime.UtcNow,
                 LastUpdatedAtUtc = DateTime.UtcNow,
-                LastUpdatedBy = uploadedBy
+                LastUpdatedByUserId = uploadedBy
             };
 
             _db.UserFiles.Add(fileMetadata);

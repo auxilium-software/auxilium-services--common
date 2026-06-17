@@ -17,7 +17,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
         /// <summary>
         /// The unique identifier of the User who created the Case Todo Entry.
         /// </summary>
-        public Guid? CreatedBy { get; set; }
+        public Guid? CreatedByUserId { get; set; }
         /// <summary>
         /// The timestamp of when the Case Todo Entry was last updated.
         /// </summary>
@@ -25,7 +25,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
         /// <summary>
         /// The unique identifier of the User who last updated the Case Todo Entry.
         /// </summary>
-        public Guid? LastUpdatedBy { get; set; }
+        public Guid? LastUpdatedByUserId { get; set; }
 
 
 
@@ -63,7 +63,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
         /// <summary>
         /// An optional unique identifier of the User the Case Todo Entry is assigned to.
         /// </summary>
-        public required Guid? AssignedTo { get; set; }
+        public required Guid? AssignedToUserId { get; set; }
         /// <summary>
         /// An optional reminder timestamp for the Case Todo Entry.
         /// </summary>
@@ -75,7 +75,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
         /// <summary>
         /// The unique identifier of the User who completed the Case Todo Entry.
         /// </summary>
-        public Guid? CompletedBy { get; set; }
+        public Guid? CompletedByUserId { get; set; }
         /// <summary>
         /// An optional note added upon completion of the Case Todo Entry.
         /// </summary>
