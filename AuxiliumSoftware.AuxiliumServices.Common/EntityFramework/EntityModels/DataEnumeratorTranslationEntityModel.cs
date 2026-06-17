@@ -1,12 +1,11 @@
-﻿using AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.Enumerators;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
 
 namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
 {
-    public class DataEnumeratorEntityModel
+    public class DataEnumeratorTranslationEntityModel
     {
         /// <summary>
         /// </summary>
@@ -31,13 +30,18 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
 
         /// <summary>
         /// </summary>
-        public required string CanonicalName { get; set; }
+        public required Guid DataEnumeratorId { get; set; }
+
+
+
+
+
         /// <summary>
         /// </summary>
-        public string? Description { get; set; }
+        public required string LanguageCode { get; set; }
         /// <summary>
         /// </summary>
-        public required bool IsActive { get; set; }
+        public required string Translation { get; set; }
 
 
 
@@ -50,9 +54,6 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
         public UserEntityModel? LastUpdatedByUser { get; set; }
         /// <summary>
         /// </summary>
-        public ICollection<DataEnumeratorValueEntityModel>? EnumeratorValues { get; set; }
-        /// <summary>
-        /// </summary>
-        public ICollection<DataEnumeratorTranslationEntityModel>? Translations { get; set; }
+        public DataEnumeratorEntityModel? Enum { get; set; }
     }
 }
