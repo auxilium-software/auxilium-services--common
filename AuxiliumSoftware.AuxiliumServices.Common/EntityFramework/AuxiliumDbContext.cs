@@ -898,7 +898,8 @@ public class AuxiliumDbContext : DbContext
 
 
 
-            entity.HasOne(e => e.CreatedByUser)                     .WithMany(u => u.WEMWBSAssessments)                         .HasForeignKey(e => e.CreatedBy)        .OnDelete(DeleteBehavior.Cascade);
+            entity.HasOne(e => e.CreatedByUser)                     .WithMany(u => u.CreatedWEMWBSAssessments)                  .HasForeignKey(e => e.CreatedBy)        .OnDelete(DeleteBehavior.Cascade);
+            entity.HasOne(e => e.User)                              .WithMany(u => u.WEMWBSAssessments)                         .HasForeignKey(e => e.UserId)           .OnDelete(DeleteBehavior.Cascade);
         });
     }
 }

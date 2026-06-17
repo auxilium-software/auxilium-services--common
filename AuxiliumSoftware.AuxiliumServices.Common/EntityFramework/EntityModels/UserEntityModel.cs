@@ -211,7 +211,10 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
 
 
         /// <summary>
-        /// WEMWBS Assessments completed by the User.
+        /// </summary>
+        public ICollection<WemwbsAssessmentEntityModel>? CreatedWEMWBSAssessments { get; set; }
+        /// <summary>
+        /// WEMWBS Assessments for the User.
         /// </summary>
         public ICollection<WemwbsAssessmentEntityModel>? WEMWBSAssessments { get; set; }
 
