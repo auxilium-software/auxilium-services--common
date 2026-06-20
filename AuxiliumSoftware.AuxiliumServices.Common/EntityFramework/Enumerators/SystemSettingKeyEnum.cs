@@ -471,6 +471,28 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.Enumerators
         [SystemSettingRecommendationAttribute("Always enable. Critical for detecting unauthorised document removal and maintaining evidence integrity.")]
         Policies_Logging_EntityActions_CaseFiles_LogDeletions,
 
+        // Logging - Entity Actions - Case Timeline Entries
+        [JsonPropertyName("policies.logging.entityActions.caseTimelineEntries.logCreations")]
+        [SystemSettingExpectedValueTypeAttribute(SystemSettingValueTypeEnum.Bool)]
+        [SystemSettingDefaultValueAttribute(true)]
+        [SystemSettingDescriptionAttribute("Records when timeline entries are created for a case. Tracks entry details and timestamps.")]
+        [SystemSettingRecommendationAttribute("Enable for workflow tracking and accountability in case management processes.")]
+        Policies_Logging_EntityActions_CaseTimelineEntries_LogCreations,
+
+        [JsonPropertyName("policies.logging.entityActions.caseTimelineEntries.logModifications")]
+        [SystemSettingExpectedValueTypeAttribute(SystemSettingValueTypeEnum.Bool)]
+        [SystemSettingDefaultValueAttribute(true)]
+        [SystemSettingDescriptionAttribute("Records when case timeline entries are modified, including status changes, reassignments, or deadline updates.")]
+        [SystemSettingRecommendationAttribute("Enable to track timeline entry progress and changes for performance monitoring and compliance.")]
+        Policies_Logging_EntityActions_CaseTimelineEntries_LogModifications,
+
+        [JsonPropertyName("policies.logging.entityActions.caseTimelineEntries.logDeletions")]
+        [SystemSettingExpectedValueTypeAttribute(SystemSettingValueTypeEnum.Bool)]
+        [SystemSettingDefaultValueAttribute(true)]
+        [SystemSettingDescriptionAttribute("Records when case timeline entries are deleted. Maintains audit trail even after entry removal.")]
+        [SystemSettingRecommendationAttribute("Enable to prevent silent removal of assigned work and maintain complete workflow history.")]
+        Policies_Logging_EntityActions_CaseTimelineEntries_LogDeletions,
+
         // Logging - Entity Actions - Case Todos
         [JsonPropertyName("policies.logging.entityActions.caseTodos.logCreations")]
         [SystemSettingExpectedValueTypeAttribute(SystemSettingValueTypeEnum.Bool)]

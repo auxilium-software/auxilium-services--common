@@ -16,6 +16,8 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Enumerators
         Case_File,
         [JsonPropertyName("Case.Message")]
         Case_Message,
+        [JsonPropertyName("Case.TimelineEntry")]
+        Case_TimelineEntry,
         [JsonPropertyName("Case.Todo")]
         Case_Todo,
         [JsonPropertyName("Case.Worker")]

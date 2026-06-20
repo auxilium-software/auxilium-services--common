@@ -41,6 +41,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Utilities
             [DatabaseObjectTypeEnum.Case_Client]                                    = "/auxilium/3/database-object/mariadb/case/client",
             [DatabaseObjectTypeEnum.Case_Message]                                   = "/auxilium/3/database-object/mariadb/case/message",
             [DatabaseObjectTypeEnum.Case_File]                                      = "/auxilium/3/database-object/mariadb/case/file",
+            [DatabaseObjectTypeEnum.Case_TimelineEntry]                             = "/auxilium/3/database-object/mariadb/case/timeline-entry",
             [DatabaseObjectTypeEnum.Case_Todo]                                      = "/auxilium/3/database-object/mariadb/case/todo",
 
 

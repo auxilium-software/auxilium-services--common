@@ -84,6 +84,10 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
         /// </summary>
         public ICollection<CaseFileEntityModel>? Files { get; set; }
         /// <summary>
+        /// Any Timeline Entries created on the Case.
+        /// </summary>
+        public ICollection<CaseTimelineEntryEntityModel>? TimelineEntries { get; set; }
+        /// <summary>
         /// Any Todos created on the Case.
         /// </summary>
         public ICollection<CaseTodoEntityModel>? Todos { get; set; }

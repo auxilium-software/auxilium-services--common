@@ -26,6 +26,9 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.Enumerators
         [JsonPropertyName("/case/file")]
         Case_File,
 
+        [JsonPropertyName("/case/timeline_entry")]
+        Case_TimelineEntry,
+
         [JsonPropertyName("/case/todo")]
         Case_Todo,
     }

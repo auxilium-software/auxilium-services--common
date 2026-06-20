@@ -11,6 +11,8 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services
 
 
 
+
+
         Task AddClientAsync(Guid caseId, Guid userId);
         Task RemoveClientAsync(Guid caseId, Guid userId);
         Task AddWorkerAsync(Guid caseId, Guid userId);
@@ -18,9 +20,36 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services
 
 
 
+
+
         Task<List<CaseAdditionalPropertyEntityModel>> GetAdditionalPropertiesAsync(Guid caseId);
         Task<Guid> SaveAdditionalPropertyAsync(UserEntityModel currentUser, Guid userId, string additionalPropertyDisplayName, string content, string contentType);
         Task DeleteAdditionalPropertyAsync(Guid caseId, Guid additionalPropertyId);
+
+
+
+
+
+        Task<CaseTimelineEntryEntityModel> CreateTimelineEntryAsync(
+            Guid caseId,
+            DateTime occuredAt,
+            string title,
+            string description,
+            Guid createdBy
+        );
+        Task<CaseTimelineEntryEntityModel?> GetTimelineEntryAsync(Guid caseId, Guid timelineEntryId);
+        Task<List<CaseTimelineEntryEntityModel>> GetTimelineEntriesAsync(Guid caseId);
+        Task UpdateTimelineEntryAsync(
+            Guid caseId,
+            Guid timelineEntryId,
+            DateTime? occuredAt,
+            string? title = null,
+            string? description = null,
+            Guid? updatedBy = null
+        );
+        Task DeleteTimelineEntryAsync(Guid caseId, Guid timelineEntryId);
+
+
 
 
 
@@ -51,6 +80,8 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services
             Guid? assignedTo = null,
             DateTime? reminder = null);
         Task DeleteTodoAsync(Guid caseId, Guid todoId);
+
+
 
 
 

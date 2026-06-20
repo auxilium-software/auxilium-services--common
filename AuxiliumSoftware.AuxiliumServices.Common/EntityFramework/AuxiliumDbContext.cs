@@ -23,6 +23,7 @@ public class AuxiliumDbContext : DbContext
     public DbSet<CaseClientEntityModel> CaseClients { get; set; }
     public DbSet<CaseFileEntityModel> CaseFiles { get; set; }
     public DbSet<CaseMessageEntityModel> CaseMessages { get; set; }
+    public DbSet<CaseTimelineEntryEntityModel> CaseTimelineEntries { get; set; }
     public DbSet<CaseTodoEntityModel> CaseTodos { get; set; }
     public DbSet<CaseWorkerEntityModel> CaseWorkers { get; set; }
     public DbSet<DataEnumeratorEntityModel> DataEnumerator_Enumerators { get; set; }
@@ -123,8 +124,6 @@ public class AuxiliumDbContext : DbContext
             entity.HasOne(e => e.CreatedByUser)                     .WithMany()                                                 .HasForeignKey(e => e.CreatedByUserId)        .OnDelete(DeleteBehavior.SetNull);
             entity.HasOne(e => e.LastUpdatedByUser)                 .WithMany()                                                 .HasForeignKey(e => e.LastUpdatedByUserId)    .OnDelete(DeleteBehavior.SetNull);
             entity.HasOne(e => e.Case)                              .WithMany(c => c.AdditionalProperties)                      .HasForeignKey(e => e.CaseId);
-
-            // entity.HasIndex(e => new { e.CaseId, e.UrlSlug }).IsUnique();
         });
 
         // case__clients
@@ -195,6 +194,28 @@ public class AuxiliumDbContext : DbContext
             entity.HasOne(e => e.Case)                              .WithMany(c => c.Messages)                                  .HasForeignKey(e => e.CaseId);
             entity.HasOne(e => e.Sender)                            .WithMany(u => u.SentMessages)                              .HasForeignKey(e => e.SenderUserId)         .OnDelete(DeleteBehavior.Restrict);
             entity.HasMany(e => e.ReadBy)                           .WithOne(r => r.Message)                                    .HasForeignKey(r => r.MessageId)        .OnDelete(DeleteBehavior.Cascade);
+        });
+
+        // case__timeline
+        modelBuilder.Entity<CaseTimelineEntryEntityModel>(entity =>
+        {
+            entity.ToTable("case__timeline");
+            entity.HasKey(e => e.Id);
+            
+            entity.Property(e => e.Id)                              .HasColumnName("id")                                        .HasColumnType("char(36)")                                                                                                          .IsRequired();
+            entity.Property(e => e.CreatedAtUtc)                    .HasColumnName("created_at_utc")                            .HasColumnType("datetime")                                                      .HasDefaultValueSql("UTC_TIMESTAMP()")              .IsRequired();
+            entity.Property(e => e.CreatedByUserId)                 .HasColumnName("created_by_user_id")                        .HasColumnType("char(36)");
+            entity.Property(e => e.LastUpdatedAtUtc)                .HasColumnName("last_updated_at_utc")                       .HasColumnType("datetime");
+            entity.Property(e => e.LastUpdatedByUserId)             .HasColumnName("last_updated_by_user_id")                   .HasColumnType("char(36)");
+
+            entity.Property(e => e.CaseId)                          .HasColumnName("case_id")                                   .HasColumnType("char(36)")                                                                                                          .IsRequired();
+            entity.Property(e => e.OccurredAt)                      .HasColumnName("occured_at")                                .HasColumnType("datetime")                                                                                                              .IsRequired();
+            entity.Property(e => e.Title)                           .HasColumnName("title")                                     .HasColumnType("text")                                                                                                              .IsRequired();
+            entity.Property(e => e.Description)                     .HasColumnName("description")                               .HasColumnType("text")                                                                                                              .IsRequired();
+            
+            entity.HasOne(e => e.CreatedByUser)                     .WithMany()                                                 .HasForeignKey(e => e.CreatedByUserId)          .OnDelete(DeleteBehavior.SetNull);
+            entity.HasOne(e => e.LastUpdatedByUser)                 .WithMany()                                                 .HasForeignKey(e => e.LastUpdatedByUserId)      .OnDelete(DeleteBehavior.SetNull);
+            entity.HasOne(e => e.Case)                              .WithMany(c => c.TimelineEntries)                           .HasForeignKey(e => e.CaseId)                   .OnDelete(DeleteBehavior.Cascade);
         });
 
         // case__todos
@@ -786,8 +807,6 @@ public class AuxiliumDbContext : DbContext
             entity.HasOne(e => e.CreatedByUser)                     .WithMany()                                                 .HasForeignKey(e => e.CreatedByUserId)        .OnDelete(DeleteBehavior.SetNull);
             entity.HasOne(e => e.LastUpdatedByUser)                 .WithMany()                                                 .HasForeignKey(e => e.LastUpdatedByUserId)    .OnDelete(DeleteBehavior.SetNull);
             entity.HasOne(e => e.User)                              .WithMany(u => u.AdditionalProperties)                      .HasForeignKey(e => e.UserId);
-
-            // entity.HasIndex(e => new { e.UserId, e.UrlSlug }).IsUnique();
         });
 
         // user_files
