@@ -37,7 +37,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
 
         /// <summary>
         /// </summary>
-        public required DateTime OccuredAt { get; set; }
+        public required DateTime OccurredAt { get; set; }
         /// <summary>
         /// </summary>
         public required string Title { get; set; }
