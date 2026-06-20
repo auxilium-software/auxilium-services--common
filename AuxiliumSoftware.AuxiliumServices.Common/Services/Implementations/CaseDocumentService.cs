@@ -38,6 +38,7 @@ public class CaseDocumentService : ICaseDocumentService
             .Include(c => c.AdditionalProperties)
             .Include(c => c.Messages)
             .Include(c => c.Files)
+            .Include(c => c.TimelineEntries)
             .Include(c => c.Todos)
             .FirstOrDefaultAsync(c => c.Id == caseId);
     }
@@ -506,6 +507,149 @@ public class CaseDocumentService : ICaseDocumentService
         }
     }
     #endregion
+    #region ========================= TIMELINE OPERATIONS =========================
+    public async Task<CaseTimelineEntryEntityModel> CreateTimelineEntryAsync(
+        Guid caseId,
+        string title,
+        string description,
+        Guid createdBy
+        )
+    {
+        try
+        {
+            // just make sure that the case actually exists
+            var caseExists = await _db.Cases.AnyAsync(c => c.Id == caseId);
+            if (!caseExists)
+            {
+                throw new KeyNotFoundException($"Case {caseId} not found");
+            }
+
+            // create the timeline entry entity/model
+            var timelineEntry = new CaseTimelineEntryEntityModel
+            {
+                Id = UUIDUtilities.GenerateV5(DatabaseObjectTypeEnum.Case_TimelineEntry),
+                CaseId = caseId,
+                Title = title ?? string.Empty,
+                Description = description ?? string.Empty,
+                CreatedAtUtc = DateTime.UtcNow,
+                CreatedByUserId = createdBy
+            };
+
+            _db.CaseTimelineEntries.Add(timelineEntry);
+
+            // update the LastUpdatedAt timestamp for the case
+            var caseEntity = await _db.Cases.FindAsync(caseId);
+            if (caseEntity != null)
+            {
+                caseEntity.LastUpdatedAtUtc = DateTime.UtcNow;
+                caseEntity.LastUpdatedByUserId = createdBy;
+            }
+
+            await _db.SaveChangesAsync();
+
+            _logger.LogInformation("Created timeline entry {TimelineEntryId} in case {CaseId}", timelineEntry.Id, caseId);
+
+            return timelineEntry;
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Failed to create timeline entry in case {CaseId}", caseId);
+            throw;
+        }
+    }
+    public async Task<CaseTimelineEntryEntityModel?> GetTimelineEntryAsync(Guid caseId, Guid timelineEntryId)
+    {
+        try
+        {
+            return await _db.CaseTimelineEntries
+                .FirstOrDefaultAsync(t => t.CaseId == caseId && t.Id == timelineEntryId);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Failed to get timeline entry {TimelineEntryId} from case {CaseId}", timelineEntryId, caseId);
+            return null;
+        }
+    }
+
+    public async Task<List<CaseTimelineEntryEntityModel>> GetTimelineEntriesAsync(Guid caseId)
+    {
+        try
+        {
+            return await _db.CaseTimelineEntries
+                .Where(t => t.CaseId == caseId)
+                .OrderByDescending(t => t.CreatedAtUtc)
+                .ToListAsync();
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Failed to get timeline entries for case {CaseId}", caseId);
+            throw;
+        }
+    }
+
+    public async Task UpdateTimelineEntryAsync(
+        Guid caseId,
+        Guid timelineEntryId,
+        string? title = null,
+        string? description = null,
+        Guid? updatedBy = null)
+    {
+        try
+        {
+            var timelineEntry = await _db.CaseTimelineEntries
+                .FirstOrDefaultAsync(t => t.CaseId == caseId && t.Id == timelineEntryId)
+                ?? throw new KeyNotFoundException($"Timeline entry {timelineEntryId} not found in case {caseId}");
+
+            if (title != null) timelineEntry.Title = title;
+            if (description != null) timelineEntry.Description = description;
+
+            // update the LastUpdatedAt timestamp for the case
+            var caseEntity = await _db.Cases.FindAsync(caseId);
+            if (caseEntity != null)
+            {
+                caseEntity.LastUpdatedAtUtc = DateTime.UtcNow;
+                if (updatedBy.HasValue) caseEntity.LastUpdatedByUserId = updatedBy.Value;
+            }
+
+            await _db.SaveChangesAsync();
+
+            _logger.LogInformation("Updated timeline entry {TimelineEntryId} in case {CaseId}", timelineEntryId, caseId);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Failed to update timeline entry {TimelineEntryId}", timelineEntryId);
+            throw;
+        }
+    }
+
+    public async Task DeleteTimelineEntryAsync(Guid caseId, Guid timelineEntryId)
+    {
+        try
+        {
+            var timelineEntry = await _db.CaseTimelineEntries
+                .FirstOrDefaultAsync(t => t.CaseId == caseId && t.Id == timelineEntryId)
+                ?? throw new KeyNotFoundException($"Timeline entry {timelineEntryId} not found in case {caseId}");
+
+            _db.CaseTimelineEntries.Remove(timelineEntry);
+
+            // update the LastUpdatedAt timestamp for the case
+            var caseEntity = await _db.Cases.FindAsync(caseId);
+            if (caseEntity != null)
+            {
+                caseEntity.LastUpdatedAtUtc = DateTime.UtcNow;
+            }
+
+            await _db.SaveChangesAsync();
+
+            _logger.LogInformation("Deleted timeline entry {TimelineEntryId} from case {CaseId}", timelineEntryId, caseId);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Failed to delete timeline entry {TimelineEntryId}", timelineEntryId);
+            throw;
+        }
+    }
+    #endregion
     #region ========================= PERMISSION CHECKS =========================
     public async Task<bool> CheckUserAccessAsync(Guid caseId, UserEntityModel currentUser)
     {
@@ -581,6 +725,11 @@ public class CaseDocumentService : ICaseDocumentService
                 if (actionType == AuditLogActionTypeEnum.Upload         && !await this._systemSettings.GetBoolAsync(SystemSettingKeyEnum.Policies_Logging_EntityActions_CaseFiles_LogUploads, ct)) return;
                 if (actionType == AuditLogActionTypeEnum.View           && !await this._systemSettings.GetBoolAsync(SystemSettingKeyEnum.Policies_Logging_EntityActions_CaseFiles_LogViews, ct)) return;
                 if (actionType == AuditLogActionTypeEnum.Deletion       && !await this._systemSettings.GetBoolAsync(SystemSettingKeyEnum.Policies_Logging_EntityActions_CaseFiles_LogDeletions, ct)) return;
+                break;
+            case CaseEntityTypeEnum.Case_TimelineEntry:
+                if (actionType == AuditLogActionTypeEnum.Creation       && !await this._systemSettings.GetBoolAsync(SystemSettingKeyEnum.Policies_Logging_EntityActions_CaseTimelineEntries_LogCreations, ct)) return;
+                if (actionType == AuditLogActionTypeEnum.Modification   && !await this._systemSettings.GetBoolAsync(SystemSettingKeyEnum.Policies_Logging_EntityActions_CaseTimelineEntries_LogModifications, ct)) return;
+                if (actionType == AuditLogActionTypeEnum.Deletion       && !await this._systemSettings.GetBoolAsync(SystemSettingKeyEnum.Policies_Logging_EntityActions_CaseTimelineEntries_LogDeletions, ct)) return;
                 break;
             case CaseEntityTypeEnum.Case_Todo:
                 if (actionType == AuditLogActionTypeEnum.Creation       && !await this._systemSettings.GetBoolAsync(SystemSettingKeyEnum.Policies_Logging_EntityActions_CaseTodos_LogCreations, ct)) return;
