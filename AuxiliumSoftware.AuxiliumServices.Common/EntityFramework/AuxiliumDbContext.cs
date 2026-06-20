@@ -882,6 +882,8 @@ public class AuxiliumDbContext : DbContext
             entity.Property(e => e.CreatedAtUtc)                    .HasColumnName("created_at_utc")                            .HasColumnType("datetime")                                                      .HasDefaultValueSql("UTC_TIMESTAMP()")              .IsRequired();
             entity.Property(e => e.CreatedByUserId)                 .HasColumnName("created_by_user_id")                        .HasColumnType("char(36)")                                                                                                          .IsRequired();
             
+            entity.Property(e => e.UserId)                          .HasColumnName("user_id")                                   .HasColumnType("char(36)")                                                                                                          .IsRequired();
+            
             entity.Property(e => e.OptimismScore)                   .HasColumnName("optimism_score")                            .HasColumnType("int")                                                                                                               .IsRequired();
             entity.Property(e => e.UsefulnessScore)                 .HasColumnName("usefulness_score")                          .HasColumnType("int")                                                                                                               .IsRequired();
             entity.Property(e => e.RelaxedScore)                    .HasColumnName("relaxed_score")                             .HasColumnType("int")                                                                                                               .IsRequired();
