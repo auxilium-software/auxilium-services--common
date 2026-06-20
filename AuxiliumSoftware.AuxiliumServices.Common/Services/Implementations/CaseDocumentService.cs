@@ -530,7 +530,7 @@ public class CaseDocumentService : ICaseDocumentService
             {
                 Id = UUIDUtilities.GenerateV5(DatabaseObjectTypeEnum.Case_TimelineEntry),
                 CaseId = caseId,
-                OccuredAt = occuredAt,
+                OccurredAt = occuredAt,
                 Title = title ?? string.Empty,
                 Description = description ?? string.Empty,
                 CreatedAtUtc = DateTime.UtcNow,
@@ -603,7 +603,7 @@ public class CaseDocumentService : ICaseDocumentService
                 .FirstOrDefaultAsync(t => t.CaseId == caseId && t.Id == timelineEntryId)
                 ?? throw new KeyNotFoundException($"Timeline entry {timelineEntryId} not found in case {caseId}");
 
-            if (occuredAt.HasValue) timelineEntry.OccuredAt = occuredAt.Value;
+            if (occuredAt.HasValue) timelineEntry.OccurredAt = occuredAt.Value;
             if (title != null) timelineEntry.Title = title;
             if (description != null) timelineEntry.Description = description;
 
