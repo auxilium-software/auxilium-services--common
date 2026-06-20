@@ -42,7 +42,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services
         Task UpdateTimelineEntryAsync(
             Guid caseId,
             Guid timelineEntryId,
-            DateTime? occuredAt,
+            DateTime? occuredAt = null,
             string? title = null,
             string? description = null,
             Guid? updatedBy = null
