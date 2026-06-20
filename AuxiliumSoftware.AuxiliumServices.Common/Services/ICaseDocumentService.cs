@@ -32,6 +32,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services
 
         Task<CaseTimelineEntryEntityModel> CreateTimelineEntryAsync(
             Guid caseId,
+            DateTime occuredAt,
             string title,
             string description,
             Guid createdBy
@@ -41,6 +42,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services
         Task UpdateTimelineEntryAsync(
             Guid caseId,
             Guid timelineEntryId,
+            DateTime? occuredAt,
             string? title = null,
             string? description = null,
             Guid? updatedBy = null

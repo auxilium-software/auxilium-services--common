@@ -510,6 +510,7 @@ public class CaseDocumentService : ICaseDocumentService
     #region ========================= TIMELINE OPERATIONS =========================
     public async Task<CaseTimelineEntryEntityModel> CreateTimelineEntryAsync(
         Guid caseId,
+        DateTime occuredAt,
         string title,
         string description,
         Guid createdBy
@@ -529,6 +530,7 @@ public class CaseDocumentService : ICaseDocumentService
             {
                 Id = UUIDUtilities.GenerateV5(DatabaseObjectTypeEnum.Case_TimelineEntry),
                 CaseId = caseId,
+                OccuredAt = occuredAt,
                 Title = title ?? string.Empty,
                 Description = description ?? string.Empty,
                 CreatedAtUtc = DateTime.UtcNow,
@@ -590,6 +592,7 @@ public class CaseDocumentService : ICaseDocumentService
     public async Task UpdateTimelineEntryAsync(
         Guid caseId,
         Guid timelineEntryId,
+        DateTime? occuredAt,
         string? title = null,
         string? description = null,
         Guid? updatedBy = null)
@@ -600,6 +603,7 @@ public class CaseDocumentService : ICaseDocumentService
                 .FirstOrDefaultAsync(t => t.CaseId == caseId && t.Id == timelineEntryId)
                 ?? throw new KeyNotFoundException($"Timeline entry {timelineEntryId} not found in case {caseId}");
 
+            if (occuredAt.HasValue) timelineEntry.OccuredAt = occuredAt.Value;
             if (title != null) timelineEntry.Title = title;
             if (description != null) timelineEntry.Description = description;
 
