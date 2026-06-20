@@ -116,8 +116,7 @@ public class AuxiliumDbContext : DbContext
             entity.Property(e => e.LastUpdatedByUserId)             .HasColumnName("last_updated_by_user_id")                   .HasColumnType("char(36)");
 
             entity.Property(e => e.CaseId)                          .HasColumnName("case_id")                                   .HasColumnType("char(36)")                                                                                                          .IsRequired();
-            entity.Property(e => e.OriginalName)                    .HasColumnName("original_name")                             .HasColumnType("text")                                                                                                              .IsRequired();
-            entity.Property(e => e.UrlSlug)                         .HasColumnName("url_slug")                                  .HasColumnType("text")                                                                                                              .IsRequired();
+            entity.Property(e => e.DisplayName)                     .HasColumnName("display_name")                              .HasColumnType("text")                                                                                                              .IsRequired();
             entity.Property(e => e.Content)                         .HasColumnName("content")                                   .HasColumnType("text")                                                                                                              .IsRequired();
             entity.Property(e => e.ContentType)                     .HasColumnName("content_type")                              .HasColumnType("text")                                                                                                              .IsRequired();
             
@@ -170,7 +169,7 @@ public class AuxiliumDbContext : DbContext
             
             entity.HasOne(e => e.CreatedByUser)                     .WithMany()                                                 .HasForeignKey(e => e.CreatedByUserId)        .OnDelete(DeleteBehavior.SetNull);
             entity.HasOne(e => e.LastUpdatedByUser)                 .WithMany()                                                 .HasForeignKey(e => e.LastUpdatedByUserId)    .OnDelete(DeleteBehavior.SetNull);
-            entity.HasOne(e => e.Case)                              .WithMany(c => c.Files)                                     .HasForeignKey(e => e.CaseId)           .OnDelete(DeleteBehavior.Cascade);
+            entity.HasOne(e => e.Case)                              .WithMany(c => c.Files)                                     .HasForeignKey(e => e.CaseId)               .OnDelete(DeleteBehavior.Cascade);
         });
 
         // case__messages
@@ -780,8 +779,7 @@ public class AuxiliumDbContext : DbContext
             entity.Property(e => e.LastUpdatedByUserId)             .HasColumnName("last_updated_by_user_id")                   .HasColumnType("char(36)");
 
             entity.Property(e => e.UserId)                          .HasColumnName("user_id")                                   .HasColumnType("char(36)")                                                                                                          .IsRequired();
-            entity.Property(e => e.OriginalName)                    .HasColumnName("original_name")                             .HasColumnType("text")                                                                                                              .IsRequired();
-            entity.Property(e => e.UrlSlug)                         .HasColumnName("url_slug")                                  .HasColumnType("text")                                                                                                              .IsRequired();
+            entity.Property(e => e.DisplayName)                     .HasColumnName("display_name")                              .HasColumnType("text")                                                                                                              .IsRequired();
             entity.Property(e => e.Content)                         .HasColumnName("content")                                   .HasColumnType("text")                                                                                                              .IsRequired();
             entity.Property(e => e.ContentType)                     .HasColumnName("content_type")                              .HasColumnType("text")                                                                                                              .IsRequired();
             

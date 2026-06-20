@@ -222,25 +222,16 @@ public class CaseDocumentService : ICaseDocumentService
         }
     }
 
-    public async Task SaveAdditionalPropertyAsync(
+    public async Task<Guid> SaveAdditionalPropertyAsync(
         UserEntityModel currentUser,
         Guid caseId,
-        string additionalPropertyOriginalName,
-        string additionalPropertyUrlSlug,
+        string additionalPropertyDisplayName,
         string additionalPropertyContent,
-        string contentType)
+        string contentType
+        )
     {
         try
         {
-            // check if the property already exists
-            var existing = await _db.CaseAdditionalProperties
-                .FirstOrDefaultAsync(a => a.CaseId == caseId && a.UrlSlug == additionalPropertyUrlSlug);
-
-            if (existing != null)
-            {
-                throw new Exception($"Additional property {additionalPropertyOriginalName} already exists for case {caseId}");
-            }
-
             var newProperty = new CaseAdditionalPropertyEntityModel
             {
                 Id = UUIDUtilities.GenerateV5(DatabaseObjectTypeEnum.Case_AdditionalProperty),
@@ -248,14 +239,12 @@ public class CaseDocumentService : ICaseDocumentService
                 ContentType = contentType ?? "text/plain",
                 CreatedByUserId = currentUser.Id,
                 CreatedAtUtc = DateTime.UtcNow,
-                OriginalName = additionalPropertyOriginalName,
-                UrlSlug = additionalPropertyUrlSlug,
+                DisplayName = additionalPropertyDisplayName,
                 Content = additionalPropertyContent,
             };
 
             _db.CaseAdditionalProperties.Add(newProperty);
 
-            // update the LastUpdatedAt timestamp for the case
             var caseEntity = await _db.Cases.FindAsync(caseId);
             if (caseEntity != null)
             {
@@ -264,11 +253,15 @@ public class CaseDocumentService : ICaseDocumentService
 
             await _db.SaveChangesAsync();
 
-            _logger.LogInformation("Saved property {AdditionalPropertyName} for case {CaseId}", additionalPropertyOriginalName, caseId);
+            _logger.LogInformation("Saved property {AdditionalPropertyId} ({Name}) for case {CaseId}",
+                newProperty.Id, additionalPropertyDisplayName, caseId);
+
+            return newProperty.Id;
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Failed to save property {AdditionalPropertyName} for case {CaseId}", additionalPropertyOriginalName, caseId);
+            _logger.LogError(ex, "Failed to save property {AdditionalPropertyName} for case {CaseId}",
+                additionalPropertyDisplayName, caseId);
             throw;
         }
     }

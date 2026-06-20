@@ -38,11 +38,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
         /// This is the Original Name of the Additional Property (eg what the User entered into the text field in the GUI) (can have spaces and special characters).
         /// I.E. This is what the User has entered.
         /// </summary>
-        public required string OriginalName { get; set; }
-        /// <summary>
-        /// This is the name to work on programmatically (no spaces or special characters).
-        /// </summary>
-        public required string UrlSlug { get; set; }
+        public required string DisplayName { get; set; }
         /// <summary>
         /// The MIME type of the Additional Property.
         /// </summary>
