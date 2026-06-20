@@ -23,11 +23,8 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.DataTransferObjects
 
 
 
-        [JsonPropertyName("originalName")]
-        public required string OriginalName { get; set; }
-
-        [JsonPropertyName("urlSlug")]
-        public required string UrlSlug { get; set; }
+        [JsonPropertyName("displayName")]
+        public required string DisplayName { get; set; }
 
         [JsonPropertyName("content")]
         public required string Content { get; set; }
