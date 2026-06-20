@@ -85,17 +85,17 @@ public class UserDocumentService : IUserDocumentService
 
     public async Task<Guid> SaveAdditionalPropertyAsync(
         UserEntityModel currentUser,
-        Guid caseId,
+        Guid userId,
         string additionalPropertyDisplayName,
         string additionalPropertyContent,
         string contentType)
     {
         try
         {
-            var newProperty = new CaseAdditionalPropertyEntityModel
+            var newProperty = new UserAdditionalPropertyEntityModel
             {
-                Id = UUIDUtilities.GenerateV5(DatabaseObjectTypeEnum.Case_AdditionalProperty),
-                CaseId = caseId,
+                Id = UUIDUtilities.GenerateV5(DatabaseObjectTypeEnum.User_AdditionalProperty),
+                UserId = userId,
                 ContentType = contentType ?? "text/plain",
                 CreatedByUserId = currentUser.Id,
                 CreatedAtUtc = DateTime.UtcNow,
@@ -103,25 +103,25 @@ public class UserDocumentService : IUserDocumentService
                 Content = additionalPropertyContent,
             };
 
-            _db.CaseAdditionalProperties.Add(newProperty);
+            _db.UserAdditionalProperties.Add(newProperty);
 
-            var caseEntity = await _db.Cases.FindAsync(caseId);
-            if (caseEntity != null)
+            var userEntity = await _db.Users.FindAsync(userId);
+            if (userEntity != null)
             {
-                caseEntity.LastUpdatedAtUtc = DateTime.UtcNow;
+                userEntity.LastUpdatedAtUtc = DateTime.UtcNow;
             }
 
             await _db.SaveChangesAsync();
 
-            _logger.LogInformation("Saved property {AdditionalPropertyId} ({Name}) for case {CaseId}",
-                newProperty.Id, additionalPropertyDisplayName, caseId);
+            _logger.LogInformation("Saved property {AdditionalPropertyId} ({Name}) for user {UserId}",
+                newProperty.Id, additionalPropertyDisplayName, userId);
 
             return newProperty.Id;
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Failed to save property {AdditionalPropertyName} for case {CaseId}",
-                additionalPropertyDisplayName, caseId);
+            _logger.LogError(ex, "Failed to save property {AdditionalPropertyName} for user {UserId}",
+                additionalPropertyDisplayName, userId);
             throw;
         }
     }
