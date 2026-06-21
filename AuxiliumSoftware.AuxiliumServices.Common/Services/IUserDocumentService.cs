@@ -45,15 +45,5 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services
             Guid userId,
             UserEntityModel currentUser
         );
-
-
-
-        Task WriteToAuditLog(
-            UserEntityModel currentUser,
-            UserEntityModel targetUser, AuditLogActionTypeEnum actionType,
-            UserEntityTypeEnum entityType, Guid? entityId = null,
-            string? propertyName = null, string? oldValue = null, string? newValue = null,
-            CancellationToken ct = default
-        );
     }
 }
