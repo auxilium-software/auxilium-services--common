@@ -59,7 +59,7 @@ public class CaseDocumentService : ICaseDocumentService
 
     #endregion
     #region ========================= PEOPLE MANAGEMENT =========================
-    public async Task AddClientAsync(Guid caseId, Guid userId)
+    public async Task AddClientAsync(Guid caseId, Guid userId, Guid actorUserId)
     {
         try
         {
@@ -79,7 +79,7 @@ public class CaseDocumentService : ICaseDocumentService
                 Id = UUIDUtilities.GenerateV5(DatabaseObjectTypeEnum.Case_Client),
                 CaseId = caseId,
                 UserId = userId,
-                CreatedByUserId = userId, // TODO: pass through current user
+                CreatedByUserId = actorUserId,
                 CreatedAtUtc = DateTime.UtcNow
             };
 
@@ -90,7 +90,16 @@ public class CaseDocumentService : ICaseDocumentService
             if (caseEntity != null)
             {
                 caseEntity.LastUpdatedAtUtc = DateTime.UtcNow;
+                caseEntity.LastUpdatedByUserId = actorUserId;
             }
+
+            await this.WriteToAuditLog(
+                actorUserId,
+                caseId,
+                AuditLogActionTypeEnum.Assignment,
+                CaseEntityTypeEnum.Case_Client,
+                entityId: userId
+            );
 
             await _db.SaveChangesAsync();
 
@@ -103,7 +112,7 @@ public class CaseDocumentService : ICaseDocumentService
         }
     }
 
-    public async Task RemoveClientAsync(Guid caseId, Guid userId)
+    public async Task RemoveClientAsync(Guid caseId, Guid userId, Guid actorUserId)
     {
         try
         {
@@ -119,7 +128,16 @@ public class CaseDocumentService : ICaseDocumentService
                 if (caseEntity != null)
                 {
                     caseEntity.LastUpdatedAtUtc = DateTime.UtcNow;
+                    caseEntity.LastUpdatedByUserId = actorUserId;
                 }
+
+                await this.WriteToAuditLog(
+                    actorUserId,
+                    caseId,
+                    AuditLogActionTypeEnum.Unassignment,
+                    CaseEntityTypeEnum.Case_Client,
+                    entityId: userId
+                );
 
                 await _db.SaveChangesAsync();
 
@@ -133,7 +151,7 @@ public class CaseDocumentService : ICaseDocumentService
         }
     }
 
-    public async Task AddWorkerAsync(Guid caseId, Guid userId)
+    public async Task AddWorkerAsync(Guid caseId, Guid userId, Guid actorUserId)
     {
         try
         {
@@ -153,7 +171,7 @@ public class CaseDocumentService : ICaseDocumentService
                 Id = UUIDUtilities.GenerateV5(DatabaseObjectTypeEnum.Case_Worker),
                 CaseId = caseId,
                 UserId = userId,
-                CreatedByUserId = userId, // TODO: pass through current user
+                CreatedByUserId = actorUserId,
                 CreatedAtUtc = DateTime.UtcNow
             };
 
@@ -164,7 +182,16 @@ public class CaseDocumentService : ICaseDocumentService
             if (caseEntity != null)
             {
                 caseEntity.LastUpdatedAtUtc = DateTime.UtcNow;
+                caseEntity.LastUpdatedByUserId = actorUserId;
             }
+
+            await this.WriteToAuditLog(
+                actorUserId,
+                caseId,
+                AuditLogActionTypeEnum.Assignment,
+                CaseEntityTypeEnum.Case_Worker,
+                entityId: userId
+            );
 
             await _db.SaveChangesAsync();
 
@@ -177,7 +204,7 @@ public class CaseDocumentService : ICaseDocumentService
         }
     }
 
-    public async Task RemoveWorkerAsync(Guid caseId, Guid userId)
+    public async Task RemoveWorkerAsync(Guid caseId, Guid userId, Guid actorUserId)
     {
         try
         {
@@ -193,7 +220,16 @@ public class CaseDocumentService : ICaseDocumentService
                 if (caseEntity != null)
                 {
                     caseEntity.LastUpdatedAtUtc = DateTime.UtcNow;
+                    caseEntity.LastUpdatedByUserId = actorUserId;
                 }
+
+                await this.WriteToAuditLog(
+                    actorUserId,
+                    caseId,
+                    AuditLogActionTypeEnum.Unassignment,
+                    CaseEntityTypeEnum.Case_Worker,
+                    entityId: userId
+                );
 
                 await _db.SaveChangesAsync();
 
@@ -250,7 +286,16 @@ public class CaseDocumentService : ICaseDocumentService
             if (caseEntity != null)
             {
                 caseEntity.LastUpdatedAtUtc = DateTime.UtcNow;
+                caseEntity.LastUpdatedByUserId = currentUser.Id;
             }
+
+            await this.WriteToAuditLog(
+                currentUser.Id,
+                caseId,
+                AuditLogActionTypeEnum.Creation,
+                CaseEntityTypeEnum.Case_AdditionalProperty,
+                entityId: newProperty.Id
+            );
 
             await _db.SaveChangesAsync();
 
@@ -267,29 +312,83 @@ public class CaseDocumentService : ICaseDocumentService
         }
     }
 
-    public async Task DeleteAdditionalPropertyAsync(Guid caseId, Guid additionalPropertyId)
+    public async Task UpdateAdditionalPropertyAsync(
+        Guid caseId,
+        Guid additionalPropertyId,
+        string content,
+        string contentType,
+        Guid actorUserId)
     {
         try
         {
             var property = await _db.CaseAdditionalProperties
-                .FirstOrDefaultAsync(a => a.CaseId == caseId && a.Id == additionalPropertyId);
+                .FirstOrDefaultAsync(a => a.CaseId == caseId && a.Id == additionalPropertyId)
+                ?? throw new KeyNotFoundException($"Property {additionalPropertyId} not found in case {caseId}");
 
-            if (property != null)
+            var previousContent = property.Content;
+
+            property.Content = content;
+            property.ContentType = contentType;
+            property.LastUpdatedAtUtc = DateTime.UtcNow;
+            property.LastUpdatedByUserId = actorUserId;
+
+            var caseEntity = await _db.Cases.FindAsync(caseId);
+            if (caseEntity != null)
             {
-                _db.CaseAdditionalProperties.Remove(property);
-
-                // update the LastUpdatedAt timestamp for the case
-                var caseEntity = await _db.Cases.FindAsync(caseId);
-                if (caseEntity != null)
-                {
-                    caseEntity.LastUpdatedAtUtc = DateTime.UtcNow;
-                }
-
-                await _db.SaveChangesAsync();
-
-                _logger.LogInformation("Deleted property {AdditionalPropertyId} from case {CaseId}", additionalPropertyId, caseId);
+                caseEntity.LastUpdatedAtUtc = DateTime.UtcNow;
+                caseEntity.LastUpdatedByUserId = actorUserId;
             }
+
+            await WriteToAuditLog(
+                actorUserId,
+                caseId,
+                AuditLogActionTypeEnum.Modification,
+                CaseEntityTypeEnum.Case_AdditionalProperty,
+                entityId: additionalPropertyId,
+                propertyName: "Content",
+                oldValue: previousContent,
+                newValue: content
+            );
+
+            await _db.SaveChangesAsync();
+
+            _logger.LogInformation("Updated property {AdditionalPropertyId} ({Name}) for case {CaseId}",
+                property.Id, property.DisplayName, caseId);
         }
+        catch (KeyNotFoundException) { throw; }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Failed to update property {AdditionalPropertyId} for case {CaseId}",
+                additionalPropertyId, caseId);
+            throw;
+        }
+    }
+
+    public async Task DeleteAdditionalPropertyAsync(Guid caseId, Guid additionalPropertyId, Guid actorUserId)
+    {
+        try
+        {
+            var property = await _db.CaseAdditionalProperties
+                .FirstOrDefaultAsync(a => a.CaseId == caseId && a.Id == additionalPropertyId)
+                ?? throw new KeyNotFoundException($"Property {additionalPropertyId} not found in case {caseId}");
+
+            _db.CaseAdditionalProperties.Remove(property);
+
+            var caseEntity = await _db.Cases.FindAsync(caseId);
+            if (caseEntity != null)
+            {
+                caseEntity.LastUpdatedAtUtc = DateTime.UtcNow;
+                caseEntity.LastUpdatedByUserId = actorUserId;
+            }
+
+            await WriteToAuditLog(actorUserId, caseId, AuditLogActionTypeEnum.Deletion,
+                CaseEntityTypeEnum.Case_AdditionalProperty, entityId: additionalPropertyId);
+
+            await _db.SaveChangesAsync();
+
+            _logger.LogInformation("Deleted property {AdditionalPropertyId} from case {CaseId}", additionalPropertyId, caseId);
+        }
+        catch (KeyNotFoundException) { throw; }
         catch (Exception ex)
         {
             _logger.LogError(ex, "Failed to delete property {AdditionalPropertyId} from case {CaseId}", additionalPropertyId, caseId);
@@ -343,6 +442,14 @@ public class CaseDocumentService : ICaseDocumentService
                 caseEntity.LastUpdatedByUserId = createdBy;
             }
 
+            await this.WriteToAuditLog(
+                createdBy,
+                caseId,
+                AuditLogActionTypeEnum.Creation,
+                CaseEntityTypeEnum.Case_Todo,
+                entityId: todo.Id
+            );
+
             await _db.SaveChangesAsync();
 
             _logger.LogInformation("Created todo {TodoId} in case {CaseId}", todo.Id, caseId);
@@ -395,6 +502,7 @@ public class CaseDocumentService : ICaseDocumentService
     public async Task UpdateTodoStatusAsync(
         Guid caseId,
         Guid todoId,
+        Guid actorUserId,
         TodoStatusEnum newStatus,
         Guid? completedBy = null,
         string? completionNotes = null)
@@ -405,6 +513,7 @@ public class CaseDocumentService : ICaseDocumentService
                 .FirstOrDefaultAsync(t => t.CaseId == caseId && t.Id == todoId)
                 ?? throw new KeyNotFoundException($"Todo {todoId} not found in case {caseId}");
 
+            var oldValue = todo.Status;
             todo.Status = newStatus;
             todo.LastUpdatedAtUtc = DateTime.UtcNow;
 
@@ -421,6 +530,17 @@ public class CaseDocumentService : ICaseDocumentService
             {
                 caseEntity.LastUpdatedAtUtc = DateTime.UtcNow;
             }
+
+            await this.WriteToAuditLog(
+                actorUserId,
+                caseId,
+                AuditLogActionTypeEnum.Modification,
+                CaseEntityTypeEnum.Case_Todo,
+                entityId: todoId,
+                propertyName: "status",
+                oldValue: oldValue.ToString(), // TODO: does this actually return the JSON string for the enum?
+                newValue: newStatus.ToString()
+            );
 
             await _db.SaveChangesAsync();
 
@@ -439,6 +559,7 @@ public class CaseDocumentService : ICaseDocumentService
     public async Task UpdateTodoAsync(
         Guid caseId,
         Guid todoId,
+        Guid actorUserId,
         string? summary = null,
         string? description = null,
         TodoPriorityEnum? priority = null,
@@ -466,7 +587,16 @@ public class CaseDocumentService : ICaseDocumentService
             if (caseEntity != null)
             {
                 caseEntity.LastUpdatedAtUtc = DateTime.UtcNow;
+                caseEntity.LastUpdatedByUserId = actorUserId;
             }
+
+            await this.WriteToAuditLog(
+                actorUserId,
+                caseId,
+                AuditLogActionTypeEnum.Modification,
+                CaseEntityTypeEnum.Case_Todo,
+                entityId: todoId
+            );
 
             await _db.SaveChangesAsync();
 
@@ -479,7 +609,7 @@ public class CaseDocumentService : ICaseDocumentService
         }
     }
 
-    public async Task DeleteTodoAsync(Guid caseId, Guid todoId)
+    public async Task DeleteTodoAsync(Guid caseId, Guid todoId, Guid actorUserId)
     {
         try
         {
@@ -494,7 +624,16 @@ public class CaseDocumentService : ICaseDocumentService
             if (caseEntity != null)
             {
                 caseEntity.LastUpdatedAtUtc = DateTime.UtcNow;
+                caseEntity.LastUpdatedByUserId = actorUserId;
             }
+
+            await this.WriteToAuditLog(
+                actorUserId,
+                caseId,
+                AuditLogActionTypeEnum.Deletion,
+                CaseEntityTypeEnum.Case_Todo,
+                entityId: todoId
+            );
 
             await _db.SaveChangesAsync();
 
@@ -514,7 +653,7 @@ public class CaseDocumentService : ICaseDocumentService
         string title,
         string description,
         Guid createdBy
-        )
+    )
     {
         try
         {
@@ -546,6 +685,14 @@ public class CaseDocumentService : ICaseDocumentService
                 caseEntity.LastUpdatedAtUtc = DateTime.UtcNow;
                 caseEntity.LastUpdatedByUserId = createdBy;
             }
+
+            await this.WriteToAuditLog(
+                createdBy,
+                caseId,
+                AuditLogActionTypeEnum.Creation,
+                CaseEntityTypeEnum.Case_TimelineEntry,
+                entityId: timelineEntry.Id
+            );
 
             await _db.SaveChangesAsync();
 
@@ -593,9 +740,9 @@ public class CaseDocumentService : ICaseDocumentService
         Guid caseId,
         Guid timelineEntryId,
         DateTime? occuredAt,
+        Guid updatedBy,
         string? title = null,
-        string? description = null,
-        Guid? updatedBy = null)
+        string? description = null)
     {
         try
         {
@@ -612,8 +759,16 @@ public class CaseDocumentService : ICaseDocumentService
             if (caseEntity != null)
             {
                 caseEntity.LastUpdatedAtUtc = DateTime.UtcNow;
-                if (updatedBy.HasValue) caseEntity.LastUpdatedByUserId = updatedBy.Value;
+                caseEntity.LastUpdatedByUserId = updatedBy;
             }
+
+            await this.WriteToAuditLog(
+                updatedBy,
+                caseId,
+                AuditLogActionTypeEnum.Modification,
+                CaseEntityTypeEnum.Case_TimelineEntry,
+                entityId: timelineEntryId
+            );
 
             await _db.SaveChangesAsync();
 
@@ -626,7 +781,7 @@ public class CaseDocumentService : ICaseDocumentService
         }
     }
 
-    public async Task DeleteTimelineEntryAsync(Guid caseId, Guid timelineEntryId)
+    public async Task DeleteTimelineEntryAsync(Guid caseId, Guid timelineEntryId, Guid actorUserId)
     {
         try
         {
@@ -641,7 +796,16 @@ public class CaseDocumentService : ICaseDocumentService
             if (caseEntity != null)
             {
                 caseEntity.LastUpdatedAtUtc = DateTime.UtcNow;
+                caseEntity.LastUpdatedByUserId = actorUserId;
             }
+
+            await this.WriteToAuditLog(
+                actorUserId,
+                caseId,
+                AuditLogActionTypeEnum.Deletion,
+                CaseEntityTypeEnum.Case_TimelineEntry,
+                entityId: timelineEntryId
+            );
 
             await _db.SaveChangesAsync();
 
@@ -684,24 +848,24 @@ public class CaseDocumentService : ICaseDocumentService
     /// This method writes an entry to the audit log for case-related actions.
     /// IT WILL NOT SAVE CHANGES TO THE DATABASE - CALLER MUST COMMIT CHANGES.
     /// </summary>
-    /// <param name="currentUser">The currently logged in User // the User that did the Action.</param>
-    /// <param name="targetCase">The Case the Action that is being Audit Logged is for.</param>
+    /// <param name="actorUserId">The id of the User that performed the Action being Audit Logged.</param>
+    /// <param name="caseId">The id of the Case the Action being Audit Logged is for.</param>
     /// <param name="entityType">The type of Case-related Entity that is being Audit Logged.</param>
     /// <param name="entityId">The unique identifier for the Case-related Entity.</param>
     /// <param name="actionType">The type of Action that is being Audit Logged.</param>
     /// <param name="propertyName">This value is MANDATORY when actionType is set to `Modification` - it specifies the target Property that has been Modified.</param>
     /// <param name="oldValue">This value is MANDATORY when actionType is set to `Modification` - it specifies the old value of the Property that has been Modified.</param>
     /// <param name="newValue">This value is MANDATORY when actionType is set to `Modification` - it specifies the new value of the Property that has been Modified.</param>
-    public async Task WriteToAuditLog(
-        UserEntityModel currentUser,
-        CaseEntityModel targetCase, AuditLogActionTypeEnum actionType,
+    internal async Task WriteToAuditLog(
+        Guid actorUserId,
+        Guid caseId, AuditLogActionTypeEnum actionType,
         CaseEntityTypeEnum entityType, Guid? entityId = null,
         string? propertyName = null, string? oldValue = null, string? newValue = null,
         CancellationToken ct = default
     )
     {
         // verification
-        switch(entityType)
+        switch (entityType)
         {
             case CaseEntityTypeEnum.Case:
                 if (actionType == AuditLogActionTypeEnum.Creation       && !await this._systemSettings.GetBoolAsync(SystemSettingKeyEnum.Policies_Logging_EntityActions_Cases_LogCreations, ct)) return;
@@ -747,8 +911,8 @@ public class CaseDocumentService : ICaseDocumentService
         {
             Id = UUIDUtilities.GenerateV5(DatabaseObjectTypeEnum.Log_CaseModification_EventEntry),
             CreatedAtUtc = DateTime.UtcNow,
-            CreatedByUserId = currentUser.Id,
-            CaseId = targetCase.Id,
+            CreatedByUserId = actorUserId,
+            CaseId = caseId,
             EntityType = entityType,
             EntityId = entityId,
             Action = actionType,
