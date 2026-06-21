@@ -87,7 +87,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services
 
         Task WriteToAuditLog(
             UserEntityModel currentUser,
-            CaseEntityModel targetUser, CaseEntityTypeEnum entityType, Guid entityId,
+            CaseEntityModel targetCase, CaseEntityTypeEnum entityType, Guid entityId,
             AuditLogActionTypeEnum actionType,
             string? propertyName = null, string? oldValue = null, string? newValue = null,
             CancellationToken ct = default
