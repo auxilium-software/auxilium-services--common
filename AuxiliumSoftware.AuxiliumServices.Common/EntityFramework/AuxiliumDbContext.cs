@@ -408,7 +408,7 @@ public class AuxiliumDbContext : DbContext
             entity.Property(e => e.CaseId)                          .HasColumnName("case_id")                                   .HasColumnType("char(36)")                                                                                                          .IsRequired();
             
             entity.Property(e => e.EntityType)                      .HasColumnName("entity_type")                               .HasColumnType("text")                  .HasConversion(new JsonPropertyNameEnumConverter<CaseEntityTypeEnum>())                     .IsRequired();
-            entity.Property(e => e.EntityId)                        .HasColumnName("entity_id")                                 .HasColumnType("char(36)")                                                                                                          .IsRequired();
+            entity.Property(e => e.EntityId)                        .HasColumnName("entity_id")                                 .HasColumnType("char(36)");
             entity.Property(e => e.Action)                          .HasColumnName("action")                                    .HasColumnType("text")                  .HasConversion(new JsonPropertyNameEnumConverter<AuditLogActionTypeEnum>())                 .IsRequired();
             entity.Property(e => e.PropertyName)                    .HasColumnName("property_name")                             .HasColumnType("text");
             entity.Property(e => e.PreviousValue)                   .HasColumnName("previous_value")                            .HasColumnType("text");
@@ -526,7 +526,7 @@ public class AuxiliumDbContext : DbContext
             entity.Property(e => e.UserId)                          .HasColumnName("user_id")                                   .HasColumnType("char(36)")                                                                                                          .IsRequired();
             
             entity.Property(e => e.EntityType)                      .HasColumnName("entity_type")                               .HasColumnType("text")                  .HasConversion(new JsonPropertyNameEnumConverter<UserEntityTypeEnum>())                     .IsRequired();
-            entity.Property(e => e.EntityId)                        .HasColumnName("entity_id")                                 .HasColumnType("char(36)")                                                                                                          .IsRequired();
+            entity.Property(e => e.EntityId)                        .HasColumnName("entity_id")                                 .HasColumnType("char(36)");
             entity.Property(e => e.Action)                          .HasColumnName("action")                                    .HasColumnType("text")                  .HasConversion(new JsonPropertyNameEnumConverter<AuditLogActionTypeEnum>())                 .IsRequired();
             entity.Property(e => e.PropertyName)                    .HasColumnName("property_name")                             .HasColumnType("text");
             entity.Property(e => e.PreviousValue)                   .HasColumnName("previous_value")                            .HasColumnType("text");
