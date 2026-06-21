@@ -150,5 +150,17 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services
             Guid caseId,
             UserEntityModel currentUser
         );
+
+
+
+
+
+        Task WriteToAuditLog(
+            Guid actorUserId,
+            Guid caseId, AuditLogActionTypeEnum actionType,
+            CaseEntityTypeEnum entityType, Guid? entityId = null,
+            string? propertyName = null, string? oldValue = null, string? newValue = null,
+            CancellationToken ct = default
+        );
     }
 }

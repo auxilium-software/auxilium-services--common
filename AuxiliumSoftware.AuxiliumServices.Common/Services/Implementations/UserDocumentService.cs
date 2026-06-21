@@ -244,7 +244,7 @@ public class UserDocumentService : IUserDocumentService
     /// <param name="propertyName">This value is MANDATORY when actionType is set to `Modification` - it specifies the target Property that has been Modified.</param>
     /// <param name="oldValue">This value is MANDATORY when actionType is set to `Modification` - it specifies the old value of the Property that has been Modified.</param>
     /// <param name="newValue">This value is MANDATORY when actionType is set to `Modification` - it specifies the new value of the Property that has been Modified.</param>
-    internal async Task WriteToAuditLog(
+    public async Task WriteToAuditLog(
         Guid actorUserId,
         Guid targetUserId, AuditLogActionTypeEnum actionType,
         UserEntityTypeEnum entityType, Guid? entityId = null,

@@ -41,9 +41,23 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services
 
 
 
+
+
         bool CheckUserAccess(
             Guid userId,
             UserEntityModel currentUser
+        );
+
+
+
+
+
+        Task WriteToAuditLog(
+            Guid actorUserId,
+            Guid targetUserId, AuditLogActionTypeEnum actionType,
+            UserEntityTypeEnum entityType, Guid? entityId = null,
+            string? propertyName = null, string? oldValue = null, string? newValue = null,
+            CancellationToken ct = default
         );
     }
 }
