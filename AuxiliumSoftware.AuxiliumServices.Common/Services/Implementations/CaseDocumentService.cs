@@ -694,8 +694,8 @@ public class CaseDocumentService : ICaseDocumentService
     /// <param name="newValue">This value is MANDATORY when actionType is set to `Modification` - it specifies the new value of the Property that has been Modified.</param>
     public async Task WriteToAuditLog(
         UserEntityModel currentUser,
-        CaseEntityModel targetCase, CaseEntityTypeEnum entityType, Guid entityId,
-        AuditLogActionTypeEnum actionType,
+        CaseEntityModel targetCase, AuditLogActionTypeEnum actionType,
+        CaseEntityTypeEnum entityType, Guid? entityId = null,
         string? propertyName = null, string? oldValue = null, string? newValue = null,
         CancellationToken ct = default
     )

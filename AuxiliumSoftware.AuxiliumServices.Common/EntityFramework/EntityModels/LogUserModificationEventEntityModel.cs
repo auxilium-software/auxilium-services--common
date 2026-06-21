@@ -46,7 +46,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
         /// <summary>
         /// The unique identifier of Entity that was Actioned on.
         /// </summary>
-        public required Guid EntityId { get; set; }
+        public Guid? EntityId { get; set; }
 
         /// <summary>
         /// The type of Action that was performed.
