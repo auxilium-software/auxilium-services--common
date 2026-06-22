@@ -578,7 +578,7 @@ public class AuxiliumDbContext : DbContext
             entity.Property(e => e.CreatedAtUtc)                    .HasColumnName("created_at_utc")                            .HasColumnType("datetime")                                                      .HasDefaultValueSql("UTC_TIMESTAMP()")              .IsRequired();
             
             entity.Property(e => e.MetricKey)                       .HasColumnName("metric_key")                                .HasColumnType("text")                  .HasConversion(new JsonPropertyNameEnumConverter<SystemMetricKeyEnum>())                    .IsRequired();
-            entity.Property(e => e.MetricValue)                     .HasColumnName("metric_value")                              .HasColumnType("float")                                                                                                             .IsRequired();
+            entity.Property(e => e.MetricValue)                     .HasColumnName("metric_value")                              .HasColumnType("double")                                                                                                            .IsRequired();
         });
 
         // system__settings
