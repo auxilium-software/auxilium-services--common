@@ -7,7 +7,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     
-    <Version>3.0.42.2</Version>
+    <Version>3.0.43.0</Version>
     <Company>Auxilium Software</Company>
     <Product>AuxiliumSoftware.AuxiliumServices.Common</Product>
     <Copyright>Copyright © 2026</Copyright>
@@ -62,6 +62,7 @@
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" />
 
     <PackageReference Include="Otp.NET" />
+    <PackageReference Include="Cronos" />
   </ItemGroup>
 
 </Project>
