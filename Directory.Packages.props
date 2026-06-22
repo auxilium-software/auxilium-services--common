@@ -28,5 +28,6 @@
     
     <!-- Utility packages -->
     <PackageVersion Include="Otp.NET" Version="1.4.1" />
+    <PackageVersion Include="Cronos" Version="0.13.0" />
   </ItemGroup>
 </Project>
