@@ -23,6 +23,6 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
 
         /// <summary>
         /// </summary>
-        public required float MetricValue { get; set; }
+        public required double MetricValue { get; set; }
     }
 }

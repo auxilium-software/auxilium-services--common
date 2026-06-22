@@ -22,18 +22,18 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.Enumerators
 
 
 
-        [JsonPropertyName("task_runner.cpu_usage")]
-        TaskRunner_CpuUsage,
-        [JsonPropertyName("task_runner.memory_usage")]
-        TaskRunner_MemoryUsage,
+        [JsonPropertyName("task_runner.cpu_usage_percentage")]
+        TaskRunner_CpuUsagePercentage,
+        [JsonPropertyName("task_runner.memory_usage_bytes")]
+        TaskRunner_MemoryUsageBytes,
 
 
 
 
 
-        [JsonPropertyName("api.cpu_usage")]
-        Api_CpuUsage,
-        [JsonPropertyName("api.memory_usage")]
-        Api_MemoryUsage,
+        [JsonPropertyName("api.cpu_usage_percentage")]
+        Api_CpuUsagePercentage,
+        [JsonPropertyName("api.memory_usage_bytes")]
+        Api_MemoryUsageBytes,
     }
 }
