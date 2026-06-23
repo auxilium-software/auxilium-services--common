@@ -23,7 +23,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
 
         /// <summary>
         /// </summary>
-        public string? MetricLabel { get; set; }
+        public SystemMetricLabelEnum? MetricLabel { get; set; }
 
         /// <summary>
         /// </summary>
