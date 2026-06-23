@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AuxiliumSoftware.AuxiliumServices.Common.Configuration.Sections.Databases.RabbitMQ;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
