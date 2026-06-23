@@ -8,6 +8,6 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Metrics.Common
     public readonly record struct MetricSample(
         SystemMetricKeyEnum Key,
         double Value,
-        string? Label = null
+        SystemMetricLabelEnum? Label = null
     );
 }

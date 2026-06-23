@@ -29,13 +29,17 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Metrics.Collectors
                     samples.Add(new(SystemMetricKeyEnum.RabbitMq_ProbeLatencyInMs, sw.Elapsed.TotalMilliseconds));
                 }
 
-                var workingQueues = new[] { queues.Notifications };
-                foreach (var queueName in workingQueues)
+                var workingQueues = new[]
                 {
-                    var depth = await TryGetQueueDepthAsync(connection, queueName, ct);
+                    (Name: queues.Notifications, Label: SystemMetricLabelEnum.RabbitMq_Notifications),
+                };
+
+                foreach (var (name, label) in workingQueues)
+                {
+                    var depth = await TryGetQueueDepthAsync(connection, name, ct);
                     if (depth.HasValue)
                     {
-                        samples.Add(new(SystemMetricKeyEnum.RabbitMq_MessagesReadyCount, depth.Value, Label: queueName));
+                        samples.Add(new(SystemMetricKeyEnum.RabbitMq_MessagesReadyCount, depth.Value, Label: label));
                     }
                 }
 
