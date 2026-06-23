@@ -22,7 +22,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Metrics.Collectors
             _httpFactory = httpFactory;
 
             var baseUrl = config["API:PrimarilyAvailableAt"] ?? throw new InvalidOperationException("API:PrimarilyAvailableAt configuration value is missing.");
-            _healthUrl = baseUrl + "/server/ping";
+            _healthUrl = baseUrl + "/api/v3/server/ping";
         }
 
         public MetricCadence Cadence => MetricCadence.Minutely;
