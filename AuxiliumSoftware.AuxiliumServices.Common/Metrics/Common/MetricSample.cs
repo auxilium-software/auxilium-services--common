@@ -7,6 +7,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Metrics.Common
 {
     public readonly record struct MetricSample(
         SystemMetricKeyEnum Key,
-        double Value
+        double Value,
+        string? Label = null
     );
 }
