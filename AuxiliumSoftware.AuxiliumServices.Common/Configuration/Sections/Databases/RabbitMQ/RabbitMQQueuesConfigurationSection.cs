@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace AuxiliumSoftware.AuxiliumServices.Common.Configuration.Sections.Databases
+namespace AuxiliumSoftware.AuxiliumServices.Common.Configuration.Sections.Databases.RabbitMQ
 {
     public class RabbitMQQueuesConfigurationSection
     {
