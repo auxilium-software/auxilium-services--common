@@ -19,7 +19,8 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Messaging
 
         public RabbitMqConnectionManager(
             RabbitMQConfigurationSection configuration,
-            ILogger<RabbitMqConnectionManager> logger)
+            ILogger<RabbitMqConnectionManager> logger
+        )
         {
             _configuration = configuration;
             _logger = logger;

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AuxiliumSoftware.AuxiliumServices.Common.Configuration.Sections.Databases.RabbitMQ;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -14,7 +15,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Configuration.Sections.Databa
         public int HeartbeatIntervalInSeconds { get; set; } = 0;
         public int BlockedConnectionTimeoutInSeconds { get; set; } = 0;
         public string ExchangeName { get; set; } = null!;
-        public Dictionary<string, string> Queues { get; set; } = null!;
+        public RabbitMQQueuesConfigurationSection Queues { get; set; } = null!;
 
 
 
@@ -28,7 +29,8 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Configuration.Sections.Databa
             if (HeartbeatIntervalInSeconds <= 0)            throw new InvalidOperationException("Configuration value 'Databases->RabbitMQ->HeartbeatInSeconds' is missing or invalid.");
             if (BlockedConnectionTimeoutInSeconds <= 0)     throw new InvalidOperationException("Configuration value 'Databases->RabbitMQ->BlockedConnectionTimeoutInSeconds' is missing or invalid.");
             if (string.IsNullOrWhiteSpace(ExchangeName))    throw new InvalidOperationException("Configuration value 'Databases->RabbitMQ->ExchangeName' is missing.");
-            if (Queues is null || Queues.Count == 0)        throw new InvalidOperationException("Configuration value 'Databases->RabbitMQ->Queues' is missing.");
+
+            Queues.Validate();
         }
     }
 }
