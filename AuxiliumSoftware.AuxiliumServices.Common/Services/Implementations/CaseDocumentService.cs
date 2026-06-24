@@ -669,6 +669,7 @@ public class CaseDocumentService : ICaseDocumentService
             {
                 Id = UUIDUtilities.GenerateV5(DatabaseObjectTypeEnum.Case_TimelineEntry),
                 CaseId = caseId,
+                EntryType = CaseTimelineEntryTypeEnum.Note_User,
                 OccurredAtUtc = occuredAt,
                 Title = title ?? string.Empty,
                 Description = description ?? string.Empty,
