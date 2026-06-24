@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.Enumerators;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
@@ -31,6 +32,9 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
         /// <summary>
         /// </summary>
         public required Guid CaseId { get; set; }
+        /// <summary>
+        /// </summary>
+        public required CaseTimelineEntryTypeEnum EntryType { get; set; }
 
 
 

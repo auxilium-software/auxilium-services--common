@@ -207,8 +207,9 @@ public class AuxiliumDbContext : DbContext
             entity.Property(e => e.CreatedByUserId)                 .HasColumnName("created_by_user_id")                        .HasColumnType("char(36)");
             entity.Property(e => e.LastUpdatedAtUtc)                .HasColumnName("last_updated_at_utc")                       .HasColumnType("datetime");
             entity.Property(e => e.LastUpdatedByUserId)             .HasColumnName("last_updated_by_user_id")                   .HasColumnType("char(36)");
-
+            
             entity.Property(e => e.CaseId)                          .HasColumnName("case_id")                                   .HasColumnType("char(36)")                                                                                                          .IsRequired();
+            entity.Property(e => e.EntryType)                       .HasColumnName("entry_type")                                .HasColumnType("text")                  .HasConversion(new JsonPropertyNameEnumConverter<CaseTimelineEntryTypeEnum>())              .IsRequired();
             entity.Property(e => e.OccurredAtUtc)                   .HasColumnName("occurred_at_utc")                           .HasColumnType("datetime")                                                                                                          .IsRequired();
             entity.Property(e => e.Title)                           .HasColumnName("title")                                     .HasColumnType("text")                                                                                                              .IsRequired();
             entity.Property(e => e.Description)                     .HasColumnName("description")                               .HasColumnType("text");
