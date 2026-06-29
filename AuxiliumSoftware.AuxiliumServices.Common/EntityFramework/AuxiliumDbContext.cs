@@ -39,7 +39,6 @@ public class AuxiliumDbContext : DbContext
     public DbSet<LogSystemMessageQueueFailedActionEntityModel> Log_SystemMessageQueueFailedActions { get; set; }
     public DbSet<LogUserModificationEventEntityModel> Log_UserModificationEvents { get; set; }
     public DbSet<SystemBulletinEntryEntityModel> System_Bulletins { get; set; }
-    public DbSet<SystemMetricEntityModel> System_Metrics { get; set; }
     public DbSet<SystemSettingEntityModel> System_Settings { get; set; }
     public DbSet<SystemWafIpBlacklistEntryEntityModel> System_Waf_IpBlacklist { get; set; }
     public DbSet<SystemWafIpWhitelistEntryEntityModel> System_Waf_IpWhitelist { get; set; }
@@ -565,24 +564,6 @@ public class AuxiliumDbContext : DbContext
             entity.HasOne(e => e.SpecificUser)                      .WithMany(u => u.TargetedBulletins)                         .HasForeignKey(e => e.SpecificUserId)   .OnDelete(DeleteBehavior.SetNull);
             entity.HasMany(e => e.Dismissals)                       .WithOne(d => d.SystemBulletin)                             .HasForeignKey(d => d.SystemBulletinId) .OnDelete(DeleteBehavior.Cascade);
             entity.HasMany(e => e.Views)                            .WithOne(v => v.SystemBulletin)                             .HasForeignKey(v => v.SystemBulletinId) .OnDelete(DeleteBehavior.Cascade);
-        });
-
-        // system__metrics
-        modelBuilder.Entity<SystemMetricEntityModel>(entity =>
-        {
-            entity.ToTable("system__metrics");
-            entity.HasKey(e => e.Id);
-
-
-
-            entity.Property(e => e.Id)                              .HasColumnName("id")                                        .HasColumnType("char(36)")                                                                                                          .IsRequired();
-            entity.Property(e => e.CreatedAtUtc)                    .HasColumnName("created_at_utc")                            .HasColumnType("datetime")                                                      .HasDefaultValueSql("UTC_TIMESTAMP()")              .IsRequired();
-            
-            entity.Property(e => e.MetricKey)                       .HasColumnName("metric_key")                                .HasColumnType("varchar(255)")          .HasConversion(new JsonPropertyNameEnumConverter<SystemMetricKeyEnum>())                    .IsRequired();
-            entity.Property(e => e.MetricLabel)                     .HasColumnName("metric_label")                              .HasColumnType("varchar(255)")          .HasConversion(new JsonPropertyNameEnumConverter<SystemMetricLabelEnum>());
-            entity.Property(e => e.MetricValue)                     .HasColumnName("metric_value")                              .HasColumnType("double")                                                                                                            .IsRequired();
-
-            entity.HasIndex(e => new { e.MetricKey, e.MetricLabel, e.CreatedAtUtc });
         });
 
         // system__settings
