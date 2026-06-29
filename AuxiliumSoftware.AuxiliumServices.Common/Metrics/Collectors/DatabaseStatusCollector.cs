@@ -3,9 +3,9 @@ using System.Diagnostics;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using AuxiliumSoftware.AuxiliumServices.Common.EntityFramework;
-using AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.Enumerators;
 using AuxiliumSoftware.AuxiliumServices.Common.Metrics.Interfaces;
 using AuxiliumSoftware.AuxiliumServices.Common.Metrics.Common;
+using AuxiliumSoftware.AuxiliumServices.Common.Metrics.Enumerators;
 
 namespace AuxiliumSoftware.AuxiliumServices.Common.Metrics.Collectors
 {

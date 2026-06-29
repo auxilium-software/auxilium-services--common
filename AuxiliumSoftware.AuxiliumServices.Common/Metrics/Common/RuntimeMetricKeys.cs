@@ -1,4 +1,4 @@
-﻿using AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.Enumerators;
+﻿using AuxiliumSoftware.AuxiliumServices.Common.Metrics.Enumerators;
 
 namespace AuxiliumSoftware.AuxiliumServices.Common.Metrics.Common
 {

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Text.Json.Serialization;
 
-namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.Enumerators
+namespace AuxiliumSoftware.AuxiliumServices.Common.Metrics.Enumerators
 {
     [JsonConverter(typeof(JsonStringEnumConverter))]
     public enum SystemMetricKeyEnum

@@ -1,6 +1,6 @@
-﻿using AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.Enumerators;
-using AuxiliumSoftware.AuxiliumServices.Common.Messaging.Interfaces;
+﻿using AuxiliumSoftware.AuxiliumServices.Common.Messaging.Interfaces;
 using AuxiliumSoftware.AuxiliumServices.Common.Metrics.Common;
+using AuxiliumSoftware.AuxiliumServices.Common.Metrics.Enumerators;
 using AuxiliumSoftware.AuxiliumServices.Common.Metrics.Interfaces;
 using RabbitMQ.Client;
 using System.Diagnostics;
