@@ -1,7 +1,7 @@
 ﻿using AuxiliumSoftware.AuxiliumServices.Common.Configuration.Sections.Databases;
-using AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.Enumerators;
 using AuxiliumSoftware.AuxiliumServices.Common.Enumerators;
 using AuxiliumSoftware.AuxiliumServices.Common.Metrics.Common;
+using AuxiliumSoftware.AuxiliumServices.Common.Metrics.Enumerators;
 using AuxiliumSoftware.AuxiliumServices.Common.Metrics.Interfaces;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
