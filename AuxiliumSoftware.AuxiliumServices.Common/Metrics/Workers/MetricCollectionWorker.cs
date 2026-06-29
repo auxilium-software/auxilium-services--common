@@ -1,14 +1,9 @@
-﻿using AuxiliumSoftware.AuxiliumServices.Common.EntityFramework;
-using AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels;
-using AuxiliumSoftware.AuxiliumServices.Common.Enumerators;
-using AuxiliumSoftware.AuxiliumServices.Common.Superclasses;
-using AuxiliumSoftware.AuxiliumServices.Common.Utilities;
-using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.Text;
-using Microsoft.Extensions.Logging;
+﻿using AuxiliumSoftware.AuxiliumServices.Common.Enumerators;
+using AuxiliumSoftware.AuxiliumServices.Common.Metrics.Common;
 using AuxiliumSoftware.AuxiliumServices.Common.Metrics.Interfaces;
+using AuxiliumSoftware.AuxiliumServices.Common.Superclasses;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 
 namespace AuxiliumSoftware.AuxiliumServices.Common.Metrics.Workers
 {
@@ -29,14 +24,14 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Metrics.Workers
         protected override async Task DoWorkAsync(CancellationToken stoppingToken)
         {
             using var scope = _scopeFactory.CreateScope();
-            var db = scope.ServiceProvider.GetRequiredService<AuxiliumDbContext>();
+            var sink = scope.ServiceProvider.GetRequiredService<IMetricSink>();
 
             var collectors = scope.ServiceProvider
                 .GetServices<IMetricCollector>()
                 .Where(c => c.Cadence == Cadence);
 
             var now = DateTime.UtcNow;
-            var rows = new List<SystemMetricEntityModel>();
+            var records = new List<MetricRecord>();
 
             foreach (var collector in collectors)
             {
@@ -44,13 +39,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Metrics.Workers
                 {
                     foreach (var s in await collector.CollectAsync(stoppingToken))
                     {
-                        rows.Add(new SystemMetricEntityModel
-                        {
-                            Id = UUIDUtilities.GenerateV5(DatabaseObjectTypeEnum.System_MetricEntry),
-                            CreatedAtUtc = now,
-                            MetricKey = s.Key,
-                            MetricValue = s.Value,
-                        });
+                        records.Add(new MetricRecord(s.Key, now, s.Value, s.Label));
                     }
                 }
                 catch (Exception ex)
@@ -59,10 +48,12 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Metrics.Workers
                 }
             }
 
-            if (rows.Count == 0) return;
+            if (records.Count == 0)
+            {
+                return;
+            }
 
-            db.System_Metrics.AddRange(rows);
-            await db.SaveChangesAsync(stoppingToken);
+            await sink.WriteAsync(records, stoppingToken);
         }
     }
 }
