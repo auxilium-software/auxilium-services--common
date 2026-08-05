@@ -415,6 +415,8 @@ public class AuxiliumDbContext : DbContext
             entity.Property(e => e.IsActive)                        .HasColumnName("is_active")                                 .HasColumnType("tinyint(1)")                                                                                                        .IsRequired();
             entity.Property(e => e.SortOrder)                       .HasColumnName("sort_order")                                .HasColumnType("int")                                                                                                               .IsRequired();
 
+            entity.Property(e => e.ColourHex)                       .HasColumnName("colour_hex")                                .HasColumnType("text")                                                                                                              .IsRequired();
+
 
             
             entity.HasOne(e => e.CreatedByUser)                     .WithMany()                                                 .HasForeignKey(e => e.CreatedByUserId)          .OnDelete(DeleteBehavior.SetNull);
