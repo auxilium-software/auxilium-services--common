@@ -21,11 +21,11 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
 
         public Guid CalendarEventId { get; set; }
 
-        public Guid InvitedUserId { get; set; }
+        public Guid? InvitedUserId { get; set; }
 
         public CalendarEventInviteStatusEnum Status { get; set; }
 
-        public Guid InvitedByUserId { get; set; }
+        public Guid? InvitedByUserId { get; set; }
 
         public DateTime InvitedAtUtc { get; set; }
 
