@@ -31,6 +31,9 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
 
         /// <summary>
         /// </summary>
+        public required DataEnumeratorScopeEnum Scope { get; set; }
+        /// <summary>
+        /// </summary>
         public required string CanonicalName { get; set; }
         /// <summary>
         /// </summary>

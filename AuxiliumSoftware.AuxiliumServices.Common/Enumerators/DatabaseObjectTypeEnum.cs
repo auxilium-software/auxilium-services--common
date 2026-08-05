@@ -6,6 +6,15 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Enumerators
     public enum DatabaseObjectTypeEnum
     {
 
+        [JsonPropertyName("Calendar.Event")]
+        Calendar_Event,
+        [JsonPropertyName("Calendar.EventInvite")]
+        Calendar_EventInvite,
+
+
+
+
+
         [JsonPropertyName("Case.Cases")]
         Case,
         [JsonPropertyName("Case.AdditionalProperty")]

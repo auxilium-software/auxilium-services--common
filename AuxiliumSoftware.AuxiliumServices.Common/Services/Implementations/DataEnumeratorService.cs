@@ -1,6 +1,7 @@
 ﻿using AuxiliumSoftware.AuxiliumServices.Common.DataTransferObjects;
 using AuxiliumSoftware.AuxiliumServices.Common.EntityFramework;
 using AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels;
+using AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.Enumerators;
 using AuxiliumSoftware.AuxiliumServices.Common.Utilities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -86,6 +87,7 @@ public class DataEnumeratorService : IDataEnumeratorService
     }
 
     public async Task<DataEnumeratorEntityModel> CreateEnumeratorAsync(
+        DataEnumeratorScopeEnum scope,
         string name,
         string? description,
         UserEntityModel createdBy,
@@ -98,6 +100,7 @@ public class DataEnumeratorService : IDataEnumeratorService
                 Id = Guid.NewGuid(),
                 CreatedAtUtc = DateTime.UtcNow,
                 CreatedByUserId = createdBy.Id,
+                Scope = scope,
                 CanonicalName = name,
                 Description = description,
                 IsActive = true,

@@ -14,6 +14,11 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Utilities
         /// </summary>
         private static readonly Dictionary<DatabaseObjectTypeEnum, string> NamespacePaths = new()
         {
+            [DatabaseObjectTypeEnum.Calendar_Event]                                 = "/auxilium/3/database-object/mariadb/calendar/event",
+            [DatabaseObjectTypeEnum.Calendar_EventInvite]                           = "/auxilium/3/database-object/mariadb/calendar/event-invite",
+
+
+
             [DatabaseObjectTypeEnum.System_Waf_IpWhitelistEntry]                    = "/auxilium/3/database-object/mariadb/system/waf/ip-whitelist-entry",
             [DatabaseObjectTypeEnum.System_Waf_IpBlacklistEntry]                    = "/auxilium/3/database-object/mariadb/system/waf/ip-blacklist-entry",
             [DatabaseObjectTypeEnum.System_Waf_UserWhitelistEntry]                  = "/auxilium/3/database-object/mariadb/system/waf/user-whitelist-entry",
