@@ -12,7 +12,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services
         Task<List<DataEnumeratorEntityModel>> GetAllEnumeratorsAsync(bool includeInactive = false, CancellationToken ct = default);
         Task<DataEnumeratorEntityModel?> GetEnumeratorAsync(Guid id, CancellationToken ct = default);
         Task<DataEnumeratorEntityModel?> GetEnumeratorByNameAsync(string name, bool activeValuesOnly = true, CancellationToken ct = default);
-        Task<DataEnumeratorEntityModel> CreateEnumeratorAsync(string name, string? description, UserEntityModel createdBy, CancellationToken ct = default);
+        Task<DataEnumeratorEntityModel> CreateEnumeratorAsync(DataEnumeratorScopeEnum scope, string name, string? description, UserEntityModel createdBy, CancellationToken ct = default);
         Task<DataEnumeratorEntityModel> UpdateEnumeratorAsync(Guid id, string? name, string? description, UserEntityModel updatedBy, CancellationToken ct = default);
         Task SetEnumeratorActiveAsync(Guid id, bool isActive, UserEntityModel updatedBy, CancellationToken ct = default);
 
