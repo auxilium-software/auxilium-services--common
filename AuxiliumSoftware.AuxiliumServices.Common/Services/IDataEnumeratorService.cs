@@ -31,8 +31,8 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services
 
         Task<List<DataEnumeratorValueEntityModel>> GetValuesAsync(Guid enumeratorId, bool includeInactive = false, CancellationToken ct = default);
         Task<DataEnumeratorValueEntityModel?> GetValueAsync(Guid valueId, CancellationToken ct = default);
-        Task<DataEnumeratorValueEntityModel> CreateValueAsync(Guid enumeratorId, string canonicalName, UserEntityModel createdBy, int? sortOrder = null, CancellationToken ct = default);
-        Task<DataEnumeratorValueEntityModel> UpdateValueAsync(Guid valueId, string? canonicalName, UserEntityModel updatedBy, CancellationToken ct = default);
+        Task<DataEnumeratorValueEntityModel> CreateValueAsync(Guid enumeratorId, string canonicalName, string colourHex, UserEntityModel createdBy, int? sortOrder = null, CancellationToken ct = default);
+        Task<DataEnumeratorValueEntityModel> UpdateValueAsync(Guid valueId, string? canonicalName, string colourHex, UserEntityModel updatedBy, CancellationToken ct = default);
         Task SetValueActiveAsync(Guid valueId, bool isActive, UserEntityModel updatedBy, CancellationToken ct = default);
         Task ReorderValuesAsync(Guid enumeratorId, List<Guid> orderedValueIds, UserEntityModel updatedBy, CancellationToken ct = default);
 

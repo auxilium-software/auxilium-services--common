@@ -5,6 +5,7 @@ using AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.Enumerators;
 using AuxiliumSoftware.AuxiliumServices.Common.Utilities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using System.Text.RegularExpressions;
 
 namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations;
 
@@ -372,10 +373,13 @@ public class DataEnumeratorService : IDataEnumeratorService
     public async Task<DataEnumeratorValueEntityModel> CreateValueAsync(
         Guid enumeratorId,
         string canonicalName,
+        string colourHex,
         UserEntityModel createdBy,
         int? sortOrder = null,
         CancellationToken ct = default)
     {
+        ValidateColourHex(colourHex, nameof(colourHex));
+
         try
         {
             var enumeratorExists = await _db.DataEnumerator_Enumerators
@@ -408,6 +412,7 @@ public class DataEnumeratorService : IDataEnumeratorService
                 CreatedAtUtc = DateTime.UtcNow,
                 CreatedByUserId = createdBy.Id,
                 EnumTypeId = enumeratorId,
+                ColourHex = colourHex,
                 CanonicalName = canonicalName,
                 IsActive = true,
                 SortOrder = sortOrder.Value,
@@ -432,9 +437,16 @@ public class DataEnumeratorService : IDataEnumeratorService
     public async Task<DataEnumeratorValueEntityModel> UpdateValueAsync(
         Guid valueId,
         string? canonicalName,
+        string? colourHex,
         UserEntityModel updatedBy,
-        CancellationToken ct = default)
+        CancellationToken ct = default
+    )
     {
+        if (colourHex != null)
+        {
+            ValidateColourHex(colourHex, nameof(colourHex));
+        }
+
         try
         {
             var value = await _db.DataEnumerator_EnumeratorValues.FindAsync([valueId], ct)
@@ -453,6 +465,11 @@ public class DataEnumeratorService : IDataEnumeratorService
                         $"A value named '{canonicalName}' already exists under enumerator {value.EnumTypeId}");
 
                 value.CanonicalName = canonicalName;
+            }
+
+            if (colourHex != null)
+            {
+                value.ColourHex = colourHex;
             }
 
             value.LastUpdatedAtUtc = DateTime.UtcNow;
@@ -730,5 +747,15 @@ public class DataEnumeratorService : IDataEnumeratorService
         }
 
         return result;
+    }
+
+    private static void ValidateColourHex(string colourHex, string paramName)
+    {
+        if (string.IsNullOrWhiteSpace(colourHex) || !Regex.IsMatch(colourHex, "^#[0-9A-Fa-f]{6}$"))
+        {
+            throw new ArgumentException(
+                "colourHex must be a 6-digit hex colour, e.g. #2F6F65",
+                paramName);
+        }
     }
 }
