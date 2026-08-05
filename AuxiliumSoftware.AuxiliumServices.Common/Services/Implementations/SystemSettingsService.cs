@@ -103,15 +103,14 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
 
             var defaultAttr = GetAttribute<SystemSettingDefaultValueAttribute>(key);
             if (defaultAttr is null)
-                throw new InvalidOperationException(
-                    $"No value found in database for key '{key}' and no default attribute specified");
+                throw new InvalidOperationException($"No value found in database for key '{key}' and no default attribute specified");
 
-            if (typeAttr.ValueType == SystemSettingValueTypeEnum.StringArray)
+            if (typeAttr.ValueType == SystemSettingValueTypeEnum.DayArray)
             {
                 var stringValue = defaultAttr.DefaultValue?.ToString() ?? "";
                 return string.IsNullOrEmpty(stringValue)
-                    ? new List<string>()
-                    : stringValue.Split(',').Select(s => s.Trim()).ToList();
+                    ? new List<DayOfWeek>()
+                    : stringValue.Split(',').Select(s => Enum.Parse<DayOfWeek>(s.Trim())).ToList();
             }
 
             return defaultAttr.DefaultValue!;
@@ -200,12 +199,12 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
             if (meta.DefaultValue is null)
                 return null;
 
-            if (meta.ValueType == SystemSettingValueTypeEnum.StringArray)
+            if (meta.ValueType == SystemSettingValueTypeEnum.DayArray)
             {
                 var stringValue = meta.DefaultValue.ToString() ?? "";
                 return string.IsNullOrEmpty(stringValue)
-                    ? new List<string>()
-                    : stringValue.Split(',').Select(s => s.Trim()).ToList();
+                    ? new List<DayOfWeek>()
+                    : stringValue.Split(',').Select(s => Enum.Parse<DayOfWeek>(s.Trim())).ToList();
             }
 
             return meta.DefaultValue;
@@ -219,8 +218,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
                 SystemSettingValueTypeEnum.Int => JsonSerializer.Deserialize<int>(json),
                 SystemSettingValueTypeEnum.Bool => JsonSerializer.Deserialize<bool>(json),
                 SystemSettingValueTypeEnum.Decimal => JsonSerializer.Deserialize<decimal>(json),
-                SystemSettingValueTypeEnum.StringArray => JsonSerializer.Deserialize<List<string>>(json)!,
-                SystemSettingValueTypeEnum.Json => JsonSerializer.Deserialize<JsonElement>(json),
+                SystemSettingValueTypeEnum.DayArray => JsonSerializer.Deserialize<List<DayOfWeek>>(json)!,
                 _ => throw new ArgumentOutOfRangeException(
                     nameof(valueType), $"Unsupported value type: {valueType}")
             };
@@ -240,8 +238,9 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
                 int or long => SystemSettingValueTypeEnum.Int,
                 bool => SystemSettingValueTypeEnum.Bool,
                 decimal or float or double => SystemSettingValueTypeEnum.Decimal,
-                IEnumerable<string> => SystemSettingValueTypeEnum.StringArray,
-                _ => SystemSettingValueTypeEnum.Json
+                IEnumerable<DayOfWeek> => SystemSettingValueTypeEnum.DayArray,
+                // _ => SystemSettingValueTypeEnum.Json
+                _ => throw new ArgumentOutOfRangeException(nameof(value), $"Unsupported value type: {value?.GetType().Name}")
             };
         }
 
