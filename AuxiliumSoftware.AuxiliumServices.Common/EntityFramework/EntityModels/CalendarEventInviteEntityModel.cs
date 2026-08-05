@@ -37,5 +37,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
         public UserEntityModel? CreatedByUser { get; set; }
         public UserEntityModel? LastUpdatedByUser { get; set; }
         public CalendarEventEntityModel? CalendarEvent { get; set; }
+        public UserEntityModel? InvitedUser { get; set; }
+        public UserEntityModel? InvitedByUser { get; set; }
     }
 }
