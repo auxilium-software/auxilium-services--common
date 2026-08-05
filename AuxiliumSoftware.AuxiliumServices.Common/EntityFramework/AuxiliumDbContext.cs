@@ -125,9 +125,9 @@ public class AuxiliumDbContext : DbContext
             entity.Property(e => e.LastUpdatedByUserId)             .HasColumnName("last_updated_by_user_id")                   .HasColumnType("char(36)");
             
             entity.Property(e => e.CalendarEventId)                 .HasColumnName("calendar_event_id")                         .HasColumnType("char(36)")                                                                                                          .IsRequired();
-            entity.Property(e => e.InvitedUserId)                   .HasColumnName("invited_user_id")                           .HasColumnType("char(36)")                                                                                                          .IsRequired();
+            entity.Property(e => e.InvitedUserId)                   .HasColumnName("invited_user_id")                           .HasColumnType("char(36)");
             entity.Property(e => e.Status)                          .HasColumnName("status")                                    .HasColumnType("text")                                                                                                              .IsRequired();
-            entity.Property(e => e.InvitedByUserId)                 .HasColumnName("invited_by_user_id")                        .HasColumnType("char(36)")                                                                                                          .IsRequired();
+            entity.Property(e => e.InvitedByUserId)                 .HasColumnName("invited_by_user_id")                        .HasColumnType("char(36)");
             entity.Property(e => e.InvitedAtUtc)                    .HasColumnName("invited_at_utc")                            .HasColumnType("datetime")                                                                                                          .IsRequired();
             entity.Property(e => e.RespondedAtUtc)                  .HasColumnName("responded_at_utc")                          .HasColumnType("datetime");
 
@@ -135,7 +135,7 @@ public class AuxiliumDbContext : DbContext
             
             entity.HasOne(e => e.CreatedByUser)                     .WithMany()                                                 .HasForeignKey(e => e.CreatedByUserId)          .OnDelete(DeleteBehavior.SetNull);
             entity.HasOne(e => e.LastUpdatedByUser)                 .WithMany()                                                 .HasForeignKey(e => e.LastUpdatedByUserId)      .OnDelete(DeleteBehavior.SetNull);
-            entity.HasOne(e => e.CalendarEvent)                     .WithMany()                                                 .HasForeignKey(e => e.CalendarEventId)          .OnDelete(DeleteBehavior.SetNull);
+            entity.HasOne(e => e.CalendarEvent)                     .WithMany()                                                 .HasForeignKey(e => e.CalendarEventId)          .OnDelete(DeleteBehavior.Cascade);
             entity.HasOne(e => e.InvitedUser)                       .WithMany()                                                 .HasForeignKey(e => e.InvitedUserId)            .OnDelete(DeleteBehavior.SetNull);
             entity.HasOne(e => e.InvitedByUser)                     .WithMany()                                                 .HasForeignKey(e => e.InvitedByUserId)          .OnDelete(DeleteBehavior.SetNull);
         });
