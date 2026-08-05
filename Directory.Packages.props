@@ -14,8 +14,6 @@
 
     <!-- DB packages -->
     <PackageVersion Include="Microsoft.EntityFrameworkCore" Version="9.0.12" />
-    <PackageVersion Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.12" />
-    <PackageVersion Include="Microsoft.EntityFrameworkCore.Tools" Version="9.0.12" />
     <PackageVersion Include="Pomelo.EntityFrameworkCore.MySql" Version="9.0.0" />
     <PackageVersion Include="Dapper" Version="2.1.66" />
     <PackageVersion Include="MySqlConnector" Version="2.4.0" />
