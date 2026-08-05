@@ -20,10 +20,23 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.Enumerators
         [JsonPropertyName("decimal")]
         Decimal,
 
+        [JsonPropertyName("day")]
+        Day,
+        [JsonPropertyName("date")]
+        Date,
+        [JsonPropertyName("time")]
+        Time,
+        [JsonPropertyName("datetime")]
+        Datetime,
+        [JsonPropertyName("day_array")]
+        DayArray,
+
+        /*
         [JsonPropertyName("stringArray")]
         StringArray,
 
         [JsonPropertyName("json")]
         Json
+        */
     }
 }

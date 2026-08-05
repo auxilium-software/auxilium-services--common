@@ -730,5 +730,57 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.Enumerators
         [SystemSettingDescriptionAttribute("The relative path to the 'About' or information page for this instance.")]
         [SystemSettingRecommendationAttribute("Create a page explaining your organisation and the purpose of this system. Important for transparency and trust.")]
         Instance_Navigation_AboutPageRelativePath,
+
+
+
+
+
+
+
+
+
+
+        // ####################################################################################################
+        // Business
+        // ####################################################################################################
+        [JsonPropertyName("business.workingHours.start")]
+        [SystemSettingVisibilityAttribute(SystemSettingVisibilityEnum.Public)]
+        [SystemSettingExpectedValueTypeAttribute(SystemSettingValueTypeEnum.Time)]
+        [SystemSettingDescriptionAttribute("The start time of the business working hours.")]
+        [SystemSettingRecommendationAttribute("Set to the time your business day starts (for example, '09:00').")]
+        [SystemSettingDefaultValueAttribute("09:00")]
+        Business_WorkingHours_Start,
+
+        [JsonPropertyName("business.workingHours.end")]
+        [SystemSettingVisibilityAttribute(SystemSettingVisibilityEnum.Public)]
+        [SystemSettingExpectedValueTypeAttribute(SystemSettingValueTypeEnum.Time)]
+        [SystemSettingDescriptionAttribute("The end time of the business working hours.")]
+        [SystemSettingRecommendationAttribute("Set to the time your business day ends (for example, '17:00').")]
+        [SystemSettingDefaultValueAttribute("17:00")]
+        Business_WorkingHours_End,
+
+        [JsonPropertyName("business.week.startingDay")]
+        [SystemSettingVisibilityAttribute(SystemSettingVisibilityEnum.Public)]
+        [SystemSettingExpectedValueTypeAttribute(SystemSettingValueTypeEnum.Day)]
+        [SystemSettingDescriptionAttribute("The starting day of the business week.")]
+        [SystemSettingRecommendationAttribute("Set to the day your business week starts (for example, 'Monday').")]
+        [SystemSettingDefaultValueAttribute("Monday")]
+        Business_Week_StartingDay,
+
+        [JsonPropertyName("business.week.workDays")]
+        [SystemSettingVisibilityAttribute(SystemSettingVisibilityEnum.Public)]
+        [SystemSettingExpectedValueTypeAttribute(SystemSettingValueTypeEnum.DayArray)]
+        [SystemSettingDescriptionAttribute("The working days of the business week.")]
+        [SystemSettingRecommendationAttribute("Set to the days your business week includes (for example, 'Monday,Tuesday,Wednesday,Thursday,Friday').")]
+        [SystemSettingDefaultValueAttribute("Monday,Tuesday,Wednesday,Thursday,Friday")]
+        Business_Week_WorkDays,
+
+        [JsonPropertyName("business.week.weekendDays")]
+        [SystemSettingVisibilityAttribute(SystemSettingVisibilityEnum.Public)]
+        [SystemSettingExpectedValueTypeAttribute(SystemSettingValueTypeEnum.DayArray)]
+        [SystemSettingDescriptionAttribute("The weekend days of the business week.")]
+        [SystemSettingRecommendationAttribute("Set to the days your business week considers as weekend (for example, 'Saturday,Sunday').")]
+        [SystemSettingDefaultValueAttribute("Saturday,Sunday")]
+        Business_Week_WeekendDays,
     }
 }
