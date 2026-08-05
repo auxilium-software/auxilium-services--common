@@ -9,7 +9,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Enumerators
         [JsonPropertyName("Calendar.Event")]
         Calendar_Event,
         [JsonPropertyName("Calendar.EventInvite")]
-        Calendar_EventInvite;
+        Calendar_EventInvite,
 
 
 
