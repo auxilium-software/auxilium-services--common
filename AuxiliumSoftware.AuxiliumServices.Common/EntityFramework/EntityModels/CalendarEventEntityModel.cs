@@ -18,7 +18,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
 
 
 
-        public Guid CategoryValueId { get; set; }
+        public Guid? CategoryValueId { get; set; }
         public required string Title { get; set; }
         public string? Description { get; set; }
         public string? Location { get; set; }
