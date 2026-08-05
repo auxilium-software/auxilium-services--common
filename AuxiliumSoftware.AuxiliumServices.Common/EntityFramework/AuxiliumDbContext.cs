@@ -104,6 +104,8 @@ public class AuxiliumDbContext : DbContext
             entity.HasOne(e => e.LastUpdatedByUser)                 .WithMany()                                                 .HasForeignKey(e => e.LastUpdatedByUserId)      .OnDelete(DeleteBehavior.SetNull);
             entity.HasOne(e => e.Category)                          .WithMany()                                                 .HasForeignKey(e => e.CategoryValueId)          .OnDelete(DeleteBehavior.SetNull);
             entity.HasOne(e => e.Case)                              .WithMany()                                                 .HasForeignKey(e => e.CaseId)                   .OnDelete(DeleteBehavior.SetNull);
+
+            entity.HasMany(e => e.Invites)                          .WithOne(i=>i.CalendarEvent)                                .HasForeignKey(e => e.CalendarEventId)          .OnDelete(DeleteBehavior.Cascade);
         });
 
 
@@ -134,6 +136,8 @@ public class AuxiliumDbContext : DbContext
             entity.HasOne(e => e.CreatedByUser)                     .WithMany()                                                 .HasForeignKey(e => e.CreatedByUserId)          .OnDelete(DeleteBehavior.SetNull);
             entity.HasOne(e => e.LastUpdatedByUser)                 .WithMany()                                                 .HasForeignKey(e => e.LastUpdatedByUserId)      .OnDelete(DeleteBehavior.SetNull);
             entity.HasOne(e => e.CalendarEvent)                     .WithMany()                                                 .HasForeignKey(e => e.CalendarEventId)          .OnDelete(DeleteBehavior.SetNull);
+            entity.HasOne(e => e.InvitedUser)                       .WithMany()                                                 .HasForeignKey(e => e.InvitedUserId)            .OnDelete(DeleteBehavior.SetNull);
+            entity.HasOne(e => e.InvitedByUser)                     .WithMany()                                                 .HasForeignKey(e => e.InvitedByUserId)          .OnDelete(DeleteBehavior.SetNull);
         });
 
 
