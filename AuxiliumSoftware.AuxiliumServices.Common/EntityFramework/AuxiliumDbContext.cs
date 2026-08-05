@@ -87,7 +87,7 @@ public class AuxiliumDbContext : DbContext
             entity.Property(e => e.LastUpdatedAtUtc)                .HasColumnName("last_updated_at_utc")                       .HasColumnType("datetime");
             entity.Property(e => e.LastUpdatedByUserId)             .HasColumnName("last_updated_by_user_id")                   .HasColumnType("char(36)");
             
-            entity.Property(e => e.CategoryValueId)                 .HasColumnName("category_id")                               .HasColumnType("text")                                                                                                              .IsRequired();
+            entity.Property(e => e.CategoryValueId)                 .HasColumnName("category_id")                               .HasColumnType("char(36)")                                                                                                          .IsRequired();
             entity.Property(e => e.Title)                           .HasColumnName("title")                                     .HasColumnType("text")                                                                                                              .IsRequired();
             entity.Property(e => e.Description)                     .HasColumnName("description")                               .HasColumnType("text");
             entity.Property(e => e.Location)                        .HasColumnName("location")                                  .HasColumnType("text");
