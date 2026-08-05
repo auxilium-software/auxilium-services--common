@@ -49,6 +49,14 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
 
 
 
+
+        /// <summary>
+        /// </summary>
+        public required string ColourHex { get; set; }
+
+
+
+
         /// <summary>
         /// </summary>
         public UserEntityModel? CreatedByUser { get; set; }
