@@ -12,6 +12,8 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
         /// </summary>
         [Key]
         public Guid Id { get; set; }
+        [Key]
+        public required Guid TenantId { get; set; }
 
         /// <summary>
         /// The timestamp of when the TOTP Recovery Code was created.
@@ -44,6 +46,8 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
 
 
 
+
+        public TenantEntityModel? Tenant { get; set; }
         /// <summary>
         /// The User who created the TOTP Recovery Code (this is who the TOTP Recovery Code belongs to).
         /// </summary>

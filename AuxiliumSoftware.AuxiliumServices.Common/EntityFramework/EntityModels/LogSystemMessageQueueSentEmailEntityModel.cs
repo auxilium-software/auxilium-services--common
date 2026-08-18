@@ -11,6 +11,13 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
         /// </summary>
         [Key]
         public required Guid Id { get; set; }
+        [Key]
+        public required Guid TenantId { get; set; }
+
+
+
+
+
         /// <summary>
         /// </summary>
         public required DateTime CreatedAtUtc { get; set; }
@@ -60,5 +67,11 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
         /// <summary>
         /// </summary>
         public required string EmailBodyTxt { get; set; }
+
+
+
+
+
+        public TenantEntityModel? Tenant { get; set; }
     }
 }

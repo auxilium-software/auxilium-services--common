@@ -12,6 +12,13 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
         /// </summary>
         [Key]
         public required Guid Id { get; set; }
+        [Key]
+        public required Guid TenantId { get; set; }
+
+
+
+
+
         /// <summary>
         /// </summary>
         public required DateTime CreatedAtUtc { get; set; }
@@ -45,6 +52,8 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
 
 
 
+
+        public TenantEntityModel? Tenant { get; set; }
         /// <summary>
         /// </summary>
         public UserEntityModel? CreatedByUser { get; set; }

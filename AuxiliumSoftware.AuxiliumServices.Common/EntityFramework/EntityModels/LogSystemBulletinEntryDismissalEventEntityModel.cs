@@ -12,6 +12,13 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
         /// </summary>
         [Key]
         public required Guid Id { get; set; }
+        [Key]
+        public required Guid TenantId { get; set; }
+
+
+
+
+
         /// <summary>
         /// The timestamp of when the System Bulletin was dismissed.
         /// </summary>
@@ -34,6 +41,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
 
 
 
+        public TenantEntityModel? Tenant { get; set; }
         /// <summary>
         /// The User who dismissed the System Bulletin.
         /// </summary>

@@ -9,6 +9,13 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
         /// </summary>
         [Key]
         public required Guid Id { get; set; }
+        [Key]
+        public required Guid TenantId { get; set; }
+
+
+
+
+
         /// <summary>
         /// The timestamp when the Message was read.
         /// </summary>
@@ -31,6 +38,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
 
 
 
+        public TenantEntityModel? Tenant { get; set; }
         /// <summary>
         /// The User who read the Message.
         /// </summary>

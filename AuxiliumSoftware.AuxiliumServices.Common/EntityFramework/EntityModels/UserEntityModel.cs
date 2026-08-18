@@ -9,6 +9,8 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
         /// </summary>
         [Key]
         public required Guid Id { get; set; }
+        [Key]
+        public required Guid TenantId { get; set; }
         /// <summary>
         /// The timestamp of when the User was created.
         /// </summary>
@@ -71,6 +73,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
 
 
 
+        public TenantEntityModel? Tenant { get; set; }
         /// <summary>
         /// Whether the User has confirmed their Email Address.
         /// </summary>

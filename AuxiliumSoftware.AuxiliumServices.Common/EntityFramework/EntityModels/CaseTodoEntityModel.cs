@@ -10,6 +10,13 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
         /// </summary>
         [Key]
         public required Guid Id { get; set; }
+        [Key]
+        public required Guid TenantId { get; set; }
+
+
+
+
+
         /// <summary>
         /// The timestamp of when the Case Todo Entry was created.
         /// </summary>
@@ -85,6 +92,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
 
 
 
+        public TenantEntityModel? Tenant { get; set; }
         /// <summary>
         /// The User that created the Case Todo Entry.
         /// </summary>
