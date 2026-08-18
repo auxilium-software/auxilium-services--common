@@ -837,6 +837,44 @@ public class AuxiliumDbContext : DbContext
             
             entity.Property(e => e.Id)                              .HasColumnName("id")                                        .HasColumnType("char(36)")                                                                                                          .IsRequired();
             entity.Property(e => e.Domain)                          .HasColumnName("domain")                                    .HasColumnType("text")                                                                                                              .IsRequired();
+
+
+            
+            entity.HasMany(e => e.CalendarEvents)                   .WithOne(w => w.Tenant)                                     .HasForeignKey(w => w.TenantId);
+            entity.HasMany(e => e.CalendarEventInvites)             .WithOne(w => w.Tenant)                                     .HasForeignKey(w => w.TenantId);
+            entity.HasMany(e => e.Cases)                            .WithOne(w => w.Tenant)                                     .HasForeignKey(w => w.TenantId);
+            entity.HasMany(e => e.CaseAdditionalProperties)         .WithOne(w => w.Tenant)                                     .HasForeignKey(w => w.TenantId);
+            entity.HasMany(e => e.CaseClients)                      .WithOne(w => w.Tenant)                                     .HasForeignKey(w => w.TenantId);
+            entity.HasMany(e => e.CaseFiles)                        .WithOne(w => w.Tenant)                                     .HasForeignKey(w => w.TenantId);
+            entity.HasMany(e => e.CaseMessages)                     .WithOne(w => w.Tenant)                                     .HasForeignKey(w => w.TenantId);
+            entity.HasMany(e => e.CaseTimelineEntries)              .WithOne(w => w.Tenant)                                     .HasForeignKey(w => w.TenantId);
+            entity.HasMany(e => e.CaseTodos)                        .WithOne(w => w.Tenant)                                     .HasForeignKey(w => w.TenantId);
+            entity.HasMany(e => e.CaseWorkers)                      .WithOne(w => w.Tenant)                                     .HasForeignKey(w => w.TenantId);
+            entity.HasMany(e => e.DataEnumerator_Enumerators)       .WithOne(w => w.Tenant)                                     .HasForeignKey(w => w.TenantId);
+            entity.HasMany(e => e.DataEnumerator_EnumeratorTranslations).WithOne(w => w.Tenant)                                 .HasForeignKey(w => w.TenantId);
+            entity.HasMany(e => e.DataEnumerator_EnumeratorValues).WithOne(w => w.Tenant)                                       .HasForeignKey(w => w.TenantId);
+            entity.HasMany(e => e.DataEnumerator_EnumeratorValueTranslations).WithOne(w => w.Tenant)                            .HasForeignKey(w => w.TenantId);
+            entity.HasMany(e => e.Log_CaseMessageReadBys)           .WithOne(w => w.Tenant)                                     .HasForeignKey(w => w.TenantId);
+            entity.HasMany(e => e.Log_CaseModificationEvents)       .WithOne(w => w.Tenant)                                     .HasForeignKey(w => w.TenantId);
+            entity.HasMany(e => e.Log_LoginAttempts)                .WithOne(w => w.Tenant)                                     .HasForeignKey(w => w.TenantId);
+            entity.HasMany(e => e.Log_SystemBulletinEntryDismissals).WithOne(w => w.Tenant)                                     .HasForeignKey(w => w.TenantId);
+            entity.HasMany(e => e.Log_SystemBulletinEntryViews)     .WithOne(w => w.Tenant)                                     .HasForeignKey(w => w.TenantId);
+            entity.HasMany(e => e.Log_SystemMessageQueueSentEmail)  .WithOne(w => w.Tenant)                                     .HasForeignKey(w => w.TenantId);
+            entity.HasMany(e => e.Log_SystemMessageQueueFailedActions).WithOne(w => w.Tenant)                                   .HasForeignKey(w => w.TenantId);
+            entity.HasMany(e => e.Log_UserModificationEvents)       .WithOne(w => w.Tenant)                                     .HasForeignKey(w => w.TenantId);
+            entity.HasMany(e => e.System_Bulletins)                 .WithOne(w => w.Tenant)                                     .HasForeignKey(w => w.TenantId);
+            entity.HasMany(e => e.System_Settings)                  .WithOne(w => w.Tenant)                                     .HasForeignKey(w => w.TenantId);
+            entity.HasMany(e => e.System_Waf_IpBlacklist)           .WithOne(w => w.Tenant)                                     .HasForeignKey(w => w.TenantId);
+            entity.HasMany(e => e.System_Waf_IpWhitelist)           .WithOne(w => w.Tenant)                                     .HasForeignKey(w => w.TenantId);
+            entity.HasMany(e => e.System_Waf_UserBlacklist)         .WithOne(w => w.Tenant)                                     .HasForeignKey(w => w.TenantId);
+            entity.HasMany(e => e.System_Waf_UserWhitelist)         .WithOne(w => w.Tenant)                                     .HasForeignKey(w => w.TenantId);
+            entity.HasMany(e => e.Users)                            .WithOne(w => w.Tenant)                                     .HasForeignKey(w => w.TenantId);
+            entity.HasMany(e => e.UserAdditionalProperties)         .WithOne(w => w.Tenant)                                     .HasForeignKey(w => w.TenantId);
+            entity.HasMany(e => e.UserFiles)                        .WithOne(w => w.Tenant)                                     .HasForeignKey(w => w.TenantId);
+            entity.HasMany(e => e.UserPasswordSetTokens)            .WithOne(w => w.Tenant)                                     .HasForeignKey(w => w.TenantId);
+            entity.HasMany(e => e.UserRefreshTokens)                .WithOne(w => w.Tenant)                                     .HasForeignKey(w => w.TenantId);
+            entity.HasMany(e => e.UserTotpRecoveryCodes)            .WithOne(w => w.Tenant)                                     .HasForeignKey(w => w.TenantId);
+            entity.HasMany(e => e.UserWemwbsAssessments)            .WithOne(w => w.Tenant)                                     .HasForeignKey(w => w.TenantId);
         });
 
         // user__users
