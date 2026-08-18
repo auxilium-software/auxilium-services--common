@@ -835,7 +835,7 @@ public class AuxiliumDbContext : DbContext
             
             entity.Property(e => e.Id)                              .HasColumnName("id")                                        .HasColumnType("char(36)")                                                                                                          .IsRequired();
             entity.Property(e => e.Domain)                          .HasColumnName("domain")                                    .HasColumnType("text")                                                                                                              .IsRequired();
-            entity.Property(e => e.LifecycleStatus)                 .HasColumnName("lifecycle_status")                          .HasColumnType("text")                  .HasConversion(new JsonPropertyNameEnumConverter<TenantLifecycleStateEnum>())               .IsRequired();
+            entity.Property(e => e.LifecycleStatus)                 .HasColumnName("lifecycle_status")                          .HasColumnType("text")                  .HasConversion(new JsonPropertyNameEnumConverter<TenantLifecycleStatusEnum>())               .IsRequired();
 
 
             

@@ -13,7 +13,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
 
         public required string Domain { get; set; }
 
-        public required TenantLifecycleStateEnum LifecycleStatus { get; set; }
+        public required TenantLifecycleStatusEnum LifecycleStatus { get; set; }
 
 
 
