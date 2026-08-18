@@ -836,7 +836,6 @@ public class AuxiliumDbContext : DbContext
             entity.Property(e => e.Id)                              .HasColumnName("id")                                        .HasColumnType("char(36)")                                                                                                          .IsRequired();
             entity.Property(e => e.Domain)                          .HasColumnName("domain")                                    .HasColumnType("text")                                                                                                              .IsRequired();
 
-
             
             entity.HasMany(e => e.CalendarEvents)                   .WithOne(w => w.Tenant)                                     .HasForeignKey(w => w.TenantId);
             entity.HasMany(e => e.CalendarEventInvites)             .WithOne(w => w.Tenant)                                     .HasForeignKey(w => w.TenantId);
@@ -873,6 +872,7 @@ public class AuxiliumDbContext : DbContext
             entity.HasMany(e => e.UserRefreshTokens)                .WithOne(w => w.Tenant)                                     .HasForeignKey(w => w.TenantId);
             entity.HasMany(e => e.UserTotpRecoveryCodes)            .WithOne(w => w.Tenant)                                     .HasForeignKey(w => w.TenantId);
             entity.HasMany(e => e.UserWemwbsAssessments)            .WithOne(w => w.Tenant)                                     .HasForeignKey(w => w.TenantId);
+            entity.Property(e => e.LifecycleStatus)                 .HasColumnName("lifecycle_status")                          .HasColumnType("text")                  .HasConversion(new JsonPropertyNameEnumConverter<TenantLifecycleStateEnum>())               .IsRequired();
         });
 
         // user__users
