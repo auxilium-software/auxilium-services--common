@@ -1,4 +1,5 @@
 ﻿using AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.Enumerators;
+using AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -6,27 +7,8 @@ using System.Text;
 
 namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
 {
-    public class LogLoginAttemptEventEntityModel
+    public class LogLoginAttemptEventEntityModel : IMandatoryFieldsEntityModel
     {
-        /// <summary>
-        /// The unique identifier for the Log Entry.
-        /// </summary>
-        [Key]
-        public required Guid Id { get; set; }
-        [Key]
-        public required Guid TenantId { get; set; }
-
-
-
-
-
-        /// <summary>
-        /// The timestamp of when the Log Entry was created.
-        /// </summary>
-        public required DateTime CreatedAtUtc { get; set; }
-
-
-
         /// <summary>
         /// What Email Address was attempted during login.
         /// </summary>
@@ -56,7 +38,6 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
 
 
 
-        public TenantEntityModel? Tenant { get; set; }
         /// <summary>
         /// If the Email Address belongs to an existing User, this will be that User. Otherwise, null.
         /// </summary>

@@ -1,25 +1,10 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.Interfaces;
+using System.ComponentModel.DataAnnotations;
 
 namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
 {
-    public class LogCaseMessageReadByEventEntityModel
+    public class LogCaseMessageReadByEventEntityModel : IMandatoryFieldsEntityModel
     {
-        /// <summary>
-        /// The unique identifier for the Read Receipt.
-        /// </summary>
-        [Key]
-        public required Guid Id { get; set; }
-        [Key]
-        public required Guid TenantId { get; set; }
-
-
-
-
-
-        /// <summary>
-        /// The timestamp when the Message was read.
-        /// </summary>
-        public required DateTime CreatedAtUtc { get; set; }
         /// <summary>
         /// The unique identifier of the User who read the Message.
         /// </summary>
@@ -38,7 +23,6 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
 
 
 
-        public TenantEntityModel? Tenant { get; set; }
         /// <summary>
         /// The User who read the Message.
         /// </summary>

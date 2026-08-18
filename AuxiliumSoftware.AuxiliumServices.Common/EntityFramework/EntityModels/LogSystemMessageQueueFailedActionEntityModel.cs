@@ -1,31 +1,13 @@
-﻿using System;
+﻿using AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
 
 namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
 {
-    public class LogSystemMessageQueueFailedActionEntityModel
+    public class LogSystemMessageQueueFailedActionEntityModel : IMandatoryFieldsEntityModel
     {
-        /// <summary>
-        /// </summary>
-        [Key]
-        public required Guid Id { get; set; }
-        [Key]
-        public required Guid TenantId { get; set; }
-
-
-
-
-
-        /// <summary>
-        /// </summary>
-        public required DateTime CreatedAtUtc { get; set; }
-
-
-
-
-
         /// <summary>
         /// </summary>
         public required Guid MessageId { get; set; }
@@ -50,11 +32,5 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
         /// <summary>
         /// </summary>
         public required string ExceptionStackTrace { get; set; }
-
-
-
-
-
-        public TenantEntityModel? Tenant { get; set; }
     }
 }

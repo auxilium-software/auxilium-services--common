@@ -1,26 +1,11 @@
 ﻿using AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.Enumerators;
+using AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.Interfaces;
 using System.ComponentModel.DataAnnotations;
 
 namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
 {
-    public class CaseEntityModel
+    public class CaseEntityModel : IMandatoryFieldsEntityModel
     {
-        /// <summary>
-        /// The unique identifier for the Case.
-        /// </summary>
-        [Key]
-        public required Guid Id { get; set; }
-        [Key]
-        public required Guid TenantId { get; set; }
-
-
-
-
-
-        /// <summary>
-        /// The timestamp of when the Case was created.
-        /// </summary>
-        public required DateTime CreatedAtUtc { get; set; }
         /// <summary>
         /// The unique identifier of the User who created the Case.
         /// </summary>
@@ -58,7 +43,6 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
 
 
 
-        public TenantEntityModel? Tenant { get; set; }
         /// <summary>
         /// The User who created the Case.
         /// </summary>

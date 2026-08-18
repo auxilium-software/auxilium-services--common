@@ -1,26 +1,13 @@
-﻿using System;
+﻿using AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
 
 namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
 {
-    public class DataEnumeratorTranslationEntityModel
+    public class DataEnumeratorTranslationEntityModel : IMandatoryFieldsEntityModel
     {
-        /// <summary>
-        /// </summary>
-        [Key]
-        public required Guid Id { get; set; }
-        [Key]
-        public required Guid TenantId { get; set; }
-
-
-
-
-
-        /// <summary>
-        /// </summary>
-        public required DateTime CreatedAtUtc { get; set; }
         /// <summary>
         /// </summary>
         public Guid? CreatedByUserId { get; set; }
@@ -54,7 +41,6 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
 
 
 
-        public TenantEntityModel? Tenant { get; set; }
         /// <summary>
         /// </summary>
         public UserEntityModel? CreatedByUser { get; set; }

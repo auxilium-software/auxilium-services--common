@@ -1,4 +1,5 @@
 ﻿using AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.Enumerators;
+using AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -6,24 +7,8 @@ using System.Text;
 
 namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
 {
-    public class LogUserModificationEventEntityModel
+    public class LogUserModificationEventEntityModel : IMandatoryFieldsEntityModel
     {
-        /// <summary>
-        /// The unique identifier for the Additional Property.
-        /// </summary>
-        [Key]
-        public required Guid Id { get; set; }
-        [Key]
-        public required Guid TenantId { get; set; }
-
-
-
-
-
-        /// <summary>
-        /// The timestamp of when the Additional Property was created.
-        /// </summary>
-        public required DateTime CreatedAtUtc { get; set; }
         /// <summary>
         /// The unique identifier of the user who created the Additional Property.
         /// </summary>
@@ -79,7 +64,6 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
 
 
 
-        public TenantEntityModel? Tenant { get; set; }
         /// <summary>
         /// The User who Actioned on the User//User related Entity
         /// </summary>

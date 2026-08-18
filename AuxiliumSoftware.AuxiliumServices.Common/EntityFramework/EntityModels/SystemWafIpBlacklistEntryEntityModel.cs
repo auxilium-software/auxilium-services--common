@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -7,25 +8,8 @@ using System.Text;
 
 namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
 {
-    public class SystemWafIpBlacklistEntryEntityModel
+    public class SystemWafIpBlacklistEntryEntityModel : IMandatoryFieldsEntityModel
     {
-        /// <summary>
-        /// The unique identifier for the IP Block.
-        /// </summary>
-        [Key]
-        public required Guid Id { get; set; }
-        [Key]
-        public required Guid TenantId { get; set; }
-
-
-
-
-
-        /// <summary>
-        /// The timestamp of when the IP Block was created.
-        /// </summary>
-        public required DateTime CreatedAtUtc { get; set; }
-
         /// <summary>
         /// The unique identifier of the User who created the IP Block.
         /// </summary>
@@ -83,7 +67,6 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
 
 
 
-        public TenantEntityModel? Tenant { get; set; }
         public UserEntityModel? CreatedByUser { get; set; }
         public UserEntityModel? UnblockedByUser { get; set; }
     }
