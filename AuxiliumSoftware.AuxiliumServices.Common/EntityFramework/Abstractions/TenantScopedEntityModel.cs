@@ -8,7 +8,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.Abstractions
     public abstract class TenantScopedEntityModel
     {
         public required Guid Id { get; set; }
-        public required Guid TenantId { get; set; }
+        public Guid TenantId { get; set; }
 
 
 
