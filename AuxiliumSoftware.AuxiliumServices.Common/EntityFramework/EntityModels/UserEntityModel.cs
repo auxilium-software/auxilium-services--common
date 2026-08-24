@@ -1,35 +1,10 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.Abstractions;
+using System.ComponentModel.DataAnnotations;
 
 namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
 {
-    public class UserEntityModel
+    public class UserEntityModel : MutableTenantScopedEntityModel
     {
-        /// <summary>
-        /// The unique identifier for the User.
-        /// </summary>
-        [Key]
-        public required Guid Id { get; set; }
-        /// <summary>
-        /// The timestamp of when the User was created.
-        /// </summary>
-        public required DateTime CreatedAtUtc { get; set; }
-        /// <summary>
-        /// The unique identifier of the User who created the User.
-        /// </summary>
-        public Guid? CreatedByUserId { get; set; }
-        /// <summary>
-        /// The timestamp of when the User was last updated.
-        /// </summary>
-        public DateTime? LastUpdatedAtUtc { get; set; }
-        /// <summary>
-        /// The unique identifier of the User who last updated the User.
-        /// </summary>
-        public Guid? LastUpdatedByUserId { get; set; }
-
-
-
-
-
         /// <summary>
         /// The email address of the User.
         /// </summary>
@@ -136,19 +111,6 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
         /// An optional reason provided by the User for requesting account deletion.
         /// </summary>
         public string? DeletionRequestReason { get; set; }
-
-
-
-
-
-        /// <summary>
-        /// The User that created the User.
-        /// </summary>
-        public UserEntityModel? CreatedByUser { get; set; }
-        /// <summary>
-        /// The User that last updated the User.
-        /// </summary>
-        public UserEntityModel? LastUpdatedByUser { get; set; }
 
 
 

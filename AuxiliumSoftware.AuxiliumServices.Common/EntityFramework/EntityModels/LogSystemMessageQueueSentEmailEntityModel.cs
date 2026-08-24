@@ -1,24 +1,13 @@
-﻿using System;
+﻿using AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.Abstractions;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
 
 namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
 {
-    public class LogSystemMessageQueueSentEmailEntityModel
+    public class LogSystemMessageQueueSentEmailEntityModel : TenantScopedEntityModel
     {
-        /// <summary>
-        /// </summary>
-        [Key]
-        public required Guid Id { get; set; }
-        /// <summary>
-        /// </summary>
-        public required DateTime CreatedAtUtc { get; set; }
-
-
-
-
-
         /// <summary>
         /// </summary>
         public required Guid MessageId { get; set; }

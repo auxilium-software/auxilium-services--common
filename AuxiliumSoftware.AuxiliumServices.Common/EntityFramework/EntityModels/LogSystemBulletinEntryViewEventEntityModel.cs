@@ -1,21 +1,13 @@
-﻿using System;
+﻿using AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.Abstractions;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
 
 namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
 {
-    public class LogSystemBulletinEntryViewEventEntityModel
+    public class LogSystemBulletinEntryViewEventEntityModel : TenantScopedEntityModel
     {
-        /// <summary>
-        /// The unique identifier for the System Bulletin View Log Entry.
-        /// </summary>
-        [Key]
-        public required Guid Id { get; set; }
-        /// <summary>
-        /// The timestamp of when the System Bulletin was viewed.
-        /// </summary>
-        public required DateTime CreatedAtUtc { get; set; }
         /// <summary>
         /// The unique identifier of the User who viewed the System Bulletin.
         /// </summary>

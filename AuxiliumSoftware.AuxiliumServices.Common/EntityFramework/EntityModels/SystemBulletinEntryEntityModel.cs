@@ -1,4 +1,5 @@
-﻿using AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.Enumerators;
+﻿using AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.Abstractions;
+using AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.Enumerators;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -6,17 +7,8 @@ using System.Text;
 
 namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
 {
-    public class SystemBulletinEntryEntityModel
+    public class SystemBulletinEntryEntityModel : TenantScopedEntityModel
     {
-        /// <summary>
-        /// The unique identifier for the System Bulletin Entry.
-        /// </summary>
-        [Key]
-        public required Guid Id { get; set; }
-        /// <summary>
-        /// The timestamp of when the System Bulletin Entry was created.
-        /// </summary>
-        public required DateTime CreatedAtUtc { get; set; }
         /// <summary>
         /// The unique identifier for the User who created the System Bulletin Entry.
         /// </summary>

@@ -1,18 +1,10 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.Abstractions;
+using System.ComponentModel.DataAnnotations;
 
 namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
 {
-    public class WemwbsAssessmentEntityModel
+    public class WemwbsAssessmentEntityModel : TenantScopedEntityModel
     {
-        /// <summary>
-        /// The unique identifier for the WEMWBS Assessment.
-        /// </summary>
-        [Key]
-        public required Guid Id { get; set; }
-        /// <summary>
-        /// The timestamp of when the WEMWBS Assessment was created.
-        /// </summary>
-        public required DateTime CreatedAtUtc { get; set; }
         /// <summary>
         /// The unique identifier of the User who created/completed the WEMWBS Assessment.
         /// </summary>
@@ -40,6 +32,8 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
         public required int FeelingLovedScore { get; set; }
         public required int InterestedInNewThingsScore { get; set; }
         public required int FeelingCheerfulScore { get; set; }
+
+
 
 
 

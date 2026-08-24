@@ -1,4 +1,5 @@
-﻿using AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.Enumerators;
+﻿using AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.Abstractions;
+using AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.Enumerators;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -6,17 +7,8 @@ using System.Text;
 
 namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
 {
-    public class PasswordSetTokenEntityModel
+    public class PasswordSetTokenEntityModel : TenantScopedEntityModel
     {
-        /// <summary>
-        /// The unique identifier for the Password Set Token.
-        /// </summary>
-        [Key]
-        public required Guid Id { get; set; }
-        /// <summary>
-        /// The timestamp of when the Password Set Token was created.
-        /// </summary>
-        public required DateTime CreatedAtUtc { get; set; }
         /// <summary>
         /// The unique identifier of the User who issued the Password Set Token.
         /// </summary>
@@ -41,6 +33,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
         /// The reason this Password Set Token was issued.
         /// </summary>
         public required PasswordSetTokenReasonEnum Reason { get; set; }
+
 
 
 

@@ -1,36 +1,11 @@
-﻿using AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.Enumerators;
+﻿using AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.Abstractions;
+using AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.Enumerators;
 using System.ComponentModel.DataAnnotations;
 
 namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
 {
-    public class CaseTodoEntityModel
+    public class CaseTodoEntityModel : MutableTenantScopedEntityModel
     {
-        /// <summary>
-        /// The unique identifier for the Case Todo Entry.
-        /// </summary>
-        [Key]
-        public required Guid Id { get; set; }
-        /// <summary>
-        /// The timestamp of when the Case Todo Entry was created.
-        /// </summary>
-        public required DateTime CreatedAtUtc { get; set; }
-        /// <summary>
-        /// The unique identifier of the User who created the Case Todo Entry.
-        /// </summary>
-        public Guid? CreatedByUserId { get; set; }
-        /// <summary>
-        /// The timestamp of when the Case Todo Entry was last updated.
-        /// </summary>
-        public DateTime? LastUpdatedAtUtc { get; set; }
-        /// <summary>
-        /// The unique identifier of the User who last updated the Case Todo Entry.
-        /// </summary>
-        public Guid? LastUpdatedByUserId { get; set; }
-
-
-
-
-
         /// <summary>
         /// The unique identifier for the case the todo is for.
         /// </summary>
@@ -80,19 +55,6 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
         /// An optional note added upon completion of the Case Todo Entry.
         /// </summary>
         public string? CompletionNote { get; set; }
-
-
-
-
-
-        /// <summary>
-        /// The User that created the Case Todo Entry.
-        /// </summary>
-        public UserEntityModel? CreatedByUser { get; set; }
-        /// <summary>
-        /// The User that last updated the Case Todo Entry.
-        /// </summary>
-        public UserEntityModel? LastUpdatedByUser { get; set; }
 
 
 

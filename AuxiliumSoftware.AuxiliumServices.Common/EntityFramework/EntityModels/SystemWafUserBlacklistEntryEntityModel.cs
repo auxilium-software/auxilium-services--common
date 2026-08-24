@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.Abstractions;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -6,19 +7,8 @@ using System.Text;
 
 namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
 {
-    public class SystemWafUserBlacklistEntryEntityModel
+    public class SystemWafUserBlacklistEntryEntityModel : TenantScopedEntityModel
     {
-        /// <summary>
-        /// The unique identifier for the User Block.
-        /// </summary>
-        [Key]
-        public required Guid Id { get; set; }
-
-        /// <summary>
-        /// The timestamp of when the User Block was created.
-        /// </summary>
-        public required DateTime CreatedAtUtc { get; set; }
-
         /// <summary>
         /// The unique identifier of the User who created the User Block.
         /// </summary>

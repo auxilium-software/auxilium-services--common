@@ -1,18 +1,10 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.Abstractions;
+using System.ComponentModel.DataAnnotations;
 
 namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
 {
-    public class RefreshTokenEntityModel
+    public class RefreshTokenEntityModel : TenantScopedEntityModel
     {
-        /// <summary>
-        /// The unique identifier for the Refresh Token.
-        /// </summary>
-        [Key]
-        public required Guid Id { get; set; }
-        /// <summary>
-        /// The timestamp of when the Refresh Token was created.
-        /// </summary>
-        public required DateTime CreatedAtUtc { get; set; }
         /// <summary>
         /// The unique identifier of the User who created the Refresh Token.
         /// </summary>

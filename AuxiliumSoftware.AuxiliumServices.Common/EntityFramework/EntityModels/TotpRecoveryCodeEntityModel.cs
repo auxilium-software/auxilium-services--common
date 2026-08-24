@@ -1,22 +1,13 @@
-﻿using System;
+﻿using AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.Abstractions;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
 
 namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
 {
-    public class TotpRecoveryCodeEntityModel
+    public class TotpRecoveryCodeEntityModel : TenantScopedEntityModel
     {
-        /// <summary>
-        /// The unique identifier for the TOTP Recovery Code.
-        /// </summary>
-        [Key]
-        public Guid Id { get; set; }
-
-        /// <summary>
-        /// The timestamp of when the TOTP Recovery Code was created.
-        /// </summary>
-        public required DateTime CreatedAtUtc { get; set; }
         /// <summary>
         /// The unique identifier of the User who created the TOTP Recovery Code (this is who the TOTP Recovery Code belongs to).
         /// </summary>
@@ -40,6 +31,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
         /// Null if unused.
         /// </summary>
         public DateTime? UsedAtUtc { get; set; }
+
 
 
 

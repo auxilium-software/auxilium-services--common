@@ -1,18 +1,10 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.Abstractions;
+using System.ComponentModel.DataAnnotations;
 
 namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
 {
-    public class CaseClientEntityModel
+    public class CaseClientEntityModel : TenantScopedEntityModel
     {
-        /// <summary>
-        /// The unique identifier for the Case Client Assignment.
-        /// </summary>
-        [Key]
-        public required Guid Id { get; set; }
-        /// <summary>
-        /// The timestamp of when the Case Client Assignment was created.
-        /// </summary>
-        public required DateTime CreatedAtUtc { get; set; }
         /// <summary>
         /// The unique identifier of the User who created the Case Client Assignment.
         /// </summary>
@@ -28,6 +20,8 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
         /// The unique identifier of the User Assigned to the Case.
         /// </summary>
         public required Guid UserId { get; set; }
+
+
 
 
 

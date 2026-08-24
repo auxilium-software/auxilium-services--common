@@ -1,19 +1,13 @@
-﻿using System;
+﻿using AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.Abstractions;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
 
 namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
 {
-    public class DataEnumeratorValueEntityModel
+    public class DataEnumeratorValueEntityModel : TenantScopedEntityModel
     {
-        /// <summary>
-        /// </summary>
-        [Key]
-        public required Guid Id { get; set; }
-        /// <summary>
-        /// </summary>
-        public required DateTime CreatedAtUtc { get; set; }
         /// <summary>
         /// </summary>
         public Guid? CreatedByUserId { get; set; }
@@ -53,6 +47,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
         /// <summary>
         /// </summary>
         public required string ColourHex { get; set; }
+
 
 
 
