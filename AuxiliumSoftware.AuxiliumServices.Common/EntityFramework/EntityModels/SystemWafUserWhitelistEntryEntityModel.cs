@@ -1,4 +1,4 @@
-﻿using AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.Interfaces;
+﻿using AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.Abstractions;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -7,7 +7,7 @@ using System.Text;
 
 namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
 {
-    public class SystemWafUserWhitelistEntryEntityModel : IMandatoryFieldsEntityModel
+    public class SystemWafUserWhitelistEntryEntityModel : TenantScopedEntityModel
     {
         /// <summary>
         /// The unique identifier of the user who created the User Whitelist Entry.

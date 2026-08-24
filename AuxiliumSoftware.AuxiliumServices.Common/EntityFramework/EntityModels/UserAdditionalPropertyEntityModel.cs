@@ -1,27 +1,10 @@
-﻿using AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.Interfaces;
+﻿using AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.Abstractions;
 using System.ComponentModel.DataAnnotations;
 
 namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
 {
-    public class UserAdditionalPropertyEntityModel : IMandatoryFieldsEntityModel
+    public class UserAdditionalPropertyEntityModel : MutableTenantScopedEntityModel
     {
-        /// <summary>
-        /// The unique identifier of the user who created the Additional Property.
-        /// </summary>
-        public Guid? CreatedByUserId { get; set; }
-        /// <summary>
-        /// The timestamp of when the Additional Property was last updated.
-        /// </summary>
-        public DateTime? LastUpdatedAtUtc { get; set; }
-        /// <summary>
-        /// The unique identifier of the user who last updated the Additional Property.
-        /// </summary>
-        public Guid? LastUpdatedByUserId { get; set; }
-
-
-
-
-
         /// <summary>
         /// The unique identifier of the User the Additional Property is for.
         /// </summary>
@@ -50,14 +33,6 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
 
 
 
-        /// <summary>
-        /// The User who created the Additional Property.
-        /// </summary>
-        public UserEntityModel? CreatedByUser { get; set; }
-        /// <summary>
-        /// The User who last updated the Additional Property.
-        /// </summary>
-        public UserEntityModel? LastUpdatedByUser { get; set; }
         /// <summary>
         /// The User the Additional Property is for.
         /// </summary>

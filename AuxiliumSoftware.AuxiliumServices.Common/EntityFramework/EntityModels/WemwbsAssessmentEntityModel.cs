@@ -1,9 +1,9 @@
-﻿using AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.Interfaces;
+﻿using AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.Abstractions;
 using System.ComponentModel.DataAnnotations;
 
 namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
 {
-    public class WemwbsAssessmentEntityModel : IMandatoryFieldsEntityModel
+    public class WemwbsAssessmentEntityModel : TenantScopedEntityModel
     {
         /// <summary>
         /// The unique identifier of the User who created/completed the WEMWBS Assessment.

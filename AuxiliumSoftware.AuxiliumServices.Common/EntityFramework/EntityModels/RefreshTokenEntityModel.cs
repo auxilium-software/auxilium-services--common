@@ -1,9 +1,9 @@
-﻿using AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.Interfaces;
+﻿using AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.Abstractions;
 using System.ComponentModel.DataAnnotations;
 
 namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
 {
-    public class RefreshTokenEntityModel : IMandatoryFieldsEntityModel
+    public class RefreshTokenEntityModel : TenantScopedEntityModel
     {
         /// <summary>
         /// The unique identifier of the User who created the Refresh Token.

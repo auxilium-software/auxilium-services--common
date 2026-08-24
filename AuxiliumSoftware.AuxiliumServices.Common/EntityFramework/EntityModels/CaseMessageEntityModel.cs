@@ -1,27 +1,10 @@
-﻿using AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.Interfaces;
+﻿using AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.Abstractions;
 using System.ComponentModel.DataAnnotations;
 
 namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
 {
-    public class CaseMessageEntityModel : IMandatoryFieldsEntityModel
+    public class CaseMessageEntityModel : MutableTenantScopedEntityModel
     {
-        /// <summary>
-        /// The unique identifier of the User who created the Case Message.
-        /// </summary>
-        public Guid? CreatedByUserId { get; set; }
-        /// <summary>
-        /// The timestamp of when the Case Message was last updated.
-        /// </summary>
-        public DateTime? LastUpdatedAtUtc { get; set; }
-        /// <summary>
-        /// The unique identifier of the User who last updated the Case Message.
-        /// </summary>
-        public Guid? LastUpdatedByUserId { get; set; }
-
-
-
-
-
         /// <summary>
         /// The unique identifier of the Case the Case Message is for.
         /// </summary>
@@ -42,19 +25,6 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
         /// Whether the Case Message should be treated as urgent.
         /// </summary>
         public required bool IsUrgent { get; set; }
-
-
-
-
-
-        /// <summary>
-        /// The User who created the Case Message.
-        /// </summary>
-        public UserEntityModel? CreatedByUser { get; set; }
-        /// <summary>
-        /// The User who last updated the Case Message.
-        /// </summary>
-        public UserEntityModel? LastUpdatedByUser { get; set; }
 
 
 

@@ -1,5 +1,5 @@
-﻿using AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.Enumerators;
-using AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.Interfaces;
+﻿using AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.Abstractions;
+using AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.Enumerators;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -7,7 +7,7 @@ using System.Text;
 
 namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
 {
-    public class LogCaseModificationEventEntityModel : IMandatoryFieldsEntityModel
+    public class LogCaseModificationEventEntityModel : TenantScopedEntityModel
     {
         /// <summary>
         /// The unique identifier of the user who created the Additional Property.

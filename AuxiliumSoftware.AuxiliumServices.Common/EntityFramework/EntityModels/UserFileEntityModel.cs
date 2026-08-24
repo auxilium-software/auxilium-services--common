@@ -1,27 +1,10 @@
-﻿using AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.Interfaces;
+﻿using AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.Abstractions;
 using System.ComponentModel.DataAnnotations;
 
 namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
 {
-    public class UserFileEntityModel : IMandatoryFieldsEntityModel
+    public class UserFileEntityModel : MutableTenantScopedEntityModel
     {
-        /// <summary>
-        /// The unique identifier of the User who created the Case File.
-        /// </summary>
-        public Guid? CreatedByUserId { get; set; }
-        /// <summary>
-        /// The timestamp of when the Case File was last updated.
-        /// </summary>
-        public DateTime? LastUpdatedAtUtc { get; set; }
-        /// <summary>
-        /// The unique identifier of the User who last updated the Case File.
-        /// </summary>
-        public Guid? LastUpdatedByUserId { get; set; }
-
-
-
-
-
         /// <summary>
         /// The unique identifier for the User the File is for.
         /// </summary>
@@ -61,14 +44,6 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
 
 
 
-        /// <summary>
-        /// The User who created the File.
-        /// </summary>
-        public UserEntityModel? CreatedByUser { get; set; }
-        /// <summary>
-        /// The User who last updated the File.
-        /// </summary>
-        public UserEntityModel? LastUpdatedByUser { get; set; }
         /// <summary>
         /// The User the File is for.
         /// </summary>

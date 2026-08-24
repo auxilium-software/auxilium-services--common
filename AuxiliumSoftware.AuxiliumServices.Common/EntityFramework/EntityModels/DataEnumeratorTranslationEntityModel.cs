@@ -1,4 +1,4 @@
-﻿using AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.Interfaces;
+﻿using AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.Abstractions;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -6,22 +6,8 @@ using System.Text;
 
 namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
 {
-    public class DataEnumeratorTranslationEntityModel : IMandatoryFieldsEntityModel
+    public class DataEnumeratorTranslationEntityModel : MutableTenantScopedEntityModel
     {
-        /// <summary>
-        /// </summary>
-        public Guid? CreatedByUserId { get; set; }
-        /// <summary>
-        /// </summary>
-        public DateTime? LastUpdatedAtUtc { get; set; }
-        /// <summary>
-        /// </summary>
-        public Guid? LastUpdatedByUserId { get; set; }
-
-
-
-
-
         /// <summary>
         /// </summary>
         public required Guid DataEnumeratorId { get; set; }
@@ -41,12 +27,6 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
 
 
 
-        /// <summary>
-        /// </summary>
-        public UserEntityModel? CreatedByUser { get; set; }
-        /// <summary>
-        /// </summary>
-        public UserEntityModel? LastUpdatedByUser { get; set; }
         /// <summary>
         /// </summary>
         public DataEnumeratorEntityModel? Enum { get; set; }

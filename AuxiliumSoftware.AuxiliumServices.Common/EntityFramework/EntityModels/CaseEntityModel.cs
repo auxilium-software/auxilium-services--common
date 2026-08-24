@@ -1,27 +1,11 @@
-﻿using AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.Enumerators;
-using AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.Interfaces;
+﻿using AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.Abstractions;
+using AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.Enumerators;
 using System.ComponentModel.DataAnnotations;
 
 namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
 {
-    public class CaseEntityModel : IMandatoryFieldsEntityModel
+    public class CaseEntityModel : MutableTenantScopedEntityModel
     {
-        /// <summary>
-        /// The unique identifier of the User who created the Case.
-        /// </summary>
-        public Guid? CreatedByUserId { get; set; }
-        /// <summary>
-        /// The timestamp of when the Case was last updated.
-        /// </summary>
-        public DateTime? LastUpdatedAtUtc { get; set; }
-        /// <summary>
-        /// The unique identifier of the User who last updated the Case.
-        /// </summary>
-        public Guid? LastUpdatedByUserId { get; set; }
-
-
-
-
         /// <summary>
         /// The title of the Case.
         /// </summary>
@@ -38,19 +22,6 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
         /// The current Status of the Case.
         /// </summary>
         public required CaseStatusEnum Status { get; set; }
-
-
-
-
-
-        /// <summary>
-        /// The User who created the Case.
-        /// </summary>
-        public UserEntityModel? CreatedByUser { get; set; }
-        /// <summary>
-        /// The User who last updated the Case.
-        /// </summary>
-        public UserEntityModel? LastUpdatedByUser { get; set; }
 
 
 
