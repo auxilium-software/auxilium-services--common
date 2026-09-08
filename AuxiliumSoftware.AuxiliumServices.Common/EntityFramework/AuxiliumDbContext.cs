@@ -870,6 +870,7 @@ public class AuxiliumDbContext : DbContext
 
             
             entity.Property(e => e.Id)                              .HasColumnName("id")                                        .HasColumnType("char(36)")                                                                                                          .IsRequired();
+            entity.Property(e => e.CreatedAt)                       .HasColumnName("created_at")                                .HasColumnType("datetime")                                                                                                          .IsRequired();
             entity.Property(e => e.Domain)                          .HasColumnName("domain")                                    .HasColumnType("varchar(253)")                                                                                                      .IsRequired();
             entity.Property(e => e.LifecycleStatus)                 .HasColumnName("lifecycle_status")                          .HasColumnType("text")                  .HasConversion(new JsonPropertyNameEnumConverter<TenantLifecycleStatusEnum>())              .IsRequired();
 
