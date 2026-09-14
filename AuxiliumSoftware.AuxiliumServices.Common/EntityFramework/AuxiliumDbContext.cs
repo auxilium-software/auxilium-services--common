@@ -107,6 +107,50 @@ public class AuxiliumDbContext : DbContext
 
 
 
+
+    public override int SaveChanges(bool acceptAllChangesOnSuccess)
+    {
+        this.StampAndGuardTenantScope();
+        return base.SaveChanges(acceptAllChangesOnSuccess);
+    }
+
+    public override Task<int> SaveChangesAsync(
+        bool acceptAllChangesOnSuccess, CancellationToken cancellationToken = default)
+    {
+        this.StampAndGuardTenantScope();
+        return base.SaveChangesAsync(acceptAllChangesOnSuccess, cancellationToken);
+    }
+
+    private void StampAndGuardTenantScope()
+    {
+        foreach (var entry in this.ChangeTracker.Entries<ITenantScopedEntityModel>())
+        {
+            switch (entry.State)
+            {
+                case EntityState.Added:
+                    if (!this._tenantContext.IsResolved)
+                    {
+                        throw new InvalidOperationException($"Cannot insert {entry.Metadata.ClrType.Name}: no tenant has been resolved.");
+                    }
+
+                    entry.Entity.TenantId = this._tenantContext.TenantId;
+                    break;
+
+                case EntityState.Modified or EntityState.Deleted:
+                    if (entry.Entity.TenantId != this._tenantContext.TenantId)
+                    {
+                        throw new InvalidOperationException($"Cross-tenant write blocked on {entry.Metadata.ClrType.Name}.");
+                    }
+
+                    entry.Property(nameof(ITenantScopedEntityModel.TenantId)).IsModified = false;
+                    break;
+            }
+        }
+    }
+
+
+
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
