@@ -44,7 +44,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
                 .Select(kvp => kvp.Value.EnumValue)
                 .ToList();
 
-            var dbOverrides = await _db.System_Settings
+            var dbOverrides = await _db.WithinTenancy_System_Settings
                 .AsNoTracking()
                 .Where(s => enumKeys.Contains(s.ConfigKey))
                 .GroupBy(s => s.ConfigKey)
@@ -90,7 +90,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
         {
             var typeAttr = GetAttribute<SystemSettingExpectedValueTypeAttribute>(key) ?? throw new InvalidOperationException($"No expected value type specified for key '{key}'");
 
-            var setting = await _db.System_Settings
+            var setting = await _db.WithinTenancy_System_Settings
                 .AsNoTracking()
                 .Where(s => s.ConfigKey == key)
                 .OrderByDescending(s => s.CreatedAtUtc)
@@ -157,7 +157,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
             var jsonValue = JsonSerializer.Serialize(value);
             var valueType = InferValueType(value);
 
-            _db.System_Settings.Add(new SystemSettingEntityModel
+            _db.WithinTenancy_System_Settings.Add(new SystemSettingEntityModel
             {
                 Id = Guid.NewGuid(),
                 ConfigKey = key,

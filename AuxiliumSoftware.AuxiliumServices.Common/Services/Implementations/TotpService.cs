@@ -42,7 +42,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
         #region Enrolment Lifecycle
         public async Task<TotpSetupResultDTO> CreateSetupAsync(Guid userId, string userEmail)
         {
-            var user = await _db.Users.FirstOrDefaultAsync(u => u.Id == userId);
+            var user = await _db.WithinTenancy_Users.FirstOrDefaultAsync(u => u.Id == userId);
             if (user == null) throw new InvalidOperationException($"User {userId} not found");
 
             if (user.TotpEnabled)
@@ -73,7 +73,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
 
         public async Task<TotpEnableResultDTO?> EnablePendingAsync(Guid userId, string code)
         {
-            var user = await _db.Users.FirstOrDefaultAsync(u => u.Id == userId);
+            var user = await _db.WithinTenancy_Users.FirstOrDefaultAsync(u => u.Id == userId);
             if (user == null) return null;
 
             // must have a pending secret that isn't yet enabled
@@ -100,7 +100,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
 
         public async Task<bool> DisableAsync(Guid userId, string code)
         {
-            var user = await _db.Users.FirstOrDefaultAsync(u => u.Id == userId);
+            var user = await _db.WithinTenancy_Users.FirstOrDefaultAsync(u => u.Id == userId);
             if (user == null) return false;
 
             if (!user.TotpEnabled || string.IsNullOrEmpty(user.TotpSecret))
@@ -113,13 +113,13 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
             user.TotpEnabled = false;
             user.TotpEnabledAtUtc = null;
 
-            var recoveryCodes = await _db.UserTotpRecoveryCodes
+            var recoveryCodes = await _db.WithinTenancy_UserTotpRecoveryCodes
                 .Where(r => r.CreatedByUserId == userId)
                 .ToListAsync();
 
             if (recoveryCodes.Count != 0)
             {
-                _db.UserTotpRecoveryCodes.RemoveRange(recoveryCodes);
+                _db.WithinTenancy_UserTotpRecoveryCodes.RemoveRange(recoveryCodes);
             }
 
             await _db.SaveChangesAsync();
@@ -134,7 +134,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
             if (string.IsNullOrWhiteSpace(code))
                 return false;
 
-            var user = await _db.Users.FirstOrDefaultAsync(u => u.Id == userId);
+            var user = await _db.WithinTenancy_Users.FirstOrDefaultAsync(u => u.Id == userId);
             if (user == null) return false;
 
             if (!user.TotpEnabled || string.IsNullOrEmpty(user.TotpSecret))
@@ -157,7 +157,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
 
             var hash = HashRecoveryCode(code);
 
-            var match = await _db.UserTotpRecoveryCodes
+            var match = await _db.WithinTenancy_UserTotpRecoveryCodes
                 .FirstOrDefaultAsync(r =>
                     r.CreatedByUserId == userId &&
                     r.CodeHash == hash &&
@@ -191,13 +191,13 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
             var isValid = await ValidateUserTotpAsync(userId, totpCode);
             if (!isValid) return null;
 
-            var existing = await _db.UserTotpRecoveryCodes
+            var existing = await _db.WithinTenancy_UserTotpRecoveryCodes
                 .Where(r => r.CreatedByUserId == userId)
                 .ToListAsync();
 
             if (existing.Count != 0)
             {
-                _db.UserTotpRecoveryCodes.RemoveRange(existing);
+                _db.WithinTenancy_UserTotpRecoveryCodes.RemoveRange(existing);
             }
 
             var plaintextCodes = await GenerateRecoveryCodesForUser(userId);
@@ -214,19 +214,19 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
 
         public async Task<int> GetRemainingRecoveryCodeCountAsync(Guid userId)
         {
-            return await _db.UserTotpRecoveryCodes
+            return await _db.WithinTenancy_UserTotpRecoveryCodes
                 .CountAsync(r => r.CreatedByUserId == userId && !r.IsUsed);
         }
         #endregion
         #region Status Queries
         public async Task<bool> IsTotpEnabledAsync(Guid userId)
         {
-            return await _db.Users
+            return await _db.WithinTenancy_Users
                 .AnyAsync(u => u.Id == userId && u.TotpEnabled);
         }
         public async Task<bool> HasPendingSetupAsync(Guid userId)
         {
-            return await _db.Users
+            return await _db.WithinTenancy_Users
                 .AnyAsync(u => u.Id == userId && u.TotpSecret != null && !u.TotpEnabled);
         }
         #endregion
@@ -243,7 +243,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
                 plaintextCodes.Add(formatted);
 
                 // hash the formatted code - what the user sees is what they must enter
-                _db.UserTotpRecoveryCodes.Add(new TotpRecoveryCodeEntityModel
+                _db.WithinTenancy_UserTotpRecoveryCodes.Add(new TotpRecoveryCodeEntityModel
                 {
                     Id = Guid.NewGuid(),
                     CreatedByUserId = userId,

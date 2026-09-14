@@ -146,7 +146,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
             // DB-side string comparison so EF can translate this to a simple WHERE
             IPAddress normalizedIp = NormaliseIpAddressObject(ipAddress);
 
-            SystemWafIpBlacklistEntryEntityModel? block = await _db.System_Waf_IpBlacklist
+            SystemWafIpBlacklistEntryEntityModel? block = await _db.WithinTenancy_System_Waf_IpBlacklist
                 .Where(b => b.IpAddress == normalizedIp)
                 .Where(b => b.UnblacklistedAtUtc == null && (b.ExpiresAtUtc == null || b.ExpiresAtUtc > DateTime.UtcNow))
                 .OrderBy(b => b.CreatedAtUtc)
@@ -172,7 +172,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
             string normalizedIp = NormaliseIpAddress(ipAddress);
             DateTime windowStart = DateTime.UtcNow.AddMinutes(-1);
 
-            int numberOfRecentAttempts = await _db.Log_LoginAttempts
+            int numberOfRecentAttempts = await _db.WithinTenancy_Log_LoginAttempts
                 .CountAsync(
                     a => a.ClientIpAddress == normalizedIp
                     && a.CreatedAtUtc >= windowStart,
@@ -192,7 +192,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
 
             DateTime now = DateTime.UtcNow;
 
-            return await _db.System_Waf_UserBlacklist
+            return await _db.WithinTenancy_System_Waf_UserBlacklist
                 .Where(b => b.UserId == user.Id)
                 .Where(b => b.UnblacklistedAtUtc == null)
                 .Where(b => (b.ExpiresAtUtc == null || b.ExpiresAtUtc > now))
@@ -214,7 +214,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
             try
             {
                 DateTime now = DateTime.UtcNow;
-                SystemWafUserBlacklistEntryEntityModel? existingLock = await _db.System_Waf_UserBlacklist
+                SystemWafUserBlacklistEntryEntityModel? existingLock = await _db.WithinTenancy_System_Waf_UserBlacklist
                     .Where(b => b.UserId == user.Id)
                     .Where(b => b.UnblacklistedAtUtc == null && (b.ExpiresAtUtc == null || b.ExpiresAtUtc > now))
                     .FirstOrDefaultAsync(ct);
@@ -226,7 +226,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
 
                 DateTime windowStart = now.AddMinutes(-await _settings.GetIntAsync(SystemSettingKeyEnum.Policies_WebApplicationFirewall_User_UserLockoutWindowInMinutes));
 
-                int failedCount = await _db.Log_LoginAttempts
+                int failedCount = await _db.WithinTenancy_Log_LoginAttempts
                     .CountAsync(
                         a => a.TargetUserId == user.Id
                         && !a.WasLoginSuccessful
@@ -237,7 +237,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
                 if (failedCount < await _settings.GetIntAsync(SystemSettingKeyEnum.Policies_WebApplicationFirewall_User_MaximumFailedLoginsPerUser))
                     return null;
 
-                bool recheck = await _db.System_Waf_UserBlacklist
+                bool recheck = await _db.WithinTenancy_System_Waf_UserBlacklist
                     .AnyAsync(
                         b => b.UserId == user.Id
                         && b.UnblacklistedAtUtc == null
@@ -259,7 +259,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
                     ExpiresAtUtc = lockoutDuration > 0 ? now.AddMinutes(lockoutDuration) : (DateTime?)null
                 };
 
-                _db.System_Waf_UserBlacklist.Add(lockout);
+                _db.WithinTenancy_System_Waf_UserBlacklist.Add(lockout);
                 await _db.SaveChangesAsync(ct);
 
                 _logger.LogWarning(
@@ -296,7 +296,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
                     return new WebApplicationFirewallActionDTO();
             }
 
-            _db.Log_LoginAttempts.Add(new LogLoginAttemptEventEntityModel
+            _db.WithinTenancy_Log_LoginAttempts.Add(new LogLoginAttemptEventEntityModel
             {
                 Id = Guid.NewGuid(),
                 CreatedAtUtc = DateTime.UtcNow,
@@ -347,7 +347,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
 
             if (await _settings.GetBoolAsync(SystemSettingKeyEnum.Policies_Logging_Security_LogSuccessfulLogins))
             {
-                _db.Log_LoginAttempts.Add(new LogLoginAttemptEventEntityModel
+                _db.WithinTenancy_Log_LoginAttempts.Add(new LogLoginAttemptEventEntityModel
                 {
                     Id = Guid.NewGuid(),
                     CreatedAtUtc = DateTime.UtcNow,
@@ -383,7 +383,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
 
             string normalizedIp = NormaliseIpAddress(ipAddress);
             int ipBlockWindow = await _settings.GetIntAsync(SystemSettingKeyEnum.Policies_WebApplicationFirewall_Ip_IpBlacklistWindowInMinutes);
-            int recentFailures = await _db.Log_LoginAttempts
+            int recentFailures = await _db.WithinTenancy_Log_LoginAttempts
                 .CountAsync(
                     a => a.ClientIpAddress == normalizedIp
                     && !a.WasLoginSuccessful
@@ -412,7 +412,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
             DateTime now = DateTime.UtcNow;
             DateTime windowStart = now.AddMinutes(-(await _settings.GetIntAsync(SystemSettingKeyEnum.Policies_WebApplicationFirewall_Ip_IpBlacklistWindowInMinutes)));
 
-            int recentFailures = await _db.Log_LoginAttempts
+            int recentFailures = await _db.WithinTenancy_Log_LoginAttempts
                 .CountAsync(
                     a => a.ClientIpAddress == normalizedIp
                     && !a.WasLoginSuccessful
@@ -427,7 +427,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
             int permananetBandWindow = await _settings.GetIntAsync(SystemSettingKeyEnum.Policies_WebApplicationFirewall_Ip_PermanentBanWindowHours);
             int temporaryBlockDuration = await _settings.GetIntAsync(SystemSettingKeyEnum.Policies_WebApplicationFirewall_Listing_TemporaryIpBlacklistDurationInMinutes_Default);
 
-            List<SystemWafIpBlacklistEntryEntityModel>? blockHistory = await _db.System_Waf_IpBlacklist
+            List<SystemWafIpBlacklistEntryEntityModel>? blockHistory = await _db.WithinTenancy_System_Waf_IpBlacklist
                 .Where(b => b.IpAddress == normalizedIpObj)
                 .ToListAsync(ct);
 
@@ -443,7 +443,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
 
             if (activeBlockIds.Count > 0)
             {
-                await _db.System_Waf_IpBlacklist
+                await _db.WithinTenancy_System_Waf_IpBlacklist
                     .Where(b => activeBlockIds.Contains(b.Id))
                     .ExecuteUpdateAsync(s => s
                         .SetProperty(b => b.UnblacklistedAtUtc, now)
@@ -456,7 +456,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
 
             if (shouldBePermanent)
             {
-                _db.System_Waf_IpBlacklist.Add(new SystemWafIpBlacklistEntryEntityModel
+                _db.WithinTenancy_System_Waf_IpBlacklist.Add(new SystemWafIpBlacklistEntryEntityModel
                 {
                     Id = Guid.NewGuid(),
                     CreatedAtUtc = now,
@@ -479,7 +479,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
             }
             else
             {
-                _db.System_Waf_IpBlacklist.Add(new SystemWafIpBlacklistEntryEntityModel
+                _db.WithinTenancy_System_Waf_IpBlacklist.Add(new SystemWafIpBlacklistEntryEntityModel
                 {
                     Id = Guid.NewGuid(),
                     CreatedAtUtc = now,
@@ -520,7 +520,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
 
             DateTime now = DateTime.UtcNow;
 
-            int distinctIps = await _db.Log_LoginAttempts
+            int distinctIps = await _db.WithinTenancy_Log_LoginAttempts
                 .Where(
                     a => a.TargetUserId == user.Id
                     && !a.WasLoginSuccessful
@@ -540,7 +540,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
                 WafLogPrefix, user.Id, distinctIps, windowMinutes
             );
 
-            bool isUserAlreadyLocked = await _db.System_Waf_UserBlacklist
+            bool isUserAlreadyLocked = await _db.WithinTenancy_System_Waf_UserBlacklist
                 .AnyAsync(
                     b => b.UserId == user.Id
                     && b.UnblacklistedAtUtc == null
@@ -551,7 +551,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
             if (isUserAlreadyLocked)
                 return;
 
-            _db.System_Waf_UserBlacklist.Add(new SystemWafUserBlacklistEntryEntityModel
+            _db.WithinTenancy_System_Waf_UserBlacklist.Add(new SystemWafUserBlacklistEntryEntityModel
             {
                 Id = Guid.NewGuid(),
                 CreatedAtUtc = now,
@@ -580,7 +580,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
             var now = DateTime.UtcNow;
             IPAddress normalizedIpObj = NormaliseIpAddressObject(ipAddress);
 
-            await _db.System_Waf_IpBlacklist
+            await _db.WithinTenancy_System_Waf_IpBlacklist
                 .Where(
                     b => b.IpAddress == normalizedIpObj
                     && b.UnblacklistedAtUtc == null
@@ -592,7 +592,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
 
             int tempBlockDuration = await _settings.GetIntAsync(SystemSettingKeyEnum.Policies_WebApplicationFirewall_Listing_TemporaryIpBlacklistDurationInMinutes_Default);
 
-            _db.System_Waf_IpBlacklist.Add(new SystemWafIpBlacklistEntryEntityModel
+            _db.WithinTenancy_System_Waf_IpBlacklist.Add(new SystemWafIpBlacklistEntryEntityModel
             {
                 Id = Guid.NewGuid(),
                 CreatedAtUtc = now,
@@ -620,7 +620,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
             DateTime now = DateTime.UtcNow;
             IPAddress normalizedIpObj = NormaliseIpAddressObject(ipAddress);
 
-            int affected = await _db.System_Waf_IpBlacklist
+            int affected = await _db.WithinTenancy_System_Waf_IpBlacklist
                 .Where(
                     b => b.IpAddress == normalizedIpObj
                     && b.UnblacklistedAtUtc == null
@@ -656,7 +656,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
             DateTime now = DateTime.UtcNow;
 
             // mark any existing active blocks as superseded
-            await _db.System_Waf_UserBlacklist
+            await _db.WithinTenancy_System_Waf_UserBlacklist
                 .Where(
                     b => b.UserId == user.Id
                     && b.UnblacklistedAtUtc == null
@@ -668,7 +668,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
 
             int lockoutDuration = await _settings.GetIntAsync(SystemSettingKeyEnum.Policies_WebApplicationFirewall_User_UserLockoutDurationInMinutes);
 
-            _db.System_Waf_UserBlacklist.Add(new SystemWafUserBlacklistEntryEntityModel
+            _db.WithinTenancy_System_Waf_UserBlacklist.Add(new SystemWafUserBlacklistEntryEntityModel
             {
                 Id = Guid.NewGuid(),
                 CreatedAtUtc = now,
@@ -695,7 +695,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
         {
             DateTime now = DateTime.UtcNow;
 
-            int affected = await _db.System_Waf_UserBlacklist
+            int affected = await _db.WithinTenancy_System_Waf_UserBlacklist
                 .Where(
                     b => b.UserId == user.Id
                     && b.UnblacklistedAtUtc == null
@@ -733,7 +733,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
             DateTime now = DateTime.UtcNow;
 
             // mark any existing active whitelist entries as superseded
-            await _db.System_Waf_IpWhitelist
+            await _db.WithinTenancy_System_Waf_IpWhitelist
                 .Where(
                     w => w.IpAddress == ipAddress
                     && w.UnwhitelistedAtUtc == null
@@ -747,7 +747,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
 
             int whitelistDuration = await _settings.GetIntAsync(SystemSettingKeyEnum.Policies_WebApplicationFirewall_Listing_TemporaryIpWhitelistDurationInMinutes_Default);
 
-            _db.System_Waf_IpWhitelist.Add(new SystemWafIpWhitelistEntryEntityModel
+            _db.WithinTenancy_System_Waf_IpWhitelist.Add(new SystemWafIpWhitelistEntryEntityModel
             {
                 Id = Guid.NewGuid(),
                 CreatedAtUtc = now,
@@ -775,7 +775,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
             DateTime now = DateTime.UtcNow;
             string normalizedIp = NormaliseIpAddress(ipAddress);
 
-            int affected = await _db.System_Waf_IpWhitelist
+            int affected = await _db.WithinTenancy_System_Waf_IpWhitelist
                 .Where(
                     w => w.IpAddress == ipAddress
                     && w.UnwhitelistedAtUtc == null
@@ -808,7 +808,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
             DateTime now = DateTime.UtcNow;
 
             // mark any existing active whitelist entries as superseded
-            await _db.System_Waf_UserWhitelist
+            await _db.WithinTenancy_System_Waf_UserWhitelist
                 .Where(
                     w => w.UserId == user.Id
                     && w.UnwhitelistedAtUtc == null
@@ -820,7 +820,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
 
             int whitelistDuration = await _settings.GetIntAsync(SystemSettingKeyEnum.Policies_WebApplicationFirewall_Listing_TemporaryUserWhitelistDurationInMinutes_Default);
 
-            _db.System_Waf_UserWhitelist.Add(new SystemWafUserWhitelistEntryEntityModel
+            _db.WithinTenancy_System_Waf_UserWhitelist.Add(new SystemWafUserWhitelistEntryEntityModel
             {
                 Id = Guid.NewGuid(),
                 CreatedAtUtc = now,
@@ -847,7 +847,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
         {
             DateTime now = DateTime.UtcNow;
 
-            int affected = await _db.System_Waf_UserWhitelist
+            int affected = await _db.WithinTenancy_System_Waf_UserWhitelist
                 .Where(
                     w => w.UserId == user.Id
                     && w.UnwhitelistedAtUtc == null
@@ -877,7 +877,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
         )
         {
             DateTime now = DateTime.UtcNow;
-            var query = _db.System_Waf_IpBlacklist.AsQueryable();
+            var query = _db.WithinTenancy_System_Waf_IpBlacklist.AsQueryable();
 
             if (!includeExpired)
                 query = query.Where(
@@ -898,7 +898,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
             DateTime now = DateTime.UtcNow;
 
             // query the whitelist table for active entries
-            List<SystemWafIpWhitelistEntryEntityModel> whitelistedIps = await _db.System_Waf_IpWhitelist
+            List<SystemWafIpWhitelistEntryEntityModel> whitelistedIps = await _db.WithinTenancy_System_Waf_IpWhitelist
                 .Where(
                     w => w.UnwhitelistedAtUtc == null
                     && (w.ExpiresAtUtc == null || w.ExpiresAtUtc > now)
@@ -945,7 +945,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
             CancellationToken ct = default
         )
         {
-            var query = _db.Log_LoginAttempts.AsQueryable();
+            var query = _db.WithinTenancy_Log_LoginAttempts.AsQueryable();
 
             if (!string.IsNullOrEmpty(ipFilter))
                 query = query.Where(a => a.ClientIpAddress == ipFilter);

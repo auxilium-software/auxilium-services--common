@@ -31,47 +31,52 @@ public class AuxiliumDbContext : DbContext
 
 
 
-    public DbSet<CalendarEventEntityModel> CalendarEvents { get; set; }
-    public DbSet<CalendarEventInviteEntityModel> CalendarEventInvites { get; set; }
-    public DbSet<CaseEntityModel> Cases { get; set; }
-    public DbSet<CaseAdditionalPropertyEntityModel> CaseAdditionalProperties { get; set; }
-    public DbSet<CaseClientEntityModel> CaseClients { get; set; }
-    public DbSet<CaseFileEntityModel> CaseFiles { get; set; }
-    public DbSet<CaseMessageEntityModel> CaseMessages { get; set; }
-    public DbSet<CaseTimelineEntryEntityModel> CaseTimelineEntries { get; set; }
-    public DbSet<CaseTodoEntityModel> CaseTodos { get; set; }
-    public DbSet<CaseWorkerEntityModel> CaseWorkers { get; set; }
-    public DbSet<DataEnumeratorEntityModel> DataEnumerator_Enumerators { get; set; }
-    public DbSet<DataEnumeratorTranslationEntityModel> DataEnumerator_EnumeratorTranslations { get; set; }
-    public DbSet<DataEnumeratorValueEntityModel> DataEnumerator_EnumeratorValues { get; set; }
-    public DbSet<DataEnumeratorValueTranslationEntityModel> DataEnumerator_EnumeratorValueTranslations { get; set; }
-    public DbSet<LogCaseMessageReadByEventEntityModel> Log_CaseMessageReadBys { get; set; }
-    public DbSet<LogCaseModificationEventEntityModel> Log_CaseModificationEvents { get; set; }
-    public DbSet<LogLoginAttemptEventEntityModel> Log_LoginAttempts { get; set; }
-    public DbSet<LogSystemBulletinEntryDismissalEventEntityModel> Log_SystemBulletinEntryDismissals { get; set; }
-    public DbSet<LogSystemBulletinEntryViewEventEntityModel> Log_SystemBulletinEntryViews { get; set; }
-    public DbSet<LogSystemMessageQueueSentEmailEntityModel> Log_SystemMessageQueueSentEmail { get; set; }
-    public DbSet<LogSystemMessageQueueFailedActionEntityModel> Log_SystemMessageQueueFailedActions { get; set; }
-    public DbSet<LogUserModificationEventEntityModel> Log_UserModificationEvents { get; set; }
-    public DbSet<SystemBulletinEntryEntityModel> System_Bulletins { get; set; }
-    public DbSet<SystemSettingEntityModel> System_Settings { get; set; }
-    public DbSet<SystemWafIpBlacklistEntryEntityModel> System_Waf_IpBlacklist { get; set; }
-    public DbSet<SystemWafIpWhitelistEntryEntityModel> System_Waf_IpWhitelist { get; set; }
-    public DbSet<SystemWafUserBlacklistEntryEntityModel> System_Waf_UserBlacklist { get; set; }
-    public DbSet<SystemWafUserWhitelistEntryEntityModel> System_Waf_UserWhitelist { get; set; }
-    public DbSet<TenantEntityModel> Tenants { get; set; }
-    public DbSet<UserEntityModel> Users { get; set; }
-    public DbSet<UserAdditionalPropertyEntityModel> UserAdditionalProperties { get; set; }
-    public DbSet<UserFileEntityModel> UserFiles { get; set; }
-    public DbSet<PasswordSetTokenEntityModel> UserPasswordSetTokens { get; set; }
-    public DbSet<RefreshTokenEntityModel> UserRefreshTokens { get; set; }
-    public DbSet<TotpRecoveryCodeEntityModel> UserTotpRecoveryCodes { get; set; }
-    public DbSet<WemwbsAssessmentEntityModel> UserWemwbsAssessments { get; set; }
+    public DbSet<CalendarEventEntityModel> WithinTenancy_CalendarEvents { get; set; }
+    public DbSet<CalendarEventInviteEntityModel> WithinTenancy_CalendarEventInvites { get; set; }
+    public DbSet<CaseEntityModel> WithinTenancy_Cases { get; set; }
+    public DbSet<CaseAdditionalPropertyEntityModel> WithinTenancy_CaseAdditionalProperties { get; set; }
+    public DbSet<CaseClientEntityModel> WithinTenancy_CaseClients { get; set; }
+    public DbSet<CaseFileEntityModel> WithinTenancy_CaseFiles { get; set; }
+    public DbSet<CaseMessageEntityModel> WithinTenancy_CaseMessages { get; set; }
+    public DbSet<CaseTimelineEntryEntityModel> WithinTenancy_CaseTimelineEntries { get; set; }
+    public DbSet<CaseTodoEntityModel> WithinTenancy_CaseTodos { get; set; }
+    public DbSet<CaseWorkerEntityModel> WithinTenancy_CaseWorkers { get; set; }
+    public DbSet<DataEnumeratorEntityModel> WithinTenancy_DataEnumerator_Enumerators { get; set; }
+    public DbSet<DataEnumeratorTranslationEntityModel> WithinTenancy_DataEnumerator_EnumeratorTranslations { get; set; }
+    public DbSet<DataEnumeratorValueEntityModel> WithinTenancy_DataEnumerator_EnumeratorValues { get; set; }
+    public DbSet<DataEnumeratorValueTranslationEntityModel> WithinTenancy_DataEnumerator_EnumeratorValueTranslations { get; set; }
+    public DbSet<LogCaseMessageReadByEventEntityModel> WithinTenancy_Log_CaseMessageReadBys { get; set; }
+    public DbSet<LogCaseModificationEventEntityModel> WithinTenancy_Log_CaseModificationEvents { get; set; }
+    public DbSet<LogLoginAttemptEventEntityModel> WithinTenancy_Log_LoginAttempts { get; set; }
+    public DbSet<LogSystemBulletinEntryDismissalEventEntityModel> WithinTenancy_Log_SystemBulletinEntryDismissals { get; set; }
+    public DbSet<LogSystemBulletinEntryViewEventEntityModel> WithinTenancy_Log_SystemBulletinEntryViews { get; set; }
+    public DbSet<LogSystemMessageQueueSentEmailEntityModel> WithinTenancy_Log_SystemMessageQueueSentEmail { get; set; }
+    public DbSet<LogSystemMessageQueueFailedActionEntityModel> WithinTenancy_Log_SystemMessageQueueFailedActions { get; set; }
+    public DbSet<LogUserModificationEventEntityModel> WithinTenancy_Log_UserModificationEvents { get; set; }
+    public DbSet<SystemBulletinEntryEntityModel> WithinTenancy_System_Bulletins { get; set; }
+    public DbSet<SystemSettingEntityModel> WithinTenancy_System_Settings { get; set; }
+    public DbSet<SystemWafIpBlacklistEntryEntityModel> WithinTenancy_System_Waf_IpBlacklist { get; set; }
+    public DbSet<SystemWafIpWhitelistEntryEntityModel> WithinTenancy_System_Waf_IpWhitelist { get; set; }
+    public DbSet<SystemWafUserBlacklistEntryEntityModel> WithinTenancy_System_Waf_UserBlacklist { get; set; }
+    public DbSet<SystemWafUserWhitelistEntryEntityModel> WithinTenancy_System_Waf_UserWhitelist { get; set; }
+    public DbSet<UserEntityModel> WithinTenancy_Users { get; set; }
+    public DbSet<UserAdditionalPropertyEntityModel> WithinTenancy_UserAdditionalProperties { get; set; }
+    public DbSet<UserFileEntityModel> WithinTenancy_UserFiles { get; set; }
+    public DbSet<PasswordSetTokenEntityModel> WithinTenancy_UserPasswordSetTokens { get; set; }
+    public DbSet<RefreshTokenEntityModel> WithinTenancy_UserRefreshTokens { get; set; }
+    public DbSet<TotpRecoveryCodeEntityModel> WithinTenancy_UserTotpRecoveryCodes { get; set; }
+    public DbSet<WemwbsAssessmentEntityModel> WithinTenancy_UserWemwbsAssessments { get; set; }
 
 
 
 
-    
+
+    public DbSet<TenantEntityModel> Global_Tenants { get; set; }
+
+
+
+
+
     protected override void ConfigureConventions(ModelConfigurationBuilder builder)
     {
         builder.Properties<DateTime>()
@@ -111,7 +116,7 @@ public class AuxiliumDbContext : DbContext
         // calendar__events
         modelBuilder.Entity<CalendarEventEntityModel>(entity =>
         {
-            entity.ToTable("calendar__events");
+            entity.ToTable("within_tenancy__calendar__events");
             entity.HasKey(e => e.Id);
 
 
@@ -148,7 +153,7 @@ public class AuxiliumDbContext : DbContext
         // calendar__event_invites
         modelBuilder.Entity<CalendarEventInviteEntityModel>(entity =>
         {
-            entity.ToTable("calendar__event_invites");
+            entity.ToTable("within_tenancy__calendar__event_invites");
             entity.HasKey(e => e.Id);
 
 
@@ -184,7 +189,7 @@ public class AuxiliumDbContext : DbContext
         // case__cases
         modelBuilder.Entity<CaseEntityModel>(entity =>
         {
-            entity.ToTable("case__cases");
+            entity.ToTable("within_tenancy__case__cases");
             entity.HasKey(e => e.Id);
 
 
@@ -210,7 +215,7 @@ public class AuxiliumDbContext : DbContext
         // case__additional_properties
         modelBuilder.Entity<CaseAdditionalPropertyEntityModel>(entity =>
         {
-            entity.ToTable("case__additional_properties");
+            entity.ToTable("within_tenancy__case__additional_properties");
             entity.HasKey(e => e.Id);
             
             entity.Property(e => e.Id)                              .HasColumnName("id")                                        .HasColumnType("char(36)")                                                                                                          .IsRequired();
@@ -234,7 +239,7 @@ public class AuxiliumDbContext : DbContext
         // case__clients
         modelBuilder.Entity<CaseClientEntityModel>(entity =>
         {
-            entity.ToTable("case__clients");
+            entity.ToTable("within_tenancy__case__clients");
             entity.HasKey(e => e.Id);
             
             entity.Property(e => e.Id)                              .HasColumnName("id")                                        .HasColumnType("char(36)")                                                                                                          .IsRequired();
@@ -256,7 +261,7 @@ public class AuxiliumDbContext : DbContext
         // case__files
         modelBuilder.Entity<CaseFileEntityModel>(entity =>
         {
-            entity.ToTable("case__files");
+            entity.ToTable("within_tenancy__case__files");
             entity.HasKey(e => e.Id);
             
             entity.Property(e => e.Id)                              .HasColumnName("id")                                        .HasColumnType("char(36)")                                                                                                          .IsRequired();
@@ -283,7 +288,7 @@ public class AuxiliumDbContext : DbContext
         // case__messages
         modelBuilder.Entity<CaseMessageEntityModel>(entity =>
         {
-            entity.ToTable("case__messages");
+            entity.ToTable("within_tenancy__case__messages");
             entity.HasKey(e => e.Id);
             
             entity.Property(e => e.Id)                              .HasColumnName("id")                                        .HasColumnType("char(36)")                                                                                                          .IsRequired();
@@ -309,7 +314,7 @@ public class AuxiliumDbContext : DbContext
         // case__timeline
         modelBuilder.Entity<CaseTimelineEntryEntityModel>(entity =>
         {
-            entity.ToTable("case__timeline");
+            entity.ToTable("within_tenancy__case__timeline");
             entity.HasKey(e => e.Id);
             
             entity.Property(e => e.Id)                              .HasColumnName("id")                                        .HasColumnType("char(36)")                                                                                                          .IsRequired();
@@ -334,7 +339,7 @@ public class AuxiliumDbContext : DbContext
         // case__todos
         modelBuilder.Entity<CaseTodoEntityModel>(entity =>
         {
-            entity.ToTable("case__todos");
+            entity.ToTable("within_tenancy__case__todos");
             entity.HasKey(e => e.Id);
             
             entity.Property(e => e.Id)                              .HasColumnName("id")                                        .HasColumnType("char(36)")                                                                                                          .IsRequired();
@@ -367,7 +372,7 @@ public class AuxiliumDbContext : DbContext
         // case__workers
         modelBuilder.Entity<CaseWorkerEntityModel>(entity =>
         {
-            entity.ToTable("case__workers");
+            entity.ToTable("within_tenancy__case__workers");
             entity.HasKey(e => e.Id);
 
 
@@ -393,7 +398,7 @@ public class AuxiliumDbContext : DbContext
         // enumerator__enumerators
         modelBuilder.Entity<DataEnumeratorEntityModel>(entity =>
         {
-            entity.ToTable("enumerator__enumerators");
+            entity.ToTable("within_tenancy__enumerator__enumerators");
             entity.HasKey(e => e.Id);
 
 
@@ -420,7 +425,7 @@ public class AuxiliumDbContext : DbContext
         // enumerator__enumerator_translations
         modelBuilder.Entity<DataEnumeratorTranslationEntityModel>(entity =>
         {
-            entity.ToTable("enumerator__enumerator_translations");
+            entity.ToTable("within_tenancy__enumerator__enumerator_translations");
             entity.HasKey(e => e.Id);
 
 
@@ -449,7 +454,7 @@ public class AuxiliumDbContext : DbContext
         // enumerator__enumerator_values
         modelBuilder.Entity<DataEnumeratorValueEntityModel>(entity =>
         {
-            entity.ToTable("enumerator__enumerator_values");
+            entity.ToTable("within_tenancy__enumerator__enumerator_values");
             entity.HasKey(e => e.Id);
 
 
@@ -481,7 +486,7 @@ public class AuxiliumDbContext : DbContext
         // enumerator__enumerator_value_translations
         modelBuilder.Entity<DataEnumeratorValueTranslationEntityModel>(entity =>
         {
-            entity.ToTable("enumerator__enumerator_value_translations");
+            entity.ToTable("within_tenancy__enumerator__enumerator_value_translations");
             entity.HasKey(e => e.Id);
 
 
@@ -510,7 +515,7 @@ public class AuxiliumDbContext : DbContext
         // log__case_messages_read_bys
         modelBuilder.Entity<LogCaseMessageReadByEventEntityModel>(entity =>
         {
-            entity.ToTable("log__case_messages_read_bys");
+            entity.ToTable("within_tenancy__log__case_messages_read_bys");
             entity.HasKey(e => e.Id);
             
             entity.Property(e => e.Id)                              .HasColumnName("id")                                        .HasColumnType("char(36)")                                                                                                          .IsRequired();
@@ -530,7 +535,7 @@ public class AuxiliumDbContext : DbContext
         // log__case_modification_events
         modelBuilder.Entity<LogCaseModificationEventEntityModel>(entity =>
         {
-            entity.ToTable("log__case_modification_events");
+            entity.ToTable("within_tenancylog__case_modification_events");
             entity.HasKey(e => e.Id);
             
             entity.Property(e => e.Id)                              .HasColumnName("id")                                        .HasColumnType("char(36)")                                                                                                          .IsRequired();
@@ -557,7 +562,7 @@ public class AuxiliumDbContext : DbContext
         // log__login_attempts
         modelBuilder.Entity<LogLoginAttemptEventEntityModel>(entity =>
         {
-            entity.ToTable("log__login_attempts");
+            entity.ToTable("within_tenancy__log__login_attempts");
             entity.HasKey(e => e.Id);
 
             entity.Property(e => e.Id)                              .HasColumnName("id")                                        .HasColumnType("char(36)")                                                                                                          .IsRequired();
@@ -577,7 +582,7 @@ public class AuxiliumDbContext : DbContext
         // log__system_bulletin_dismissals
         modelBuilder.Entity<LogSystemBulletinEntryDismissalEventEntityModel>(entity =>
         {
-            entity.ToTable("log__system_bulletin_dismissals");
+            entity.ToTable("within_tenancy__log__system_bulletin_dismissals");
             entity.HasKey(e => e.Id);
             
             entity.Property(e => e.Id)                              .HasColumnName("id")                                        .HasColumnType("char(36)")                                                                                                          .IsRequired();
@@ -597,7 +602,7 @@ public class AuxiliumDbContext : DbContext
         // log__system_bulletin_views
         modelBuilder.Entity<LogSystemBulletinEntryViewEventEntityModel>(entity =>
         {
-            entity.ToTable("log__system_bulletin_views");
+            entity.ToTable("within_tenancy__log__system_bulletin_views");
             entity.HasKey(e => e.Id);
             
             entity.Property(e => e.Id)                              .HasColumnName("id")                                        .HasColumnType("char(36)")                                                                                                          .IsRequired();
@@ -615,7 +620,7 @@ public class AuxiliumDbContext : DbContext
         // log__system_message_queue_sent_emails
         modelBuilder.Entity<LogSystemMessageQueueSentEmailEntityModel>(entity =>
         {
-            entity.ToTable("log__system_message_queue_sent_emails");
+            entity.ToTable("within_tenancy__log__system_message_queue_sent_emails");
             entity.HasKey(e => e.Id);
             
             entity.Property(e => e.Id)                              .HasColumnName("id")                                        .HasColumnType("char(36)")                                                                                                          .IsRequired();
@@ -640,7 +645,7 @@ public class AuxiliumDbContext : DbContext
         // log__system_message_queue_failed_actions
         modelBuilder.Entity<LogSystemMessageQueueFailedActionEntityModel>(entity =>
         {
-            entity.ToTable("log__system_message_queue_failed_actions");
+            entity.ToTable("within_tenancy__log__system_message_queue_failed_actions");
             entity.HasKey(e => e.Id);
             
             entity.Property(e => e.Id)                              .HasColumnName("id")                                        .HasColumnType("char(36)")                                                                                                          .IsRequired();
@@ -661,7 +666,7 @@ public class AuxiliumDbContext : DbContext
         // log__user_modification_events
         modelBuilder.Entity<LogUserModificationEventEntityModel>(entity =>
         {
-            entity.ToTable("log__user_modification_events");
+            entity.ToTable("within_tenancy__log__user_modification_events");
             entity.HasKey(e => e.Id);
             
             entity.Property(e => e.Id)                              .HasColumnName("id")                                        .HasColumnType("char(36)")                                                                                                          .IsRequired();
@@ -688,7 +693,7 @@ public class AuxiliumDbContext : DbContext
         // system__bulletin
         modelBuilder.Entity<SystemBulletinEntryEntityModel>(entity =>
         {
-            entity.ToTable("system__bulletin");
+            entity.ToTable("within_tenancy__system__bulletin");
             entity.HasKey(e => e.Id);
 
 
@@ -717,7 +722,7 @@ public class AuxiliumDbContext : DbContext
         // system__settings
         modelBuilder.Entity<SystemSettingEntityModel>(entity =>
         {
-            entity.ToTable("system__settings");
+            entity.ToTable("within_tenancy__system__settings");
             entity.HasKey(e => e.Id);
 
 
@@ -743,7 +748,7 @@ public class AuxiliumDbContext : DbContext
         // system__waf__ip_blacklist
         modelBuilder.Entity<SystemWafIpBlacklistEntryEntityModel>(entity =>
         {
-            entity.ToTable("system__waf__ip_blacklist");
+            entity.ToTable("within_tenancy__system__waf__ip_blacklist");
             entity.HasKey(e => e.Id);
 
 
@@ -774,7 +779,7 @@ public class AuxiliumDbContext : DbContext
         // system__waf__ip_whitelist
         modelBuilder.Entity<SystemWafIpWhitelistEntryEntityModel>(entity =>
         {
-            entity.ToTable("system__waf__ip_whitelist");
+            entity.ToTable("within_tenancy__system__waf__ip_whitelist");
             entity.HasKey(e => e.Id);
 
 
@@ -804,7 +809,7 @@ public class AuxiliumDbContext : DbContext
         // system__waf__user_blacklist
         modelBuilder.Entity<SystemWafUserBlacklistEntryEntityModel>(entity =>
         {
-            entity.ToTable("system__waf__user_blacklist");
+            entity.ToTable("within_tenancy__system__waf__user_blacklist");
             entity.HasKey(e => e.Id);
 
 
@@ -834,7 +839,7 @@ public class AuxiliumDbContext : DbContext
         // system__waf__user_whitelist
         modelBuilder.Entity<SystemWafUserWhitelistEntryEntityModel>(entity =>
         {
-            entity.ToTable("system__waf__user_whitelist");
+            entity.ToTable("within_tenancy__system__waf__user_whitelist");
             entity.HasKey(e => e.Id);
 
 
@@ -859,29 +864,10 @@ public class AuxiliumDbContext : DbContext
             entity.HasOne(e => e.CreatedByUser)                     .WithMany()                                                 .HasForeignKey(e => e.CreatedByUserId)          .OnDelete(DeleteBehavior.SetNull);
         });
 
-
-
-        // tenants__tenants
-        modelBuilder.Entity<TenantEntityModel>(entity =>
-        {
-            entity.ToTable("tenants__tenants");
-            entity.HasKey(e => e.Id);
-
-
-            
-            entity.Property(e => e.Id)                              .HasColumnName("id")                                        .HasColumnType("char(36)")                                                                                                          .IsRequired();
-            entity.Property(e => e.Domain)                          .HasColumnName("domain")                                    .HasColumnType("varchar(253)")                                                                                                      .IsRequired();
-            entity.Property(e => e.LifecycleStatus)                 .HasColumnName("lifecycle_status")                          .HasColumnType("text")                  .HasConversion(new JsonPropertyNameEnumConverter<TenantLifecycleStatusEnum>())              .IsRequired();
-
-
-            
-            entity.HasIndex(e => e.Domain)                          .IsUnique();
-        });
-
         // user__users
         modelBuilder.Entity<UserEntityModel>(entity =>
         {
-            entity.ToTable("user__users");
+            entity.ToTable("within_tenancy__user__users");
             entity.HasKey(e => e.Id);
 
 
@@ -931,7 +917,7 @@ public class AuxiliumDbContext : DbContext
         // user__additional_properties
         modelBuilder.Entity<UserAdditionalPropertyEntityModel>(entity =>
         {
-            entity.ToTable("user__additional_properties");
+            entity.ToTable("within_tenancy__user__additional_properties");
             entity.HasKey(e => e.Id);
             
             entity.Property(e => e.Id)                              .HasColumnName("id")                                        .HasColumnType("char(36)")                                                                                                          .IsRequired();
@@ -955,7 +941,7 @@ public class AuxiliumDbContext : DbContext
         // user__files
         modelBuilder.Entity<UserFileEntityModel>(entity =>
         {
-            entity.ToTable("user__files");
+            entity.ToTable("within_tenancy__user__files");
             entity.HasKey(e => e.Id);
             
             entity.Property(e => e.Id)                              .HasColumnName("id")                                        .HasColumnType("char(36)")                                                                                                          .IsRequired();
@@ -982,7 +968,7 @@ public class AuxiliumDbContext : DbContext
         // user__password_set_tokens
         modelBuilder.Entity<PasswordSetTokenEntityModel>(entity =>
         {
-            entity.ToTable("user__password_set_tokens");
+            entity.ToTable("within_tenancy__user__password_set_tokens");
             entity.HasKey(e => e.Id);
             
             entity.Property(e => e.Id)                              .HasColumnName("id")                                        .HasColumnType("char(36)")                                                                                                          .IsRequired();
@@ -1006,7 +992,7 @@ public class AuxiliumDbContext : DbContext
         // user__refresh_tokens
         modelBuilder.Entity<RefreshTokenEntityModel>(entity =>
         {
-            entity.ToTable("user__refresh_tokens");
+            entity.ToTable("within_tenancy__user__refresh_tokens");
             entity.HasKey(e => e.Id);
             
             entity.Property(e => e.Id)                              .HasColumnName("id")                                        .HasColumnType("char(36)")                                                                                                          .IsRequired();
@@ -1026,7 +1012,7 @@ public class AuxiliumDbContext : DbContext
         // user__totp_recovery_codes
         modelBuilder.Entity<TotpRecoveryCodeEntityModel>(entity =>
         {
-            entity.ToTable("user__totp_recovery_codes");
+            entity.ToTable("within_tenancy__user__totp_recovery_codes");
             entity.HasKey(e => e.Id);
             
             entity.Property(e => e.Id)                              .HasColumnName("id")                                        .HasColumnType("char(36)")                                                                                                          .IsRequired();
@@ -1045,7 +1031,7 @@ public class AuxiliumDbContext : DbContext
         // user__wemwbs_assessments
         modelBuilder.Entity<WemwbsAssessmentEntityModel>(entity =>
         {
-            entity.ToTable("user__wemwbs_assessments");
+            entity.ToTable("within_tenancy__user__wemwbs_assessments");
             entity.HasKey(e => e.Id);
 
 
@@ -1079,6 +1065,26 @@ public class AuxiliumDbContext : DbContext
             entity.HasOne(e => e.User)                              .WithMany(u => u.WEMWBSAssessments)                         .HasForeignKey(e => e.UserId)                   .OnDelete(DeleteBehavior.Cascade);
 
             entity.HasIndex(e => new { e.UserId, e.CreatedAtUtc });
+        });
+
+
+
+        // tenants__tenants
+        modelBuilder.Entity<TenantEntityModel>(entity =>
+        {
+            entity.ToTable("global__tenancy_tenants");
+            entity.HasKey(e => e.Id);
+
+
+            
+            entity.Property(e => e.Id)                              .HasColumnName("id")                                        .HasColumnType("char(36)")                                                                                                          .IsRequired();
+            entity.Property(e => e.CreatedAt)                       .HasColumnName("created_at")                                .HasColumnType("datetime")                                                                                                          .IsRequired();
+            entity.Property(e => e.Domain)                          .HasColumnName("domain")                                    .HasColumnType("varchar(253)")                                                                                                      .IsRequired();
+            entity.Property(e => e.LifecycleStatus)                 .HasColumnName("lifecycle_status")                          .HasColumnType("text")                  .HasConversion(new JsonPropertyNameEnumConverter<TenantLifecycleStatusEnum>())              .IsRequired();
+
+
+            
+            entity.HasIndex(e => e.Domain)                          .IsUnique();
         });
 
 

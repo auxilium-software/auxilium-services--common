@@ -10,9 +10,8 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
     {
         [Key]
         public required Guid Id { get; set; }
-
+        public required DateTime CreatedAt { get; set; }
         public required string Domain { get; set; }
-
         public required TenantLifecycleStatusEnum LifecycleStatus { get; set; }
 
 
