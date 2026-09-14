@@ -579,7 +579,7 @@ public class AuxiliumDbContext : DbContext
         // log__case_modification_events
         modelBuilder.Entity<LogCaseModificationEventEntityModel>(entity =>
         {
-            entity.ToTable("within_tenancylog__case_modification_events");
+            entity.ToTable("within_tenancy__log__case_modification_events");
             entity.HasKey(e => e.Id);
             
             entity.Property(e => e.Id)                              .HasColumnName("id")                                        .HasColumnType("char(36)")                                                                                                          .IsRequired();
