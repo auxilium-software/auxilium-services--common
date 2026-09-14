@@ -20,7 +20,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Tenancy.TenantLookup
         public async Task<TenantLookupResult?> FindByDomainAsync(string domain, CancellationToken ct = default)
         {
             // tenants__tenants has no query filter, so this is safe to run before a tenant is resolved
-            return await this._db.Tenants
+            return await this._db.Global_Tenants
                 .AsNoTracking()
                 .Where(t => t.Domain == domain)
                 .Select(t => new TenantLookupResult(t.Id, t.LifecycleStatus))
