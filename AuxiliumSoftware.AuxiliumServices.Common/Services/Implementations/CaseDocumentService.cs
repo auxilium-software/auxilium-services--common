@@ -32,7 +32,7 @@ public class CaseDocumentService : ICaseDocumentService
     #region ========================= CASE DOCUMENT OPERATIONS =========================
     public async Task<CaseEntityModel?> GetDocumentAsync(Guid caseId)
     {
-        return await _db.Cases
+        return await _db.WithinTenancy_Cases
             .Include(c => c.Workers)
             .Include(c => c.Clients)
             .Include(c => c.AdditionalProperties)
@@ -51,7 +51,7 @@ public class CaseDocumentService : ICaseDocumentService
         var entry = _db.Entry(caseDoc);
         if (entry.State == EntityState.Detached)
         {
-            _db.Cases.Update(caseDoc);
+            _db.WithinTenancy_Cases.Update(caseDoc);
         }
 
         await _db.SaveChangesAsync();
@@ -64,7 +64,7 @@ public class CaseDocumentService : ICaseDocumentService
         try
         {
             // check if the relationship already exists
-            var exists = await _db.CaseClients
+            var exists = await _db.WithinTenancy_CaseClients
                 .AnyAsync(cc => cc.CaseId == caseId && cc.UserId == userId);
 
             if (exists)
@@ -83,10 +83,10 @@ public class CaseDocumentService : ICaseDocumentService
                 CreatedAtUtc = DateTime.UtcNow
             };
 
-            _db.CaseClients.Add(caseClient);
+            _db.WithinTenancy_CaseClients.Add(caseClient);
 
             // update the LastUpdatedAt timestamp for the case
-            var caseEntity = await _db.Cases.FindAsync(caseId);
+            var caseEntity = await _db.WithinTenancy_Cases.FindAsync(caseId);
             if (caseEntity != null)
             {
                 caseEntity.LastUpdatedAtUtc = DateTime.UtcNow;
@@ -116,15 +116,15 @@ public class CaseDocumentService : ICaseDocumentService
     {
         try
         {
-            var caseClient = await _db.CaseClients
+            var caseClient = await _db.WithinTenancy_CaseClients
                 .FirstOrDefaultAsync(cc => cc.CaseId == caseId && cc.UserId == userId);
 
             if (caseClient != null)
             {
-                _db.CaseClients.Remove(caseClient);
+                _db.WithinTenancy_CaseClients.Remove(caseClient);
 
                 // update the LastUpdatedAt timestamp for the case
-                var caseEntity = await _db.Cases.FindAsync(caseId);
+                var caseEntity = await _db.WithinTenancy_Cases.FindAsync(caseId);
                 if (caseEntity != null)
                 {
                     caseEntity.LastUpdatedAtUtc = DateTime.UtcNow;
@@ -156,7 +156,7 @@ public class CaseDocumentService : ICaseDocumentService
         try
         {
             // check if the relationship already exists
-            var exists = await _db.CaseWorkers
+            var exists = await _db.WithinTenancy_CaseWorkers
                 .AnyAsync(cw => cw.CaseId == caseId && cw.UserId == userId);
 
             if (exists)
@@ -175,10 +175,10 @@ public class CaseDocumentService : ICaseDocumentService
                 CreatedAtUtc = DateTime.UtcNow
             };
 
-            _db.CaseWorkers.Add(caseWorker);
+            _db.WithinTenancy_CaseWorkers.Add(caseWorker);
 
             // update the LastUpdatedAt timestamp for the case
-            var caseEntity = await _db.Cases.FindAsync(caseId);
+            var caseEntity = await _db.WithinTenancy_Cases.FindAsync(caseId);
             if (caseEntity != null)
             {
                 caseEntity.LastUpdatedAtUtc = DateTime.UtcNow;
@@ -208,15 +208,15 @@ public class CaseDocumentService : ICaseDocumentService
     {
         try
         {
-            var caseWorker = await _db.CaseWorkers
+            var caseWorker = await _db.WithinTenancy_CaseWorkers
                 .FirstOrDefaultAsync(cw => cw.CaseId == caseId && cw.UserId == userId);
 
             if (caseWorker != null)
             {
-                _db.CaseWorkers.Remove(caseWorker);
+                _db.WithinTenancy_CaseWorkers.Remove(caseWorker);
 
                 // update the LastUpdatedAt timestamp for the case
-                var caseEntity = await _db.Cases.FindAsync(caseId);
+                var caseEntity = await _db.WithinTenancy_Cases.FindAsync(caseId);
                 if (caseEntity != null)
                 {
                     caseEntity.LastUpdatedAtUtc = DateTime.UtcNow;
@@ -248,7 +248,7 @@ public class CaseDocumentService : ICaseDocumentService
     {
         try
         {
-            return await _db.CaseAdditionalProperties
+            return await _db.WithinTenancy_CaseAdditionalProperties
                 .Where(a => a.CaseId == caseId)
                 .ToListAsync();
         }
@@ -280,9 +280,9 @@ public class CaseDocumentService : ICaseDocumentService
                 Content = additionalPropertyContent,
             };
 
-            _db.CaseAdditionalProperties.Add(newProperty);
+            _db.WithinTenancy_CaseAdditionalProperties.Add(newProperty);
 
-            var caseEntity = await _db.Cases.FindAsync(caseId);
+            var caseEntity = await _db.WithinTenancy_Cases.FindAsync(caseId);
             if (caseEntity != null)
             {
                 caseEntity.LastUpdatedAtUtc = DateTime.UtcNow;
@@ -321,7 +321,7 @@ public class CaseDocumentService : ICaseDocumentService
     {
         try
         {
-            var property = await _db.CaseAdditionalProperties
+            var property = await _db.WithinTenancy_CaseAdditionalProperties
                 .FirstOrDefaultAsync(a => a.CaseId == caseId && a.Id == additionalPropertyId)
                 ?? throw new KeyNotFoundException($"Property {additionalPropertyId} not found in case {caseId}");
 
@@ -332,7 +332,7 @@ public class CaseDocumentService : ICaseDocumentService
             property.LastUpdatedAtUtc = DateTime.UtcNow;
             property.LastUpdatedByUserId = actorUserId;
 
-            var caseEntity = await _db.Cases.FindAsync(caseId);
+            var caseEntity = await _db.WithinTenancy_Cases.FindAsync(caseId);
             if (caseEntity != null)
             {
                 caseEntity.LastUpdatedAtUtc = DateTime.UtcNow;
@@ -368,13 +368,13 @@ public class CaseDocumentService : ICaseDocumentService
     {
         try
         {
-            var property = await _db.CaseAdditionalProperties
+            var property = await _db.WithinTenancy_CaseAdditionalProperties
                 .FirstOrDefaultAsync(a => a.CaseId == caseId && a.Id == additionalPropertyId)
                 ?? throw new KeyNotFoundException($"Property {additionalPropertyId} not found in case {caseId}");
 
-            _db.CaseAdditionalProperties.Remove(property);
+            _db.WithinTenancy_CaseAdditionalProperties.Remove(property);
 
-            var caseEntity = await _db.Cases.FindAsync(caseId);
+            var caseEntity = await _db.WithinTenancy_Cases.FindAsync(caseId);
             if (caseEntity != null)
             {
                 caseEntity.LastUpdatedAtUtc = DateTime.UtcNow;
@@ -410,7 +410,7 @@ public class CaseDocumentService : ICaseDocumentService
         try
         {
             // just make sure that the case actually exists
-            var caseExists = await _db.Cases.AnyAsync(c => c.Id == caseId);
+            var caseExists = await _db.WithinTenancy_Cases.AnyAsync(c => c.Id == caseId);
             if (!caseExists)
             {
                 throw new KeyNotFoundException($"Case {caseId} not found");
@@ -432,10 +432,10 @@ public class CaseDocumentService : ICaseDocumentService
                 ReminderUtc = reminder
             };
 
-            _db.CaseTodos.Add(todo);
+            _db.WithinTenancy_CaseTodos.Add(todo);
 
             // update the LastUpdatedAt timestamp for the case
-            var caseEntity = await _db.Cases.FindAsync(caseId);
+            var caseEntity = await _db.WithinTenancy_Cases.FindAsync(caseId);
             if (caseEntity != null)
             {
                 caseEntity.LastUpdatedAtUtc = DateTime.UtcNow;
@@ -467,7 +467,7 @@ public class CaseDocumentService : ICaseDocumentService
     {
         try
         {
-            return await _db.CaseTodos
+            return await _db.WithinTenancy_CaseTodos
                 .Include(t => t.CreatedByUser)
                 .Include(t => t.AssignedToUser)
                 .Include(t => t.CompletedByUser)
@@ -484,7 +484,7 @@ public class CaseDocumentService : ICaseDocumentService
     {
         try
         {
-            return await _db.CaseTodos
+            return await _db.WithinTenancy_CaseTodos
                 .Include(t => t.CreatedByUser)
                 .Include(t => t.AssignedToUser)
                 .Include(t => t.CompletedByUser)
@@ -509,7 +509,7 @@ public class CaseDocumentService : ICaseDocumentService
     {
         try
         {
-            var todo = await _db.CaseTodos
+            var todo = await _db.WithinTenancy_CaseTodos
                 .FirstOrDefaultAsync(t => t.CaseId == caseId && t.Id == todoId)
                 ?? throw new KeyNotFoundException($"Todo {todoId} not found in case {caseId}");
 
@@ -525,7 +525,7 @@ public class CaseDocumentService : ICaseDocumentService
             }
 
             // update the LastUpdatedAt timestamp for the case
-            var caseEntity = await _db.Cases.FindAsync(caseId);
+            var caseEntity = await _db.WithinTenancy_Cases.FindAsync(caseId);
             if (caseEntity != null)
             {
                 caseEntity.LastUpdatedAtUtc = DateTime.UtcNow;
@@ -569,7 +569,7 @@ public class CaseDocumentService : ICaseDocumentService
     {
         try
         {
-            var todo = await _db.CaseTodos
+            var todo = await _db.WithinTenancy_CaseTodos
                 .FirstOrDefaultAsync(t => t.CaseId == caseId && t.Id == todoId)
                 ?? throw new KeyNotFoundException($"Todo {todoId} not found in case {caseId}");
 
@@ -583,7 +583,7 @@ public class CaseDocumentService : ICaseDocumentService
             todo.LastUpdatedAtUtc = DateTime.UtcNow;
 
             // update the LastUpdatedAt timestamp for the case
-            var caseEntity = await _db.Cases.FindAsync(caseId);
+            var caseEntity = await _db.WithinTenancy_Cases.FindAsync(caseId);
             if (caseEntity != null)
             {
                 caseEntity.LastUpdatedAtUtc = DateTime.UtcNow;
@@ -613,14 +613,14 @@ public class CaseDocumentService : ICaseDocumentService
     {
         try
         {
-            var todo = await _db.CaseTodos
+            var todo = await _db.WithinTenancy_CaseTodos
                 .FirstOrDefaultAsync(t => t.CaseId == caseId && t.Id == todoId)
                 ?? throw new KeyNotFoundException($"Todo {todoId} not found in case {caseId}");
 
-            _db.CaseTodos.Remove(todo);
+            _db.WithinTenancy_CaseTodos.Remove(todo);
 
             // update the LastUpdatedAt timestamp for the case
-            var caseEntity = await _db.Cases.FindAsync(caseId);
+            var caseEntity = await _db.WithinTenancy_Cases.FindAsync(caseId);
             if (caseEntity != null)
             {
                 caseEntity.LastUpdatedAtUtc = DateTime.UtcNow;
@@ -658,7 +658,7 @@ public class CaseDocumentService : ICaseDocumentService
         try
         {
             // just make sure that the case actually exists
-            var caseExists = await _db.Cases.AnyAsync(c => c.Id == caseId);
+            var caseExists = await _db.WithinTenancy_Cases.AnyAsync(c => c.Id == caseId);
             if (!caseExists)
             {
                 throw new KeyNotFoundException($"Case {caseId} not found");
@@ -677,10 +677,10 @@ public class CaseDocumentService : ICaseDocumentService
                 CreatedByUserId = createdBy
             };
 
-            _db.CaseTimelineEntries.Add(timelineEntry);
+            _db.WithinTenancy_CaseTimelineEntries.Add(timelineEntry);
 
             // update the LastUpdatedAt timestamp for the case
-            var caseEntity = await _db.Cases.FindAsync(caseId);
+            var caseEntity = await _db.WithinTenancy_Cases.FindAsync(caseId);
             if (caseEntity != null)
             {
                 caseEntity.LastUpdatedAtUtc = DateTime.UtcNow;
@@ -711,7 +711,7 @@ public class CaseDocumentService : ICaseDocumentService
     {
         try
         {
-            return await _db.CaseTimelineEntries
+            return await _db.WithinTenancy_CaseTimelineEntries
                 .FirstOrDefaultAsync(t => t.CaseId == caseId && t.Id == timelineEntryId);
         }
         catch (Exception ex)
@@ -725,7 +725,7 @@ public class CaseDocumentService : ICaseDocumentService
     {
         try
         {
-            return await _db.CaseTimelineEntries
+            return await _db.WithinTenancy_CaseTimelineEntries
                 .Where(t => t.CaseId == caseId)
                 .OrderByDescending(t => t.CreatedAtUtc)
                 .ToListAsync();
@@ -747,7 +747,7 @@ public class CaseDocumentService : ICaseDocumentService
     {
         try
         {
-            var timelineEntry = await _db.CaseTimelineEntries
+            var timelineEntry = await _db.WithinTenancy_CaseTimelineEntries
                 .FirstOrDefaultAsync(t => t.CaseId == caseId && t.Id == timelineEntryId)
                 ?? throw new KeyNotFoundException($"Timeline entry {timelineEntryId} not found in case {caseId}");
 
@@ -756,7 +756,7 @@ public class CaseDocumentService : ICaseDocumentService
             if (description != null) timelineEntry.Description = description;
 
             // update the LastUpdatedAt timestamp for the case
-            var caseEntity = await _db.Cases.FindAsync(caseId);
+            var caseEntity = await _db.WithinTenancy_Cases.FindAsync(caseId);
             if (caseEntity != null)
             {
                 caseEntity.LastUpdatedAtUtc = DateTime.UtcNow;
@@ -786,14 +786,14 @@ public class CaseDocumentService : ICaseDocumentService
     {
         try
         {
-            var timelineEntry = await _db.CaseTimelineEntries
+            var timelineEntry = await _db.WithinTenancy_CaseTimelineEntries
                 .FirstOrDefaultAsync(t => t.CaseId == caseId && t.Id == timelineEntryId)
                 ?? throw new KeyNotFoundException($"Timeline entry {timelineEntryId} not found in case {caseId}");
 
-            _db.CaseTimelineEntries.Remove(timelineEntry);
+            _db.WithinTenancy_CaseTimelineEntries.Remove(timelineEntry);
 
             // update the LastUpdatedAt timestamp for the case
-            var caseEntity = await _db.Cases.FindAsync(caseId);
+            var caseEntity = await _db.WithinTenancy_Cases.FindAsync(caseId);
             if (caseEntity != null)
             {
                 caseEntity.LastUpdatedAtUtc = DateTime.UtcNow;
@@ -828,7 +828,7 @@ public class CaseDocumentService : ICaseDocumentService
             if (currentUser.IsAdministrator) return true;
 
             // check whether user is client or worker
-            var hasAccess = await _db.Cases
+            var hasAccess = await _db.WithinTenancy_Cases
                 .Where(c => c.Id == caseId)
                 .AnyAsync(c =>
                     c.Clients!.Any(cl => cl.UserId == currentUser.Id) ||
@@ -923,7 +923,7 @@ public class CaseDocumentService : ICaseDocumentService
         };
 
         // commiting
-        _db.Log_CaseModificationEvents.Add(logEntry);
+        _db.WithinTenancy_Log_CaseModificationEvents.Add(logEntry);
     }
     #endregion
 }

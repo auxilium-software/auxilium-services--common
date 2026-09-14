@@ -29,7 +29,7 @@ public class DataEnumeratorService : IDataEnumeratorService
     {
         try
         {
-            var query = _db.DataEnumerator_Enumerators.AsQueryable();
+            var query = _db.WithinTenancy_DataEnumerator_Enumerators.AsQueryable();
 
             if (!includeInactive)
                 query = query.Where(e => e.IsActive);
@@ -51,7 +51,7 @@ public class DataEnumeratorService : IDataEnumeratorService
     {
         try
         {
-            return await _db.DataEnumerator_Enumerators
+            return await _db.WithinTenancy_DataEnumerator_Enumerators
                 .Include(e => e.EnumeratorValues.OrderBy(v => v.SortOrder))
                 .FirstOrDefaultAsync(e => e.Id == id, ct);
         }
@@ -69,7 +69,7 @@ public class DataEnumeratorService : IDataEnumeratorService
     {
         try
         {
-            var query = _db.DataEnumerator_Enumerators
+            var query = _db.WithinTenancy_DataEnumerator_Enumerators
                 .Include(e => e.EnumeratorValues.OrderBy(v => v.SortOrder))
                 .Where(e => e.CanonicalName == name && e.IsActive);
 
@@ -107,7 +107,7 @@ public class DataEnumeratorService : IDataEnumeratorService
                 IsActive = true,
             };
 
-            _db.DataEnumerator_Enumerators.Add(enumerator);
+            _db.WithinTenancy_DataEnumerator_Enumerators.Add(enumerator);
             await _db.SaveChangesAsync(ct);
 
             _logger.LogInformation(
@@ -132,7 +132,7 @@ public class DataEnumeratorService : IDataEnumeratorService
     {
         try
         {
-            var enumerator = await _db.DataEnumerator_Enumerators.FindAsync([id], ct)
+            var enumerator = await _db.WithinTenancy_DataEnumerator_Enumerators.FindAsync([id], ct)
                 ?? throw new KeyNotFoundException($"Enumerator {id} not found");
 
             if (name != null) enumerator.CanonicalName = name;
@@ -163,7 +163,7 @@ public class DataEnumeratorService : IDataEnumeratorService
     {
         try
         {
-            var enumerator = await _db.DataEnumerator_Enumerators.FindAsync([id], ct)
+            var enumerator = await _db.WithinTenancy_DataEnumerator_Enumerators.FindAsync([id], ct)
                 ?? throw new KeyNotFoundException($"Enumerator {id} not found");
 
             enumerator.IsActive = isActive;
@@ -191,7 +191,7 @@ public class DataEnumeratorService : IDataEnumeratorService
     {
         try
         {
-            return await _db.DataEnumerator_EnumeratorTranslations
+            return await _db.WithinTenancy_DataEnumerator_EnumeratorTranslations
                 .Where(t => t.DataEnumeratorId == enumeratorId)
                 .OrderBy(t => t.LanguageCode)
                 .ToListAsync(ct);
@@ -212,7 +212,7 @@ public class DataEnumeratorService : IDataEnumeratorService
     {
         try
         {
-            var enumeratorExists = await _db.DataEnumerator_Enumerators
+            var enumeratorExists = await _db.WithinTenancy_DataEnumerator_Enumerators
                 .AnyAsync(e => e.Id == enumeratorId, ct);
 
             if (!enumeratorExists)
@@ -221,7 +221,7 @@ public class DataEnumeratorService : IDataEnumeratorService
             var lang = EnumValueUtilities.NormaliseLanguageCode(languageCode);
 
             // one translation per (enumerator, language) - checking it here instead of getting a duplicate key error
-            var alreadyExists = await _db.DataEnumerator_EnumeratorTranslations
+            var alreadyExists = await _db.WithinTenancy_DataEnumerator_EnumeratorTranslations
                 .AnyAsync(t => t.DataEnumeratorId == enumeratorId && t.LanguageCode == lang, ct);
 
             if (alreadyExists)
@@ -238,7 +238,7 @@ public class DataEnumeratorService : IDataEnumeratorService
                 Translation = translation,
             };
 
-            _db.DataEnumerator_EnumeratorTranslations.Add(entity);
+            _db.WithinTenancy_DataEnumerator_EnumeratorTranslations.Add(entity);
             await _db.SaveChangesAsync(ct);
 
             _logger.LogInformation(
@@ -263,7 +263,7 @@ public class DataEnumeratorService : IDataEnumeratorService
     {
         try
         {
-            var entity = await _db.DataEnumerator_EnumeratorTranslations.FindAsync([translationId], ct)
+            var entity = await _db.WithinTenancy_DataEnumerator_EnumeratorTranslations.FindAsync([translationId], ct)
                 ?? throw new KeyNotFoundException($"Translation {translationId} not found");
 
             if (languageCode != null)
@@ -273,7 +273,7 @@ public class DataEnumeratorService : IDataEnumeratorService
                 // only guard the unique (enumerator, language) index if the language actually changes
                 if (lang != entity.LanguageCode)
                 {
-                    var clash = await _db.DataEnumerator_EnumeratorTranslations
+                    var clash = await _db.WithinTenancy_DataEnumerator_EnumeratorTranslations
                         .AnyAsync(t => t.DataEnumeratorId == entity.DataEnumeratorId
                                     && t.LanguageCode == lang
                                     && t.Id != translationId, ct);
@@ -312,10 +312,10 @@ public class DataEnumeratorService : IDataEnumeratorService
     {
         try
         {
-            var entity = await _db.DataEnumerator_EnumeratorTranslations.FindAsync([translationId], ct)
+            var entity = await _db.WithinTenancy_DataEnumerator_EnumeratorTranslations.FindAsync([translationId], ct)
                 ?? throw new KeyNotFoundException($"Translation {translationId} not found");
 
-            _db.DataEnumerator_EnumeratorTranslations.Remove(entity);
+            _db.WithinTenancy_DataEnumerator_EnumeratorTranslations.Remove(entity);
             await _db.SaveChangesAsync(ct);
 
             _logger.LogInformation("Deleted enumerator translation {TranslationId}", translationId);
@@ -336,7 +336,7 @@ public class DataEnumeratorService : IDataEnumeratorService
     {
         try
         {
-            var query = _db.DataEnumerator_EnumeratorValues
+            var query = _db.WithinTenancy_DataEnumerator_EnumeratorValues
                 .Where(v => v.EnumTypeId == enumeratorId);
 
             if (!includeInactive)
@@ -359,7 +359,7 @@ public class DataEnumeratorService : IDataEnumeratorService
     {
         try
         {
-            return await _db.DataEnumerator_EnumeratorValues
+            return await _db.WithinTenancy_DataEnumerator_EnumeratorValues
                 .Include(v => v.EnumType)
                 .FirstOrDefaultAsync(v => v.Id == valueId, ct);
         }
@@ -382,14 +382,14 @@ public class DataEnumeratorService : IDataEnumeratorService
 
         try
         {
-            var enumeratorExists = await _db.DataEnumerator_Enumerators
+            var enumeratorExists = await _db.WithinTenancy_DataEnumerator_Enumerators
                 .AnyAsync(e => e.Id == enumeratorId, ct);
 
             if (!enumeratorExists)
                 throw new KeyNotFoundException($"Enumerator {enumeratorId} not found");
 
             // one value per (enumerator, canonical name) - clean error instead of a raw 1062
-            var alreadyExists = await _db.DataEnumerator_EnumeratorValues
+            var alreadyExists = await _db.WithinTenancy_DataEnumerator_EnumeratorValues
                 .AnyAsync(v => v.EnumTypeId == enumeratorId && v.CanonicalName == canonicalName, ct);
 
             if (alreadyExists)
@@ -399,7 +399,7 @@ public class DataEnumeratorService : IDataEnumeratorService
             // default sort order to end of list
             if (sortOrder == null)
             {
-                var maxSortOrder = await _db.DataEnumerator_EnumeratorValues
+                var maxSortOrder = await _db.WithinTenancy_DataEnumerator_EnumeratorValues
                     .Where(v => v.EnumTypeId == enumeratorId)
                     .MaxAsync(v => (int?)v.SortOrder, ct);
 
@@ -418,7 +418,7 @@ public class DataEnumeratorService : IDataEnumeratorService
                 SortOrder = sortOrder.Value,
             };
 
-            _db.DataEnumerator_EnumeratorValues.Add(value);
+            _db.WithinTenancy_DataEnumerator_EnumeratorValues.Add(value);
             await _db.SaveChangesAsync(ct);
 
             _logger.LogInformation(
@@ -449,13 +449,13 @@ public class DataEnumeratorService : IDataEnumeratorService
 
         try
         {
-            var value = await _db.DataEnumerator_EnumeratorValues.FindAsync([valueId], ct)
+            var value = await _db.WithinTenancy_DataEnumerator_EnumeratorValues.FindAsync([valueId], ct)
                 ?? throw new KeyNotFoundException($"Enumerator value {valueId} not found");
 
             if (canonicalName != null && canonicalName != value.CanonicalName)
             {
                 // guard the unique (enumerator, canonical name) index on rename
-                var clash = await _db.DataEnumerator_EnumeratorValues
+                var clash = await _db.WithinTenancy_DataEnumerator_EnumeratorValues
                     .AnyAsync(v => v.EnumTypeId == value.EnumTypeId
                                 && v.CanonicalName == canonicalName
                                 && v.Id != valueId, ct);
@@ -498,7 +498,7 @@ public class DataEnumeratorService : IDataEnumeratorService
     {
         try
         {
-            var value = await _db.DataEnumerator_EnumeratorValues.FindAsync([valueId], ct)
+            var value = await _db.WithinTenancy_DataEnumerator_EnumeratorValues.FindAsync([valueId], ct)
                 ?? throw new KeyNotFoundException($"Enumerator value {valueId} not found");
 
             value.IsActive = isActive;
@@ -526,7 +526,7 @@ public class DataEnumeratorService : IDataEnumeratorService
     {
         try
         {
-            var values = await _db.DataEnumerator_EnumeratorValues
+            var values = await _db.WithinTenancy_DataEnumerator_EnumeratorValues
                 .Where(v => v.EnumTypeId == enumeratorId && orderedValueIds.Contains(v.Id))
                 .ToListAsync(ct);
 
@@ -561,7 +561,7 @@ public class DataEnumeratorService : IDataEnumeratorService
     {
         try
         {
-            return await _db.DataEnumerator_EnumeratorValueTranslations
+            return await _db.WithinTenancy_DataEnumerator_EnumeratorValueTranslations
                 .Where(t => t.DataEnumeratorValueId == valueId)
                 .OrderBy(t => t.LanguageCode)
                 .ToListAsync(ct);
@@ -582,7 +582,7 @@ public class DataEnumeratorService : IDataEnumeratorService
     {
         try
         {
-            var valueExists = await _db.DataEnumerator_EnumeratorValues
+            var valueExists = await _db.WithinTenancy_DataEnumerator_EnumeratorValues
                 .AnyAsync(v => v.Id == valueId, ct);
 
             if (!valueExists)
@@ -591,7 +591,7 @@ public class DataEnumeratorService : IDataEnumeratorService
             var lang = EnumValueUtilities.NormaliseLanguageCode(languageCode);
 
             // one translation per (value, language) - checking it here instead of getting a duplicate key error
-            var alreadyExists = await _db.DataEnumerator_EnumeratorValueTranslations
+            var alreadyExists = await _db.WithinTenancy_DataEnumerator_EnumeratorValueTranslations
                 .AnyAsync(t => t.DataEnumeratorValueId == valueId && t.LanguageCode == lang, ct);
 
             if (alreadyExists)
@@ -608,7 +608,7 @@ public class DataEnumeratorService : IDataEnumeratorService
                 Translation = translation,
             };
 
-            _db.DataEnumerator_EnumeratorValueTranslations.Add(entity);
+            _db.WithinTenancy_DataEnumerator_EnumeratorValueTranslations.Add(entity);
             await _db.SaveChangesAsync(ct);
 
             _logger.LogInformation(
@@ -633,7 +633,7 @@ public class DataEnumeratorService : IDataEnumeratorService
     {
         try
         {
-            var entity = await _db.DataEnumerator_EnumeratorValueTranslations.FindAsync([translationId], ct)
+            var entity = await _db.WithinTenancy_DataEnumerator_EnumeratorValueTranslations.FindAsync([translationId], ct)
                 ?? throw new KeyNotFoundException($"Translation {translationId} not found");
 
             if (languageCode != null)
@@ -643,7 +643,7 @@ public class DataEnumeratorService : IDataEnumeratorService
                 // only guard the unique (value, language) index if the language actually changes
                 if (lang != entity.LanguageCode)
                 {
-                    var clash = await _db.DataEnumerator_EnumeratorValueTranslations
+                    var clash = await _db.WithinTenancy_DataEnumerator_EnumeratorValueTranslations
                         .AnyAsync(t => t.DataEnumeratorValueId == entity.DataEnumeratorValueId
                                     && t.LanguageCode == lang
                                     && t.Id != translationId, ct);
@@ -682,10 +682,10 @@ public class DataEnumeratorService : IDataEnumeratorService
     {
         try
         {
-            var entity = await _db.DataEnumerator_EnumeratorValueTranslations.FindAsync([translationId], ct)
+            var entity = await _db.WithinTenancy_DataEnumerator_EnumeratorValueTranslations.FindAsync([translationId], ct)
                 ?? throw new KeyNotFoundException($"Translation {translationId} not found");
 
-            _db.DataEnumerator_EnumeratorValueTranslations.Remove(entity);
+            _db.WithinTenancy_DataEnumerator_EnumeratorValueTranslations.Remove(entity);
             await _db.SaveChangesAsync(ct);
 
             _logger.LogInformation("Deleted translation {TranslationId}", translationId);
@@ -711,7 +711,7 @@ public class DataEnumeratorService : IDataEnumeratorService
 
         var lang = locale != null ? EnumValueUtilities.NormaliseLanguageCode(locale) : null;
 
-        var values = await _db.DataEnumerator_EnumeratorValues
+        var values = await _db.WithinTenancy_DataEnumerator_EnumeratorValues
             .Include(v => v.Translations)
             .Include(v => v.EnumType)
                 .ThenInclude(t => t.Translations)

@@ -35,7 +35,7 @@ public class MessageDocumentService : IMessageDocumentService
         try
         {
             // verify the case actually exists
-            var caseExists = await _db.Cases.AnyAsync(c => c.Id == caseId);
+            var caseExists = await _db.WithinTenancy_Cases.AnyAsync(c => c.Id == caseId);
             if (!caseExists)
             {
                 throw new KeyNotFoundException($"Case {caseId} not found");
@@ -56,10 +56,10 @@ public class MessageDocumentService : IMessageDocumentService
                 LastUpdatedByUserId = senderId
             };
 
-            _db.CaseMessages.Add(message);
+            _db.WithinTenancy_CaseMessages.Add(message);
 
             // update the LastUpdatedAt timestamp for the case
-            var caseEntity = await _db.Cases.FindAsync(caseId);
+            var caseEntity = await _db.WithinTenancy_Cases.FindAsync(caseId);
             if (caseEntity != null)
             {
                 caseEntity.LastUpdatedAtUtc = DateTime.UtcNow;
@@ -84,7 +84,7 @@ public class MessageDocumentService : IMessageDocumentService
     {
         try
         {
-            return await _db.CaseMessages
+            return await _db.WithinTenancy_CaseMessages
                 .Include(m => m.Sender)
                 .Include(m => m.Case)
                 .FirstOrDefaultAsync(m => m.Id == messageId);
@@ -100,7 +100,7 @@ public class MessageDocumentService : IMessageDocumentService
     {
         try
         {
-            return await _db.CaseMessages
+            return await _db.WithinTenancy_CaseMessages
                 .Include(m => m.Sender)
                 .Where(m => m.CaseId == caseId)
                 .OrderByDescending(m => m.CreatedAtUtc)
@@ -121,7 +121,7 @@ public class MessageDocumentService : IMessageDocumentService
                 ?? throw new KeyNotFoundException($"Message {messageId} not found");
 
             // check if it's already marked as read
-            var alreadyRead = await _db.Log_CaseMessageReadBys
+            var alreadyRead = await _db.WithinTenancy_Log_CaseMessageReadBys
                 .AnyAsync(rb => rb.MessageId == messageId && rb.CreatedByUserId == userId);
 
             if (!alreadyRead)
@@ -135,7 +135,7 @@ public class MessageDocumentService : IMessageDocumentService
                     CreatedAtUtc = DateTime.UtcNow
                 };
 
-                _db.Log_CaseMessageReadBys.Add(readBy);
+                _db.WithinTenancy_Log_CaseMessageReadBys.Add(readBy);
 
                 // update the LastUpdatedAt timestamp for the case
                 message.LastUpdatedAtUtc = DateTime.UtcNow;
@@ -156,7 +156,7 @@ public class MessageDocumentService : IMessageDocumentService
     {
         try
         {
-            return await _db.Log_CaseMessageReadBys
+            return await _db.WithinTenancy_Log_CaseMessageReadBys
                 .AnyAsync(rb => rb.MessageId == messageId && rb.CreatedByUserId == userId);
         }
         catch (Exception ex)
@@ -170,7 +170,7 @@ public class MessageDocumentService : IMessageDocumentService
     {
         try
         {
-            return await _db.Log_CaseMessageReadBys
+            return await _db.WithinTenancy_Log_CaseMessageReadBys
                 .Where(rb => rb.MessageId == messageId)
                 .Select(rb => rb.CreatedByUserId)
                 .ToListAsync();
@@ -186,7 +186,7 @@ public class MessageDocumentService : IMessageDocumentService
     {
         try
         {
-            return await _db.Log_CaseMessageReadBys
+            return await _db.WithinTenancy_Log_CaseMessageReadBys
                 .Where(rb => rb.MessageId == messageId)
                 .ToDictionaryAsync(
                     rb => rb.CreatedByUserId,
@@ -204,14 +204,14 @@ public class MessageDocumentService : IMessageDocumentService
     {
         try
         {
-            var message = await _db.CaseMessages.FindAsync(messageId)
+            var message = await _db.WithinTenancy_CaseMessages.FindAsync(messageId)
                 ?? throw new KeyNotFoundException($"Message {messageId} not found");
 
             // remove the message (read-by entries will cascade delete within the database)
-            _db.CaseMessages.Remove(message);
+            _db.WithinTenancy_CaseMessages.Remove(message);
 
             // update the LastUpdatedAt timestamp for the case
-            var caseEntity = await _db.Cases.FindAsync(message.CaseId);
+            var caseEntity = await _db.WithinTenancy_Cases.FindAsync(message.CaseId);
             if (caseEntity != null)
             {
                 caseEntity.LastUpdatedAtUtc = DateTime.UtcNow;
@@ -235,7 +235,7 @@ public class MessageDocumentService : IMessageDocumentService
         try
         {
             // get message with case from the database
-            var message = await _db.CaseMessages
+            var message = await _db.WithinTenancy_CaseMessages
                 .Include(m => m.Case)
                     .ThenInclude(c => c!.Workers)
                 .Include(m => m.Case)
