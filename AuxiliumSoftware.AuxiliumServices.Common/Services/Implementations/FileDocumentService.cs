@@ -71,7 +71,7 @@ public class FileDocumentService : IFileDocumentService
     {
         try
         {
-            var fileId = UUIDUtilities.GenerateV5(DatabaseObjectTypeEnum.Case_File);
+            var fileId = UUIDUtilities.GenerateV5(DatabaseObjectTypeEnum.WithinTenancy_Case_File);
             var filePath = Path.Combine(_lfsBasePath, $"{fileId}.bin");
 
             // just make sure the directory actually exists
@@ -205,7 +205,7 @@ public class FileDocumentService : IFileDocumentService
     {
         try
         {
-            var fileId = UUIDUtilities.GenerateV5(DatabaseObjectTypeEnum.User_File);
+            var fileId = UUIDUtilities.GenerateV5(DatabaseObjectTypeEnum.WithinTenancy_User_File);
             var filePath = Path.Combine(_lfsBasePath, $"{fileId}.bin");
 
             // just make sure the directory actually exists

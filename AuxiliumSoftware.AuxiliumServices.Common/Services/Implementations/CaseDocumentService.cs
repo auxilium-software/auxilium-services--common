@@ -76,7 +76,7 @@ public class CaseDocumentService : ICaseDocumentService
             // add the new client relationship to the case
             var caseClient = new CaseClientEntityModel
             {
-                Id = UUIDUtilities.GenerateV5(DatabaseObjectTypeEnum.Case_Client),
+                Id = UUIDUtilities.GenerateV5(DatabaseObjectTypeEnum.WithinTenancy_Case_Client),
                 CaseId = caseId,
                 UserId = userId,
                 CreatedByUserId = actorUserId,
@@ -168,7 +168,7 @@ public class CaseDocumentService : ICaseDocumentService
             // add the new worker to the case
             var caseWorker = new CaseWorkerEntityModel
             {
-                Id = UUIDUtilities.GenerateV5(DatabaseObjectTypeEnum.Case_Worker),
+                Id = UUIDUtilities.GenerateV5(DatabaseObjectTypeEnum.WithinTenancy_Case_Worker),
                 CaseId = caseId,
                 UserId = userId,
                 CreatedByUserId = actorUserId,
@@ -271,7 +271,7 @@ public class CaseDocumentService : ICaseDocumentService
         {
             var newProperty = new CaseAdditionalPropertyEntityModel
             {
-                Id = UUIDUtilities.GenerateV5(DatabaseObjectTypeEnum.Case_AdditionalProperty),
+                Id = UUIDUtilities.GenerateV5(DatabaseObjectTypeEnum.WithinTenancy_Case_AdditionalProperty),
                 CaseId = caseId,
                 ContentType = contentType ?? "text/plain",
                 CreatedByUserId = currentUser.Id,
@@ -419,7 +419,7 @@ public class CaseDocumentService : ICaseDocumentService
             // create the todo entity/model
             var todo = new CaseTodoEntityModel
             {
-                Id = UUIDUtilities.GenerateV5(DatabaseObjectTypeEnum.Case_Todo),
+                Id = UUIDUtilities.GenerateV5(DatabaseObjectTypeEnum.WithinTenancy_Case_Todo),
                 CaseId = caseId,
                 Summary = summary,
                 Description = description ?? string.Empty,
@@ -667,7 +667,7 @@ public class CaseDocumentService : ICaseDocumentService
             // create the timeline entry entity/model
             var timelineEntry = new CaseTimelineEntryEntityModel
             {
-                Id = UUIDUtilities.GenerateV5(DatabaseObjectTypeEnum.Case_TimelineEntry),
+                Id = UUIDUtilities.GenerateV5(DatabaseObjectTypeEnum.WithinTenancy_Case_TimelineEntry),
                 CaseId = caseId,
                 EntryType = CaseTimelineEntryTypeEnum.Note_User,
                 OccurredAtUtc = occuredAt,
@@ -910,7 +910,7 @@ public class CaseDocumentService : ICaseDocumentService
         // actually logging
         var logEntry = new LogCaseModificationEventEntityModel
         {
-            Id = UUIDUtilities.GenerateV5(DatabaseObjectTypeEnum.Log_CaseModification_EventEntry),
+            Id = UUIDUtilities.GenerateV5(DatabaseObjectTypeEnum.WithinTenancy_Log_CaseModification_EventEntry),
             CreatedAtUtc = DateTime.UtcNow,
             CreatedByUserId = actorUserId,
             CaseId = caseId,
