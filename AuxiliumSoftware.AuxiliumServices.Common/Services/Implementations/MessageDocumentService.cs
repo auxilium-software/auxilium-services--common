@@ -44,7 +44,7 @@ public class MessageDocumentService : IMessageDocumentService
             // create the message entity
             var message = new CaseMessageEntityModel
             {
-                Id = UUIDUtilities.GenerateV5(DatabaseObjectTypeEnum.Case_Message),
+                Id = UUIDUtilities.GenerateV5(DatabaseObjectTypeEnum.WithinTenancy_Case_Message),
                 CaseId = caseId,
                 SenderUserId = senderId,
                 Subject = subject,
@@ -129,7 +129,7 @@ public class MessageDocumentService : IMessageDocumentService
                 // create a read-by entry
                 var readBy = new LogCaseMessageReadByEventEntityModel
                 {
-                    Id = UUIDUtilities.GenerateV5(DatabaseObjectTypeEnum.Log_CaseMessageReadBy_EventEntry),
+                    Id = UUIDUtilities.GenerateV5(DatabaseObjectTypeEnum.WithinTenancy_Log_CaseMessageReadBy_EventEntry),
                     MessageId = messageId,
                     CreatedByUserId = userId,
                     CreatedAtUtc = DateTime.UtcNow

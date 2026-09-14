@@ -94,7 +94,7 @@ public class UserDocumentService : IUserDocumentService
         {
             var newProperty = new UserAdditionalPropertyEntityModel
             {
-                Id = UUIDUtilities.GenerateV5(DatabaseObjectTypeEnum.User_AdditionalProperty),
+                Id = UUIDUtilities.GenerateV5(DatabaseObjectTypeEnum.WithinTenancy_User_AdditionalProperty),
                 UserId = userId,
                 ContentType = contentType ?? "text/plain",
                 CreatedByUserId = currentUser.Id,
@@ -275,7 +275,7 @@ public class UserDocumentService : IUserDocumentService
         // actually logging
         var logEntry = new LogUserModificationEventEntityModel
         {
-            Id = UUIDUtilities.GenerateV5(DatabaseObjectTypeEnum.Log_UserModification_EventEntry),
+            Id = UUIDUtilities.GenerateV5(DatabaseObjectTypeEnum.WithinTenancy_Log_UserModification_EventEntry),
             CreatedAtUtc = DateTime.UtcNow,
             CreatedByUserId = actorUserId,
             UserId = targetUserId,
