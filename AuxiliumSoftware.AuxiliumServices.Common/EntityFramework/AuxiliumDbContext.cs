@@ -1072,7 +1072,7 @@ public class AuxiliumDbContext : DbContext
         // tenants__tenants
         modelBuilder.Entity<TenantEntityModel>(entity =>
         {
-            entity.ToTable("global__tenancy_tenants");
+            entity.ToTable("global__tenancy__tenants");
             entity.HasKey(e => e.Id);
 
 
