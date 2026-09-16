@@ -18,6 +18,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
 
 
 
+        /*
         public ICollection<CalendarEventEntityModel>? CalendarEvents { get; set; }
         public ICollection<CalendarEventInviteEntityModel>? CalendarEventInvites { get; set; }
         public ICollection<CaseEntityModel>? Cases { get; set; }
@@ -54,5 +55,6 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
         public ICollection<RefreshTokenEntityModel>? UserRefreshTokens { get; set; }
         public ICollection<TotpRecoveryCodeEntityModel>? UserTotpRecoveryCodes { get; set; }
         public ICollection<WemwbsAssessmentEntityModel>? UserWemwbsAssessments { get; set; }
+        */
     }
 }
