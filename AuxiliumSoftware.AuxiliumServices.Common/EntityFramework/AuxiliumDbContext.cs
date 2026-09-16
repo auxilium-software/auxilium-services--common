@@ -1,10 +1,9 @@
-﻿using AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.Converters;
+﻿using AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.Abstractions;
+using AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.Converters;
 using AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels;
 using AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.Enumerators;
-using AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.Interceptors;
 using AuxiliumSoftware.AuxiliumServices.Common.Tenancy;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
 using System.Text.Json;
 using System.Text.Json.Serialization;
@@ -86,13 +85,57 @@ public class AuxiliumDbContext : DbContext
 
 
 
+
+    private void StampAndGuardTenantScope()
+    {
+        foreach (var entry in this.ChangeTracker.Entries<TenantScopedEntityModel>())
+        {
+            switch (entry.State)
+            {
+                case EntityState.Added:
+                    if (!this._tenantContext.IsResolved)
+                        throw new InvalidOperationException(
+                            $"Cannot insert {entry.Metadata.ClrType.Name}: no tenant has been resolved for this scope.");
+
+                    entry.Entity.TenantId = this._tenantContext.TenantId;
+                    break;
+
+                case EntityState.Modified or EntityState.Deleted:
+                    if (entry.Entity.TenantId != this._tenantContext.TenantId)
+                        throw new InvalidOperationException(
+                            $"Cross-tenant write blocked on {entry.Metadata.ClrType.Name}.");
+
+                    entry.Property(e => e.TenantId).IsModified = false;
+                    break;
+            }
+        }
+    }
+
+    public override int SaveChanges(bool acceptAllChangesOnSuccess)
+    {
+        this.StampAndGuardTenantScope();
+        return base.SaveChanges(acceptAllChangesOnSuccess);
+    }
+
+    public override Task<int> SaveChangesAsync(
+        bool acceptAllChangesOnSuccess,
+        CancellationToken cancellationToken = default)
+    {
+        this.StampAndGuardTenantScope();
+        return base.SaveChangesAsync(acceptAllChangesOnSuccess, cancellationToken);
+    }
+
+
+
+
+
     private static readonly MethodInfo ConfigureTenantScopeMethod =
         typeof(AuxiliumDbContext).GetMethod(
             nameof(ConfigureTenantScope),
             BindingFlags.NonPublic | BindingFlags.Instance)!;
 
     private void ConfigureTenantScope<TEntity>(ModelBuilder modelBuilder)
-        where TEntity : class, ITenantScopedEntityModel
+        where TEntity : TenantScopedEntityModel
     {
         modelBuilder.Entity<TEntity>()
             .HasOne(e => e.Tenant)
@@ -102,50 +145,6 @@ public class AuxiliumDbContext : DbContext
 
         modelBuilder.Entity<TEntity>()
             .HasQueryFilter(e => e.TenantId == CurrentTenantId);
-    }
-
-
-
-
-
-    public override int SaveChanges(bool acceptAllChangesOnSuccess)
-    {
-        this.StampAndGuardTenantScope();
-        return base.SaveChanges(acceptAllChangesOnSuccess);
-    }
-
-    public override Task<int> SaveChangesAsync(
-        bool acceptAllChangesOnSuccess, CancellationToken cancellationToken = default)
-    {
-        this.StampAndGuardTenantScope();
-        return base.SaveChangesAsync(acceptAllChangesOnSuccess, cancellationToken);
-    }
-
-    private void StampAndGuardTenantScope()
-    {
-        foreach (var entry in this.ChangeTracker.Entries<ITenantScopedEntityModel>())
-        {
-            switch (entry.State)
-            {
-                case EntityState.Added:
-                    if (!this._tenantContext.IsResolved)
-                    {
-                        throw new InvalidOperationException($"Cannot insert {entry.Metadata.ClrType.Name}: no tenant has been resolved.");
-                    }
-
-                    entry.Entity.TenantId = this._tenantContext.TenantId;
-                    break;
-
-                case EntityState.Modified or EntityState.Deleted:
-                    if (entry.Entity.TenantId != this._tenantContext.TenantId)
-                    {
-                        throw new InvalidOperationException($"Cross-tenant write blocked on {entry.Metadata.ClrType.Name}.");
-                    }
-
-                    entry.Property(nameof(ITenantScopedEntityModel.TenantId)).IsModified = false;
-                    break;
-            }
-        }
     }
 
 
@@ -1113,7 +1112,7 @@ public class AuxiliumDbContext : DbContext
 
 
 
-        // tenants__tenants
+        // global__tenancy__tenants
         modelBuilder.Entity<TenantEntityModel>(entity =>
         {
             entity.ToTable("global__tenancy__tenants");
@@ -1134,7 +1133,7 @@ public class AuxiliumDbContext : DbContext
 
 
         foreach (var entityType in modelBuilder.Model.GetEntityTypes()
-            .Where(t => typeof(ITenantScopedEntityModel).IsAssignableFrom(t.ClrType)))
+            .Where(t => typeof(TenantScopedEntityModel).IsAssignableFrom(t.ClrType)))
         {
             ConfigureTenantScopeMethod
                 .MakeGenericMethod(entityType.ClrType)
