@@ -1,5 +1,7 @@
-﻿using AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.Abstractions;
+﻿using AuxiliumSoftware.AuxiliumServices.Common.Attributes;
+using AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.Abstractions;
 using AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.Enumerators;
+using AuxiliumSoftware.AuxiliumServices.Common.Enumerators;
 using System.ComponentModel.DataAnnotations;
 
 namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
@@ -9,18 +11,25 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
         /// <summary>
         /// The title of the Case.
         /// </summary>
+        [DataMergeResolvable]
         public required string Title { get; set; }
         /// <summary>
         /// A description of the Case.
         /// </summary>
+        [DataMergeResolvable(allowCombine: true)]
         public required string Description { get; set; }
         /// <summary>
         /// The Sensitivity Level of the Case.
         /// </summary>
+        /// <remarks>
+        /// Defaults to the more restrictive of the two on merge, so merging can't downgrade a case's sensitivity.
+        /// </remarks>
+        [DataMergeResolvable(DataMergeFieldDefaultEnum.PreferHigherValue)]
         public required CaseSensitivityEnum Sensitivity { get; set; }
         /// <summary>
         /// The current Status of the Case.
         /// </summary>
+        [DataMergeResolvable]
         public required CaseStatusEnum Status { get; set; }
 
 
