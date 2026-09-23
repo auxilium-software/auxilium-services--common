@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
 {
-    public class CaseTodoEntityModel : MutableTenantScopedEntityModel
+    public class CaseTodoEntityModel : MutableTenantScopedEntityModelBase
     {
         /// <summary>
         /// The unique identifier for the case the todo is for.

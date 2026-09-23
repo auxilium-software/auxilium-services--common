@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
 {
-    public class CaseWorkerEntityModel : TenantScopedEntityModel
+    public class CaseWorkerEntityModel : TenantScopedEntityModelBase
     {
         /// <summary>
         /// The unique identifier of the User who created the Case Worker Assignment.

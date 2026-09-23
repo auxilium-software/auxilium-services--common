@@ -7,7 +7,7 @@ using System.Text;
 
 namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
 {
-    public class SystemWafUserBlacklistEntryEntityModel : TenantScopedEntityModel
+    public class SystemWafUserBlacklistEntryEntityModel : TenantScopedEntityModelBase
     {
         /// <summary>
         /// The unique identifier of the User who created the User Block.

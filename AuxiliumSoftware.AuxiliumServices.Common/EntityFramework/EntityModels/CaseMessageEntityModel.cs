@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
 {
-    public class CaseMessageEntityModel : MutableTenantScopedEntityModel
+    public class CaseMessageEntityModel : MutableTenantScopedEntityModelBase
     {
         /// <summary>
         /// The unique identifier of the Case the Case Message is for.

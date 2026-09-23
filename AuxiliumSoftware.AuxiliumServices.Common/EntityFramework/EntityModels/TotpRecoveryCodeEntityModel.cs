@@ -6,7 +6,7 @@ using System.Text;
 
 namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
 {
-    public class TotpRecoveryCodeEntityModel : TenantScopedEntityModel
+    public class TotpRecoveryCodeEntityModel : TenantScopedEntityModelBase
     {
         /// <summary>
         /// The unique identifier of the User who created the TOTP Recovery Code (this is who the TOTP Recovery Code belongs to).

@@ -33,7 +33,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.Interceptors
                 return;
             }
 
-            foreach (var entry in context.ChangeTracker.Entries<TenantScopedEntityModel>())
+            foreach (var entry in context.ChangeTracker.Entries<TenantScopedEntityModelBase>())
             {
                 switch (entry.State)
                 {

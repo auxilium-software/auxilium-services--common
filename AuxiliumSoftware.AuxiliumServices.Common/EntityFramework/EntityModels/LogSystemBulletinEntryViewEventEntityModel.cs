@@ -6,7 +6,7 @@ using System.Text;
 
 namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
 {
-    public class LogSystemBulletinEntryViewEventEntityModel : TenantScopedEntityModel
+    public class LogSystemBulletinEntryViewEventEntityModel : TenantScopedEntityModelBase
     {
         /// <summary>
         /// The unique identifier of the User who viewed the System Bulletin.

@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
 {
-    public class UserEntityModel : MutableTenantScopedEntityModel
+    public class UserEntityModel : MutableTenantScopedEntityModelBase
     {
         /// <summary>
         /// The email address of the User.

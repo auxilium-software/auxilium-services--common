@@ -7,7 +7,7 @@ using System.Text;
 
 namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
 {
-    public class SystemWafUserWhitelistEntryEntityModel : TenantScopedEntityModel
+    public class SystemWafUserWhitelistEntryEntityModel : TenantScopedEntityModelBase
     {
         /// <summary>
         /// The unique identifier of the user who created the User Whitelist Entry.

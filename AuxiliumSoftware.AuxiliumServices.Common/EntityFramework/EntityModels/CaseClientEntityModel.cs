@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
 {
-    public class CaseClientEntityModel : TenantScopedEntityModel
+    public class CaseClientEntityModel : TenantScopedEntityModelBase
     {
         /// <summary>
         /// The unique identifier of the User who created the Case Client Assignment.
