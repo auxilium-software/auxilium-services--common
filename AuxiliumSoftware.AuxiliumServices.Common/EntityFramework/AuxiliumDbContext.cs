@@ -88,9 +88,22 @@ public class AuxiliumDbContext : DbContext
 
 
 
+    private void RefreshConcurrencyStamps()
+    {
+        foreach (var entry in this.ChangeTracker.Entries<IConcurrencyStamped>())
+        {
+            switch (entry.State)
+            {
+                case EntityState.Added when entry.Entity.ConcurrencyStamp == Guid.Empty:
+                case EntityState.Modified:
+                    entry.Entity.ConcurrencyStamp = Guid.NewGuid();
+                    break;
+            }
+        }
+    }
     private void StampAndGuardTenantScope()
     {
-        foreach (var entry in this.ChangeTracker.Entries<TenantScopedEntityModel>())
+        foreach (var entry in this.ChangeTracker.Entries<TenantScopedEntityModelBase>())
         {
             switch (entry.State)
             {
@@ -115,6 +128,7 @@ public class AuxiliumDbContext : DbContext
 
     public override int SaveChanges(bool acceptAllChangesOnSuccess)
     {
+        this.RefreshConcurrencyStamps();
         this.StampAndGuardTenantScope();
         return base.SaveChanges(acceptAllChangesOnSuccess);
     }
@@ -123,6 +137,7 @@ public class AuxiliumDbContext : DbContext
         bool acceptAllChangesOnSuccess,
         CancellationToken cancellationToken = default)
     {
+        this.RefreshConcurrencyStamps();
         this.StampAndGuardTenantScope();
         return base.SaveChangesAsync(acceptAllChangesOnSuccess, cancellationToken);
     }
@@ -137,7 +152,7 @@ public class AuxiliumDbContext : DbContext
             BindingFlags.NonPublic | BindingFlags.Instance)!;
 
     private void ConfigureTenantScope<TEntity>(ModelBuilder modelBuilder)
-        where TEntity : TenantScopedEntityModel
+        where TEntity : TenantScopedEntityModelBase
     {
         modelBuilder.Entity<TEntity>()
             .HasOne(e => e.Tenant)
@@ -637,6 +652,7 @@ public class AuxiliumDbContext : DbContext
             entity.HasOne(e => e.CreatedByUser)                     .WithMany()                                                 .HasForeignKey(e => e.CreatedByUserId)          .OnDelete(DeleteBehavior.Restrict);
             entity.HasOne(e => e.SurvivorCase)                      .WithMany(c => c.MergeEventsAsSurvivor)                     .HasForeignKey(e => e.SurvivorCaseId)           .OnDelete(DeleteBehavior.Restrict);
             entity.HasOne(e => e.TombstoneCase)                        .WithMany(c => c.MergeEventsAsMerged)                       .HasForeignKey(e => e.MergedCaseId)             .OnDelete(DeleteBehavior.Restrict);
+            entity.HasOne(e => e.TombstoneCase)                     .WithMany(c => c.MergeEventsAsMerged)                       .HasForeignKey(e => e.TombstoneCaseId)          .OnDelete(DeleteBehavior.Restrict);
         });
 
         // log__case_merge_event_row_changes
@@ -654,7 +670,7 @@ public class AuxiliumDbContext : DbContext
             entity.Property(e => e.EntityName)                      .HasColumnName("entity_name")                               .HasColumnType("varchar(191)")                                                                                                      .IsRequired();
             entity.Property(e => e.PropertyName)                    .HasColumnName("property_name")                             .HasColumnType("varchar(191)")                                                                                                      .IsRequired();
             entity.Property(e => e.RowId)                           .HasColumnName("row_id")                                    .HasColumnType("char(36)")                                                                                                          .IsRequired();
-            entity.Property(e => e.Action)                          .HasColumnName("action")                                    .HasColumnType("text")                  .HasConversion(new JsonPropertyNameEnumConverter<MergeRowActionEnum>())                     .IsRequired();
+            entity.Property(e => e.Action)                          .HasColumnName("action")                                    .HasColumnType("text")                  .HasConversion(new JsonPropertyNameEnumConverter<DataMergeRowActionEnum>())                     .IsRequired();
             entity.Property(e => e.SnapshotJson)                    .HasColumnName("snapshot_json")                             .HasColumnType("longtext");
             
             entity.HasOne(e => e.CaseMergeEvent)                    .WithMany(m => m.RowChanges)                                .HasForeignKey(e => e.CaseMergeEventId)         .OnDelete(DeleteBehavior.Cascade);
