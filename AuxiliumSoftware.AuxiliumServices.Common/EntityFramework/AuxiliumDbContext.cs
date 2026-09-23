@@ -1193,7 +1193,7 @@ public class AuxiliumDbContext : DbContext
 
 
         foreach (var entityType in modelBuilder.Model.GetEntityTypes()
-            .Where(t => typeof(TenantScopedEntityModel).IsAssignableFrom(t.ClrType)))
+            .Where(t => typeof(TenantScopedEntityModelBase).IsAssignableFrom(t.ClrType)))
         {
             ConfigureTenantScopeMethod
                 .MakeGenericMethod(entityType.ClrType)
