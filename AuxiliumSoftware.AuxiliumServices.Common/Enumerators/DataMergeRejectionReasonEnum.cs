@@ -6,13 +6,15 @@ using System.Text.Json.Serialization;
 namespace AuxiliumSoftware.AuxiliumServices.Common.Enumerators
 {
     [JsonConverter(typeof(JsonStringEnumConverter))]
-    public enum MetricCadence
+    public enum DataMergeRejectionReasonEnum
     {
-        [JsonPropertyName("Hourly")]
-        Hourly,
+        [JsonPropertyName("NotFound")]
+        NotFound,
 
+        [JsonPropertyName("Invalid")]
+        Invalid,
 
-        [JsonPropertyName("Minutely")]
-        Minutely,
+        [JsonPropertyName("Stale")]
+        Stale,
     }
 }
