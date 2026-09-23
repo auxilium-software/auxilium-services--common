@@ -57,7 +57,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.Enumerators
         [JsonPropertyName("Policies.WebApplicationFirewall.Ip.TemporaryBlacklistsBeforePermanentBlacklist")]
         [SystemSettingExpectedValueTypeAttribute(SystemSettingValueTypeEnum.Int)]
         [SystemSettingDefaultValueAttribute(3)]
-        [SystemSettingDescriptionAttribute("The number of times blacklists IP can be temporarily blacklisted before it receives a permanent ban. This escalates punishment for persistent attackers who return after temporary blacklists expire.")]
+        [SystemSettingDescriptionAttribute("The number of times an IP address can be temporarily blacklisted before it receives a permanent ban. This escalates punishment for persistent attackers who return after temporary blacklists expire.")]
         [SystemSettingRecommendationAttribute("3-5 temporary blacklists before permanent ban. Lower values may catch legitimate users on shared IPs; higher values give attackers more attempts.")]
         Policies_WebApplicationFirewall_Ip_TemporaryBlacklistsBeforePermanentBlacklist,
 
