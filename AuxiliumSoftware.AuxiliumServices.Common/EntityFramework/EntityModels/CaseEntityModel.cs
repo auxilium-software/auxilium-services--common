@@ -6,7 +6,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
 {
-    public class CaseEntityModel : MutableTenantScopedEntityModelBase
+    public class CaseEntityModel : MutableTenantScopedEntityModelBase, IConcurrencyStamped
     {
         /// <summary>
         /// The title of the Case.
