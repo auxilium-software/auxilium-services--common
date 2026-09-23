@@ -5,16 +5,16 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.Enumerators
     [JsonConverter(typeof(JsonStringEnumConverter))]
     public enum TodoStatusEnum
     {
-        [JsonPropertyName("needsAction")]
+        [JsonPropertyName("NeedsAction")]
         NeedsAction,
 
-        [JsonPropertyName("inProgress")]
+        [JsonPropertyName("InProgress")]
         InProgress,
 
-        [JsonPropertyName("completed")]
+        [JsonPropertyName("Completed")]
         Completed,
 
-        [JsonPropertyName("cancelled")]
+        [JsonPropertyName("Cancelled")]
         Cancelled,
     }
 }

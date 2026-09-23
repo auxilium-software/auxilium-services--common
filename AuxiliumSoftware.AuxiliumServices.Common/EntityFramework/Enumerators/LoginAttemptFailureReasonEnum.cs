@@ -8,16 +8,16 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.Enumerators
     [JsonConverter(typeof(JsonStringEnumConverter))]
     public enum LoginAttemptFailureReasonEnum
     {
-        [JsonPropertyName("invalidPassword")]
+        [JsonPropertyName("InvalidPassword")]
         InvalidPassword,
 
-        [JsonPropertyName("userNotFound")]
+        [JsonPropertyName("UserNotFound")]
         UserNotFound,
 
-        [JsonPropertyName("accountLocked")]
+        [JsonPropertyName("AccountLocked")]
         AccountLocked,
 
-        [JsonPropertyName("ipBlocked")]
+        [JsonPropertyName("IpBlocked")]
         IPBlocked,
     }
 }

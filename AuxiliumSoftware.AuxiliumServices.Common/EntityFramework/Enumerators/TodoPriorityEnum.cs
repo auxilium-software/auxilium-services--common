@@ -5,16 +5,16 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.Enumerators
     [JsonConverter(typeof(JsonStringEnumConverter))]
     public enum TodoPriorityEnum
     {
-        [JsonPropertyName("low")]
+        [JsonPropertyName("Low")]
         Low,
 
-        [JsonPropertyName("medium")]
+        [JsonPropertyName("Medium")]
         Medium,
 
-        [JsonPropertyName("high")]
+        [JsonPropertyName("High")]
         High,
 
-        [JsonPropertyName("urgent")]
+        [JsonPropertyName("Urgent")]
         Urgent,
     }
 }

@@ -8,16 +8,16 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.Enumerators
     [JsonConverter(typeof(JsonStringEnumConverter))]
     public enum SystemBulletinMessageTargetAudienceEnum
     {
-        [JsonPropertyName("everyone")]
+        [JsonPropertyName("Everyone")]
         Everyone,
 
-        [JsonPropertyName("logged_in_users_only")]
+        [JsonPropertyName("LoggedInUsersOnly")]
         LoggedInUsersOnly,
 
-        [JsonPropertyName("public_only")]
+        [JsonPropertyName("PublicOnly")]
         PublicOnly,
 
-        [JsonPropertyName("single_user_only")]
+        [JsonPropertyName("SingleUserOnly")]
         SingleUserOnly,
     }
 }

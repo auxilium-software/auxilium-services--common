@@ -5,16 +5,16 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.Enumerators
     [JsonConverter(typeof(JsonStringEnumConverter))]
     public enum CaseSensitivityEnum
     {
-        [JsonPropertyName("public")]
+        [JsonPropertyName("Public")]
         Public,
 
-        [JsonPropertyName("internal")]
+        [JsonPropertyName("Internal")]
         Internal,
 
-        [JsonPropertyName("confidential")]
+        [JsonPropertyName("Confidential")]
         Confidential,
 
-        [JsonPropertyName("restricted")]
+        [JsonPropertyName("Restricted")]
         Restricted
     }
 }

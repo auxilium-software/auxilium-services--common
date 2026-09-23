@@ -8,10 +8,10 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.Enumerators
     [JsonConverter(typeof(JsonStringEnumConverter))]
     public enum DataEnumeratorScopeEnum
     {
-        [JsonPropertyName("additional_property")]
+        [JsonPropertyName("AdditionalProperty")]
         AdditionalProperty,
 
-        [JsonPropertyName("calendar_event_category")]
+        [JsonPropertyName("CalendarEventCategory")]
         CalendarEventCategory,
     }
 }
