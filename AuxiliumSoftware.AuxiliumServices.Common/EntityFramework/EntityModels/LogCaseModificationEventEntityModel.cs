@@ -23,6 +23,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
         /// <summary>
         /// The unique identifier of the Case the Additional Property is for.
         /// </summary>
+        [DataMergeBehaviour(DataMergeBehaviourEnum.Preserve)]
         public required Guid CaseId { get; set; }
 
 
