@@ -5,15 +5,17 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Enumerators
     [JsonConverter(typeof(JsonStringEnumConverter))]
     public enum DatabaseObjectTypeEnum
     {
-
-        [JsonPropertyName("Global.Calendar.Event")]
+        // ####################################################################################################
+        // Global -> Tenant
+        // ####################################################################################################
+        [JsonPropertyName("Global.Tenant.Tenant")]
         Global_Tenant_Tenant,
 
 
 
-
-
-
+        // ####################################################################################################
+        // Within Tenancy -> Calendar
+        // ####################################################################################################
         [JsonPropertyName("WithinTenancy.Calendar.Event")]
         WithinTenancy_Calendar_Event,
         [JsonPropertyName("WithinTenancy.Calendar.EventInvite")]
@@ -21,9 +23,10 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Enumerators
 
 
 
-
-
-        [JsonPropertyName("WithinTenancy.Case.Cases")]
+        // ####################################################################################################
+        // Within Tenancy -> Case
+        // ####################################################################################################
+        [JsonPropertyName("WithinTenancy.Case.Case")]
         WithinTenancy_Case,
         [JsonPropertyName("WithinTenancy.Case.AdditionalProperty")]
         WithinTenancy_Case_AdditionalProperty,
@@ -42,8 +45,23 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Enumerators
 
 
 
+        // ####################################################################################################
+        // Within Tenancy -> Enumerator
+        // ####################################################################################################
+        [JsonPropertyName("WithinTenancy.Enumerator.Enumerator")]
+        WithinTenancy_Enumerator,
+        [JsonPropertyName("WithinTenancy.Enumerator.Translation")]
+        WithinTenancy_Enumerator_Translation,
+        [JsonPropertyName("WithinTenancy.Enumerator.Value")]
+        WithinTenancy_Enumerator_Value,
+        [JsonPropertyName("WithinTenancy.Enumerator.ValueTranslation")]
+        WithinTenancy_Enumerator_ValueTranslation,
 
 
+
+        // ####################################################################################################
+        // Within Tenancy -> Log
+        // ####################################################################################################
         [JsonPropertyName("WithinTenancy.Log.CaseMessageReadBy.EventEntry")]
         WithinTenancy_Log_CaseMessageReadBy_EventEntry,
         [JsonPropertyName("WithinTenancy.Log.CaseModification.EventEntry")]
@@ -63,8 +81,9 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Enumerators
 
 
 
-
-
+        // ####################################################################################################
+        // Within Tenancy -> System
+        // ####################################################################################################
         [JsonPropertyName("WithinTenancy.System.BulletinEntry")]
         WithinTenancy_System_BulletinEntry,
         [JsonPropertyName("WithinTenancy.System.MetricEntry")]
@@ -82,8 +101,10 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Enumerators
 
 
 
-
-        [JsonPropertyName("WithinTenancy.User.Users")]
+        // ####################################################################################################
+        // Within Tenancy -> User
+        // ####################################################################################################
+        [JsonPropertyName("WithinTenancy.User.User")]
         WithinTenancy_User,
         [JsonPropertyName("WithinTenancy.User.AdditionalProperty")]
         WithinTenancy_User_AdditionalProperty,
