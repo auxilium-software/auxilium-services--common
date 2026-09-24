@@ -651,7 +651,6 @@ public class AuxiliumDbContext : DbContext
             
             entity.HasOne(e => e.CreatedByUser)                     .WithMany()                                                 .HasForeignKey(e => e.CreatedByUserId)          .OnDelete(DeleteBehavior.Restrict);
             entity.HasOne(e => e.SurvivorCase)                      .WithMany(c => c.MergeEventsAsSurvivor)                     .HasForeignKey(e => e.SurvivorCaseId)           .OnDelete(DeleteBehavior.Restrict);
-            entity.HasOne(e => e.TombstoneCase)                        .WithMany(c => c.MergeEventsAsMerged)                       .HasForeignKey(e => e.MergedCaseId)             .OnDelete(DeleteBehavior.Restrict);
             entity.HasOne(e => e.TombstoneCase)                     .WithMany(c => c.MergeEventsAsMerged)                       .HasForeignKey(e => e.TombstoneCaseId)          .OnDelete(DeleteBehavior.Restrict);
         });
 
