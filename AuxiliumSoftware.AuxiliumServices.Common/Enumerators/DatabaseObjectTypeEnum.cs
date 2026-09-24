@@ -66,18 +66,25 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Enumerators
         WithinTenancy_Log_CaseMessageReadBy_EventEntry,
         [JsonPropertyName("WithinTenancy.Log.CaseModification.EventEntry")]
         WithinTenancy_Log_CaseModification_EventEntry,
+
+        [JsonPropertyName("WithinTenancy.Log.CaseMerge.RowChange.EventEntry")]
+        WithinTenancy_Log_CaseMerge_RowChange_EventEntry,
         [JsonPropertyName("WithinTenancy.Log.CaseMerge.EventEntry")]
-        WithinTenancy_Log_CaseMerge_RowChange,
+        WithinTenancy_Log_CaseMerge_EventEntry,
+
         [JsonPropertyName("WithinTenancy.Log.LoginAttempt.EventEntry")]
         WithinTenancy_Log_LoginAttempt_EventEntry,
+
         [JsonPropertyName("WithinTenancy.Log.SystemMessageQueue.EmailSent.EventEntry")]
         WithinTenancy_Log_SystemMessageQueue_EmailSent_EventEntry,
         [JsonPropertyName("WithinTenancy.Log.SystemMessageQueue.FailedAction.EventEntry")]
         WithinTenancy_Log_SystemMessageQueue_FailedAction_EventEntry,
+
         [JsonPropertyName("WithinTenancy.Log.SystemBulletin.EntryDismissal.EventEntry")]
         WithinTenancy_Log_SystemBulletin_EntryDismissal_EventEntry,
         [JsonPropertyName("WithinTenancy.Log.SystemBulletin.EntryView.EventEntry")]
         WithinTenancy_Log_SystemBulletin_EntryView_EventEntry,
+
         [JsonPropertyName("WithinTenancy.Log.UserModification.EventEntry")]
         WithinTenancy_Log_UserModification_EventEntry,
 
