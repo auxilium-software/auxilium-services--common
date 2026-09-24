@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
 {
-    public class UserFileEntityModel : MutableTenantScopedEntityModel
+    public class UserFileEntityModel : MutableTenantScopedEntityModelBase
     {
         /// <summary>
         /// The unique identifier for the User the File is for.

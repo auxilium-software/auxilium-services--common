@@ -5,16 +5,16 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.Enumerators
     [JsonConverter(typeof(JsonStringEnumConverter))]
     public enum CaseStatusEnum
     {
-        [JsonPropertyName("staging")]
+        [JsonPropertyName("Staging")]
         Staging,
 
-        [JsonPropertyName("open")]
+        [JsonPropertyName("Open")]
         Open,
 
-        [JsonPropertyName("closed")]
+        [JsonPropertyName("Closed")]
         Closed,
 
-        [JsonPropertyName("archived")]
+        [JsonPropertyName("Archived")]
         Archived
     }
 }

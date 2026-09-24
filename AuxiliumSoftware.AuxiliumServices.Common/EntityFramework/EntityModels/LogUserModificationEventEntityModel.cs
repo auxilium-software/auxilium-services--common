@@ -7,7 +7,7 @@ using System.Text;
 
 namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
 {
-    public class LogUserModificationEventEntityModel : TenantScopedEntityModel
+    public class LogUserModificationEventEntityModel : TenantScopedEntityModelBase
     {
         /// <summary>
         /// The unique identifier of the user who created the Additional Property.

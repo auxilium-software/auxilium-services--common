@@ -8,28 +8,28 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.Enumerators
     [JsonConverter(typeof(JsonStringEnumConverter))]
     public enum CaseEntityTypeEnum
     {
-        [JsonPropertyName("/case")]
+        [JsonPropertyName("Case.Itself")]
         Case,
 
-        [JsonPropertyName("/case/additional_property")]
+        [JsonPropertyName("Case.AdditionalProperty")]
         Case_AdditionalProperty,
 
-        [JsonPropertyName("/case/worker")]
+        [JsonPropertyName("Case.Worker")]
         Case_Worker,
 
-        [JsonPropertyName("/case/client")]
+        [JsonPropertyName("Case.Client")]
         Case_Client,
 
-        [JsonPropertyName("/case/message")]
+        [JsonPropertyName("Case.Message")]
         Case_Message,
 
-        [JsonPropertyName("/case/file")]
+        [JsonPropertyName("Case.File")]
         Case_File,
 
-        [JsonPropertyName("/case/timeline_entry")]
+        [JsonPropertyName("Case.TimelineEntry")]
         Case_TimelineEntry,
 
-        [JsonPropertyName("/case/todo")]
+        [JsonPropertyName("Case.Todo")]
         Case_Todo,
     }
 }

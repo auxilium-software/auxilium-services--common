@@ -8,27 +8,27 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.Enumerators
     [JsonConverter(typeof(JsonStringEnumConverter))]
     public enum SystemSettingValueTypeEnum
     {
-        [JsonPropertyName("string")]
+        [JsonPropertyName("String")]
         String,
 
-        [JsonPropertyName("int")]
+        [JsonPropertyName("Int")]
         Int,
 
-        [JsonPropertyName("bool")]
+        [JsonPropertyName("Bool")]
         Bool,
 
-        [JsonPropertyName("decimal")]
+        [JsonPropertyName("Decimal")]
         Decimal,
 
-        [JsonPropertyName("day")]
+        [JsonPropertyName("Day")]
         Day,
-        [JsonPropertyName("date")]
+        [JsonPropertyName("Date")]
         Date,
-        [JsonPropertyName("time")]
+        [JsonPropertyName("Time")]
         Time,
-        [JsonPropertyName("datetime")]
+        [JsonPropertyName("Datetime")]
         Datetime,
-        [JsonPropertyName("day_array")]
+        [JsonPropertyName("DayArray")]
         DayArray,
 
         /*

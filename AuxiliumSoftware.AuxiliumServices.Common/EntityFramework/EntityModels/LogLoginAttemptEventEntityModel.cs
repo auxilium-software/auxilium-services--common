@@ -7,7 +7,7 @@ using System.Text;
 
 namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
 {
-    public class LogLoginAttemptEventEntityModel : TenantScopedEntityModel
+    public class LogLoginAttemptEventEntityModel : TenantScopedEntityModelBase
     {
         /// <summary>
         /// What Email Address was attempted during login.

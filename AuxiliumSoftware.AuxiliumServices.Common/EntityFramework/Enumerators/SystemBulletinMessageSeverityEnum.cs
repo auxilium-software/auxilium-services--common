@@ -8,13 +8,13 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.Enumerators
     [JsonConverter(typeof(JsonStringEnumConverter))]
     public enum SystemBulletinMessageSeverityEnum
     {
-        [JsonPropertyName("informational")]
+        [JsonPropertyName("Informational")]
         Informational,
 
-        [JsonPropertyName("warning")]
+        [JsonPropertyName("Warning")]
         Warning,
 
-        [JsonPropertyName("critical")]
+        [JsonPropertyName("Critical")]
         Critical,
     }
 }

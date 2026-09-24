@@ -5,7 +5,7 @@ using System.Text;
 
 namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.Abstractions
 {
-    public abstract class MutableTenantScopedEntityModel : TenantScopedEntityModel
+    public abstract class MutableTenantScopedEntityModelBase : TenantScopedEntityModelBase
     {
         public Guid? CreatedByUserId { get; set; }
         public DateTime? LastUpdatedAtUtc { get; set; }

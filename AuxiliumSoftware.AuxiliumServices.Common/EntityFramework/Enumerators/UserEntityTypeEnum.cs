@@ -8,13 +8,13 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.Enumerators
     [JsonConverter(typeof(JsonStringEnumConverter))]
     public enum UserEntityTypeEnum
     {
-        [JsonPropertyName("/user")]
+        [JsonPropertyName("User")]
         User,
 
-        [JsonPropertyName("/user/additional_property")]
+        [JsonPropertyName("User.AdditionalProperty")]
         User_AdditionalProperty,
 
-        [JsonPropertyName("/user/file")]
+        [JsonPropertyName("User.File")]
         User_File,
     }
 }

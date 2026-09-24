@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
 {
-    public class CaseAdditionalPropertyEntityModel : MutableTenantScopedEntityModel
+    public class CaseAdditionalPropertyEntityModel : MutableTenantScopedEntityModelBase
     {
         /// <summary>
         /// The unique identifier of the Case the Additional Property is for.

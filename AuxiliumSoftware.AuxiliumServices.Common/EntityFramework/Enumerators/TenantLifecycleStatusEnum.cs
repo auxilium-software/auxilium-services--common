@@ -11,31 +11,31 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.Enumerators
         /// <summary>
         /// This Tenant is running fine and dandy.
         /// </summary>
-        [JsonPropertyName("active")]
+        [JsonPropertyName("Active")]
         Active,
 
         /// <summary>
         /// This Tenant is in the grace period before destruction.
         /// </summary>
-        [JsonPropertyName("suspended")]
+        [JsonPropertyName("Suspended")]
         Suspended,
 
         /// <summary>
         /// This Tenant is next in line to be destroyed.
         /// </summary>
-        [JsonPropertyName("awaiting_immediate_destruction")]
+        [JsonPropertyName("AwaitingImmediateDestruction")]
         AwaitingImmediateDestruction,
 
         /// <summary>
         /// The Task Runner service is currently going through and destroying data to do with this Tenant.
         /// </summary>
-        [JsonPropertyName("destruction_in_progress")]
+        [JsonPropertyName("DestructionInProgress")]
         DestructionInProgress,
 
         /// <summary>
         /// This record is empty, doesn't do anything, needs cleaning up.
         /// </summary>
-        [JsonPropertyName("destroyed")]
+        [JsonPropertyName("Destroyed")]
         Destroyed,
     }
 }

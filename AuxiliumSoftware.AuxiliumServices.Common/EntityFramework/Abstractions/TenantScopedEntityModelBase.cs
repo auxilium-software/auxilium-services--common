@@ -5,7 +5,7 @@ using System.Text;
 
 namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.Abstractions
 {
-    public abstract class TenantScopedEntityModel
+    public abstract class TenantScopedEntityModelBase
     {
         public required Guid Id { get; set; }
         public Guid TenantId { get; set; } // <-- not required as it's handled by the interceptor

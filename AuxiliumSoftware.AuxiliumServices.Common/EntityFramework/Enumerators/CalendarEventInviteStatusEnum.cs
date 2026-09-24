@@ -8,16 +8,16 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.Enumerators
     [JsonConverter(typeof(JsonStringEnumConverter))]
     public enum CalendarEventInviteStatusEnum
     {
-        [JsonPropertyName("pending")]
+        [JsonPropertyName("Pending")]
         Pending,
 
-        [JsonPropertyName("accepted")]
+        [JsonPropertyName("Accepted")]
         Accepted,
 
-        [JsonPropertyName("declined")]
+        [JsonPropertyName("Declined")]
         Declined,
 
-        [JsonPropertyName("tenative")]
+        [JsonPropertyName("Tenative")]
         Tentative,
     }
 }

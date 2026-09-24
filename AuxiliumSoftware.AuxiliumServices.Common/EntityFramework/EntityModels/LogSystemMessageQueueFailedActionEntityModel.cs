@@ -6,7 +6,7 @@ using System.Text;
 
 namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
 {
-    public class LogSystemMessageQueueFailedActionEntityModel : TenantScopedEntityModel
+    public class LogSystemMessageQueueFailedActionEntityModel : TenantScopedEntityModelBase
     {
         /// <summary>
         /// </summary>

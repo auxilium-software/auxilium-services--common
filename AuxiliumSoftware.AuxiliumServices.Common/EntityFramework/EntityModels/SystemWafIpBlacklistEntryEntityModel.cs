@@ -8,7 +8,7 @@ using System.Text;
 
 namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
 {
-    public class SystemWafIpBlacklistEntryEntityModel : TenantScopedEntityModel
+    public class SystemWafIpBlacklistEntryEntityModel : TenantScopedEntityModelBase
     {
         /// <summary>
         /// The unique identifier of the User who created the IP Block.

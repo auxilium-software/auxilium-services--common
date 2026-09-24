@@ -1,27 +1,46 @@
-﻿using AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.Abstractions;
+﻿using AuxiliumSoftware.AuxiliumServices.Common.Attributes;
+using AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.Abstractions;
 using AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.Enumerators;
+using AuxiliumSoftware.AuxiliumServices.Common.Enumerators;
 using System.ComponentModel.DataAnnotations;
 
 namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
 {
-    public class CaseEntityModel : MutableTenantScopedEntityModel
+    public class CaseEntityModel : MutableTenantScopedEntityModelBase, IConcurrencyStamped
     {
         /// <summary>
         /// The title of the Case.
         /// </summary>
+        [DataMergeResolvableAttribute]
         public required string Title { get; set; }
         /// <summary>
         /// A description of the Case.
         /// </summary>
+        [DataMergeResolvableAttribute(allowCombine: true)]
         public required string Description { get; set; }
         /// <summary>
         /// The Sensitivity Level of the Case.
         /// </summary>
+        /// <remarks>
+        /// Defaults to the more restrictive of the two on merge, so merging can't downgrade a case's sensitivity.
+        /// </remarks>
+        [DataMergeResolvableAttribute(DataMergeFieldDefaultEnum.PreferHigherValue)]
         public required CaseSensitivityEnum Sensitivity { get; set; }
         /// <summary>
         /// The current Status of the Case.
         /// </summary>
+        [DataMergeResolvableAttribute]
         public required CaseStatusEnum Status { get; set; }
+
+
+
+
+
+        public Guid? MergedIntoCaseId { get; set; }
+        public DateTime? MergedAtUtc { get; set; }
+        public Guid? MergedByUserId { get; set; }
+
+        public Guid ConcurrencyStamp { get; set; }
 
 
 
@@ -59,5 +78,9 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
         /// A Log of Modification Events related to the Case.
         /// </summary>
         public ICollection<LogCaseModificationEventEntityModel>? EventLog { get; set; }
+        public CaseEntityModel? MergedIntoCase { get; set; }
+        public UserEntityModel? MergedByUser { get; set; }
+        public ICollection<LogCaseMergeEventEntityModel>? MergeEventsAsSurvivor { get; set; }
+        public ICollection<LogCaseMergeEventEntityModel>? MergeEventsAsMerged { get; set; }
     }
 }

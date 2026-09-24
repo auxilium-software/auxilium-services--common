@@ -8,16 +8,16 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.Enumerators
     [JsonConverter(typeof(JsonStringEnumConverter))]
     public enum PasswordSetTokenReasonEnum
     {
-        [JsonPropertyName("new_account")]
+        [JsonPropertyName("NewAccount")]
         NewAccount,
 
-        [JsonPropertyName("password_reset")]
+        [JsonPropertyName("PasswordReset")]
         PasswordReset,
 
-        [JsonPropertyName("password_expired")]
+        [JsonPropertyName("PasswordExpired")]
         PasswordExpired,
 
-        [JsonPropertyName("auxilium_1_bcrypt_migration")]
+        [JsonPropertyName("Auxilium1BcryptMigration")]
         Auxilium1BCryptMigration
     }
 }

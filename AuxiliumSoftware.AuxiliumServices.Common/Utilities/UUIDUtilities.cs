@@ -55,6 +55,13 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Utilities
 
 
 
+            [DatabaseObjectTypeEnum.WithinTenancy_Enumerator]                                       = "/auxilium/3/database-object/mariadb/within-tenancy/enumerator",
+            [DatabaseObjectTypeEnum.WithinTenancy_Enumerator_Translation]                           = "/auxilium/3/database-object/mariadb/within-tenancy/enumerator/translation",
+            [DatabaseObjectTypeEnum.WithinTenancy_Enumerator_Value]                                 = "/auxilium/3/database-object/mariadb/within-tenancy/enumerator/value",
+            [DatabaseObjectTypeEnum.WithinTenancy_Enumerator_ValueTranslation]                      = "/auxilium/3/database-object/mariadb/within-tenancy/enumerator/value-translation",
+
+
+
             [DatabaseObjectTypeEnum.WithinTenancy_Log_CaseModification_EventEntry]                  = "/auxilium/3/database-object/mariadb/within-tenancy/log/case-modification/event-entry",
             [DatabaseObjectTypeEnum.WithinTenancy_Log_CaseMessageReadBy_EventEntry]                 = "/auxilium/3/database-object/mariadb/within-tenancy/log/case-message-read-by/event-entry",
 

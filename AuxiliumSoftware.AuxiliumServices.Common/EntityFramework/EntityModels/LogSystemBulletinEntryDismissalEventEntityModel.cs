@@ -6,7 +6,7 @@ using System.Text;
 
 namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
 {
-    public class LogSystemBulletinEntryDismissalEventEntityModel : TenantScopedEntityModel
+    public class LogSystemBulletinEntryDismissalEventEntityModel : TenantScopedEntityModelBase
     {
         /// <summary>
         /// The unique identifier of the User who dismissed the System Bulletin.

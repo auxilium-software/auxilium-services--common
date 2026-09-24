@@ -1,5 +1,7 @@
-﻿using AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.Abstractions;
+﻿using AuxiliumSoftware.AuxiliumServices.Common.Attributes;
+using AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.Abstractions;
 using AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.Enumerators;
+using AuxiliumSoftware.AuxiliumServices.Common.Enumerators;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -7,7 +9,7 @@ using System.Text;
 
 namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
 {
-    public class LogCaseModificationEventEntityModel : TenantScopedEntityModel
+    public class LogCaseModificationEventEntityModel : TenantScopedEntityModelBase
     {
         /// <summary>
         /// The unique identifier of the user who created the Additional Property.
@@ -21,6 +23,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
         /// <summary>
         /// The unique identifier of the Case the Additional Property is for.
         /// </summary>
+        [DataMergeBehaviour(DataMergeBehaviourEnum.Preserve)]
         public required Guid CaseId { get; set; }
 
 

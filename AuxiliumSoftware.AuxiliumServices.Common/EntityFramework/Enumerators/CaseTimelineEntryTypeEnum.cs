@@ -8,10 +8,10 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.Enumerators
     [JsonConverter(typeof(JsonStringEnumConverter))]
     public enum CaseTimelineEntryTypeEnum
     {
-        [JsonPropertyName("note.user")]
+        [JsonPropertyName("Note.User")]
         Note_User,
 
-        [JsonPropertyName("note.system")]
+        [JsonPropertyName("Note.System")]
         Note_System,
     }
 }
