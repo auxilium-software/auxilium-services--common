@@ -64,6 +64,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Utilities
 
             [DatabaseObjectTypeEnum.WithinTenancy_Log_CaseModification_EventEntry]                  = "/auxilium/3/database-object/mariadb/within-tenancy/log/case-modification/event-entry",
             [DatabaseObjectTypeEnum.WithinTenancy_Log_CaseMessageReadBy_EventEntry]                 = "/auxilium/3/database-object/mariadb/within-tenancy/log/case-message-read-by/event-entry",
+            [DatabaseObjectTypeEnum.WithinTenancy_Log_CaseMerge_RowChange]                          = "/auxilium/3/database-object/mariadb/within-tenancy/log/case-merge/event-entry",
 
             [DatabaseObjectTypeEnum.WithinTenancy_Log_LoginAttempt_EventEntry]                      = "/auxilium/3/database-object/mariadb/within-tenancy/log/login-attempt/event-entry",
 
