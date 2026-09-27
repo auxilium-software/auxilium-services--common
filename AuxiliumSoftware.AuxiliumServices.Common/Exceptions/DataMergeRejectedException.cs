@@ -5,7 +5,7 @@ using System.Text;
 
 namespace AuxiliumSoftware.AuxiliumServices.Common.Exceptions
 {
-    internal class DataMergeRejectedException : Exception
+    public class DataMergeRejectedException : Exception
     {
         public DataMergeRejectionReasonEnum Reason { get; }
 
