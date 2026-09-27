@@ -17,7 +17,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.Abstractions
 
         public required string SurvivorPreviousValuesJson { get; set; }
 
-        public required string MergedSnapshotJson { get; set; }
+        public required string TombstoneSnapshotJson { get; set; }
 
 
 
