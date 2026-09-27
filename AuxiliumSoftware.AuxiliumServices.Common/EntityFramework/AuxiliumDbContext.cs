@@ -649,7 +649,7 @@ public class AuxiliumDbContext : DbContext
             
             entity.Property(e => e.FieldResolutionsJson)            .HasColumnName("field_resolutions_json")                    .HasColumnType("longtext")                                                                                                          .IsRequired();
             entity.Property(e => e.SurvivorPreviousValuesJson)      .HasColumnName("survivor_previous_values_json")             .HasColumnType("longtext")                                                                                                          .IsRequired();
-            entity.Property(e => e.MergedSnapshotJson)              .HasColumnName("merged_snapshot_json")                      .HasColumnType("longtext")                                                                                                          .IsRequired();
+            entity.Property(e => e.TombstoneSnapshotJson)           .HasColumnName("tombstone_snapshot_json")                   .HasColumnType("longtext")                                                                                                          .IsRequired();
             
             entity.HasOne(e => e.CreatedByUser)                     .WithMany()                                                 .HasForeignKey(e => e.CreatedByUserId)          .OnDelete(DeleteBehavior.Restrict);
             entity.HasOne(e => e.SurvivorCase)                      .WithMany(c => c.MergeEventsAsSurvivor)                     .HasForeignKey(e => e.SurvivorCaseId)           .OnDelete(DeleteBehavior.Restrict);
