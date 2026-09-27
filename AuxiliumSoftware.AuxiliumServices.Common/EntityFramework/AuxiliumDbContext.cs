@@ -643,11 +643,13 @@ public class AuxiliumDbContext : DbContext
             entity.Property(e => e.CreatedByUserId)                 .HasColumnName("created_by_user_id")                        .HasColumnType("char(36)")                                                                                                          .IsRequired();
             
             entity.Property(e => e.SurvivorCaseId)                  .HasColumnName("survivor_case_id")                          .HasColumnType("char(36)")                                                                                                          .IsRequired();
-            entity.Property(e => e.TombstoneCaseId)                    .HasColumnName("merged_case_id")                            .HasColumnType("char(36)")                                                                                                          .IsRequired();
+            entity.Property(e => e.TombstoneCaseId)                 .HasColumnName("tombstone_case_id")                         .HasColumnType("char(36)")                                                                                                          .IsRequired();
+            
+            entity.Property(e => e.Justification)                   .HasColumnName("justification")                             .HasColumnType("text")                                                                                                              .IsRequired();
             
             entity.Property(e => e.FieldResolutionsJson)            .HasColumnName("field_resolutions_json")                    .HasColumnType("longtext")                                                                                                          .IsRequired();
             entity.Property(e => e.SurvivorPreviousValuesJson)      .HasColumnName("survivor_previous_values_json")             .HasColumnType("longtext")                                                                                                          .IsRequired();
-            entity.Property(e => e.MergedSnapshotJson)              .HasColumnName("merged_snapshot_json")                      .HasColumnType("longtext")                                                                                                          .IsRequired();
+            entity.Property(e => e.TombstoneSnapshotJson)           .HasColumnName("tombstone_snapshot_json")                   .HasColumnType("longtext")                                                                                                          .IsRequired();
             
             entity.HasOne(e => e.CreatedByUser)                     .WithMany()                                                 .HasForeignKey(e => e.CreatedByUserId)          .OnDelete(DeleteBehavior.Restrict);
             entity.HasOne(e => e.SurvivorCase)                      .WithMany(c => c.MergeEventsAsSurvivor)                     .HasForeignKey(e => e.SurvivorCaseId)           .OnDelete(DeleteBehavior.Restrict);

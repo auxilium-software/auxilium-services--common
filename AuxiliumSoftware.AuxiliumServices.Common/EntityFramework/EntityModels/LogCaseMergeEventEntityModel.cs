@@ -8,8 +8,13 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
     public class LogCaseMergeEventEntityModel : LogMergeEventEntityModelBase
     {
         public required Guid SurvivorCaseId { get; set; }
-
         public required Guid TombstoneCaseId { get; set; }
+
+
+
+
+
+        public required string Justification { get; set; }
 
 
 
