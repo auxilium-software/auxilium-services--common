@@ -1087,8 +1087,8 @@ public class AuxiliumDbContext : DbContext
             entity.HasOne(e => e.CreatedByUser)                     .WithMany()                                                 .HasForeignKey(e => e.CreatedByUserId)          .OnDelete(DeleteBehavior.SetNull);
             entity.HasOne(e => e.LastUpdatedByUser)                 .WithMany()                                                 .HasForeignKey(e => e.LastUpdatedByUserId)      .OnDelete(DeleteBehavior.SetNull);
 
-            entity.HasOne(e => e.MergedIntoUser)                    .WithMany()                                                 .HasForeignKey(e => e.MergedIntoUserId)         .OnDelete(DeleteBehavior.Restrict);
-            entity.HasOne(e => e.MergedByUser)                      .WithMany()                                                 .HasForeignKey(e => e.MergedByUserId)           .OnDelete(DeleteBehavior.SetNull);
+            entity.HasOne(e => e.MergedIntoUser)                    .WithMany()                                                 .HasForeignKey(e => e.MergedIntoUserId)         .OnDelete(DeleteBehavior.Restrict).HasConstraintName("FK_within_tenancy__user__users_merged_into_user_id");
+            entity.HasOne(e => e.MergedByUser)                      .WithMany()                                                 .HasForeignKey(e => e.MergedByUserId)           .OnDelete(DeleteBehavior.SetNull).HasConstraintName("FK_within_tenancy__user__users_merged_by_user_id");
 
             entity.HasIndex(e => new { e.TenantId, e.EmailAddress }).IsUnique();
             entity.HasIndex(e => e.MergedIntoUserId);
