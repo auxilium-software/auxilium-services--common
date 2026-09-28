@@ -48,6 +48,8 @@ public class AuxiliumDbContext : DbContext
     public DbSet<LogCaseModificationEventEntityModel> WithinTenancy_Log_CaseModificationEvents { get; set; }
     public DbSet<LogCaseMergeEventEntityModel> WithinTenancy_Log_CaseMergeEvents { get; set; }
     public DbSet<LogCaseMergeEventRowChangeEntityModel> WithinTenancy_Log_CaseMergeEventRowChanges { get; set; }
+    public DbSet<LogUserMergeEventEntityModel> WithinTenancy_Log_UserMergeEvents { get; set; }
+    public DbSet<LogUserMergeEventRowChangeEntityModel> WithinTenancy_Log_UserMergeEventRowChanges { get; set; }
     public DbSet<LogLoginAttemptEventEntityModel> WithinTenancy_Log_LoginAttempts { get; set; }
     public DbSet<LogSystemBulletinEntryDismissalEventEntityModel> WithinTenancy_Log_SystemBulletinEntryDismissals { get; set; }
     public DbSet<LogSystemBulletinEntryViewEventEntityModel> WithinTenancy_Log_SystemBulletinEntryViews { get; set; }
@@ -679,6 +681,55 @@ public class AuxiliumDbContext : DbContext
             entity.HasIndex(e => new { e.EntityName, e.RowId });
         });
 
+        // log__user_merge_events
+        modelBuilder.Entity<LogUserMergeEventEntityModel>(entity =>
+        {
+            entity.ToTable("within_tenancy__log__user_merge_events");
+            entity.HasKey(e => e.Id);
+            
+            entity.Property(e => e.Id)                              .HasColumnName("id")                                        .HasColumnType("char(36)")                                                                                                          .IsRequired();
+            entity.Property(e => e.TenantId)                        .HasColumnName("tenant_id")                                 .HasColumnType("char(36)")                                                                                                          .IsRequired();
+            entity.Property(e => e.CreatedAtUtc)                    .HasColumnName("created_at_utc")                            .HasColumnType("datetime")                                                      .HasDefaultValueSql("UTC_TIMESTAMP()")              .IsRequired();
+            
+            entity.Property(e => e.CreatedByUserId)                 .HasColumnName("created_by_user_id")                        .HasColumnType("char(36)")                                                                                                          .IsRequired();
+            
+            entity.Property(e => e.SurvivorUserId)                  .HasColumnName("survivor_user_id")                          .HasColumnType("char(36)")                                                                                                          .IsRequired();
+            entity.Property(e => e.TombstoneUserId)                 .HasColumnName("tombstone_user_id")                         .HasColumnType("char(36)")                                                                                                          .IsRequired();
+            
+            entity.Property(e => e.Justification)                   .HasColumnName("justification")                             .HasColumnType("text")                                                                                                              .IsRequired();
+            
+            entity.Property(e => e.FieldResolutionsJson)            .HasColumnName("field_resolutions_json")                    .HasColumnType("longtext")                                                                                                          .IsRequired();
+            entity.Property(e => e.SurvivorPreviousValuesJson)      .HasColumnName("survivor_previous_values_json")             .HasColumnType("longtext")                                                                                                          .IsRequired();
+            entity.Property(e => e.TombstoneSnapshotJson)           .HasColumnName("tombstone_snapshot_json")                   .HasColumnType("longtext")                                                                                                          .IsRequired();
+            
+            entity.HasOne(e => e.CreatedByUser)                     .WithMany()                                                 .HasForeignKey(e => e.CreatedByUserId)          .OnDelete(DeleteBehavior.Restrict);
+            entity.HasOne(e => e.SurvivorUser)                      .WithMany(u => u.MergeEventsAsSurvivor)                     .HasForeignKey(e => e.SurvivorUserId)           .OnDelete(DeleteBehavior.Restrict);
+            entity.HasOne(e => e.TombstoneUser)                     .WithMany(u => u.MergeEventsAsMerged)                       .HasForeignKey(e => e.TombstoneUserId)          .OnDelete(DeleteBehavior.Restrict);
+        });
+
+        // log__user_merge_event_row_changes
+        modelBuilder.Entity<LogUserMergeEventRowChangeEntityModel>(entity =>
+        {
+            entity.ToTable("within_tenancy__log__user_merge_event_row_changes");
+            entity.HasKey(e => e.Id);
+            
+            entity.Property(e => e.Id)                              .HasColumnName("id")                                        .HasColumnType("char(36)")                                                                                                          .IsRequired();
+            entity.Property(e => e.TenantId)                        .HasColumnName("tenant_id")                                 .HasColumnType("char(36)")                                                                                                          .IsRequired();
+            entity.Property(e => e.CreatedAtUtc)                    .HasColumnName("created_at_utc")                            .HasColumnType("datetime")                                                      .HasDefaultValueSql("UTC_TIMESTAMP()")              .IsRequired();
+            
+            entity.Property(e => e.UserMergeEventId)                .HasColumnName("user_merge_event_id")                       .HasColumnType("char(36)")                                                                                                          .IsRequired();
+            
+            entity.Property(e => e.EntityName)                      .HasColumnName("entity_name")                               .HasColumnType("varchar(191)")                                                                                                      .IsRequired();
+            entity.Property(e => e.PropertyName)                    .HasColumnName("property_name")                             .HasColumnType("varchar(191)")                                                                                                      .IsRequired();
+            entity.Property(e => e.RowId)                           .HasColumnName("row_id")                                    .HasColumnType("char(36)")                                                                                                          .IsRequired();
+            entity.Property(e => e.Action)                          .HasColumnName("action")                                    .HasColumnType("text")                  .HasConversion(new JsonPropertyNameEnumConverter<DataMergeRowActionEnum>())                     .IsRequired();
+            entity.Property(e => e.SnapshotJson)                    .HasColumnName("snapshot_json")                             .HasColumnType("longtext");
+            
+            entity.HasOne(e => e.UserMergeEvent)                    .WithMany(m => m.RowChanges)                                .HasForeignKey(e => e.UserMergeEventId)         .OnDelete(DeleteBehavior.Cascade);
+
+            entity.HasIndex(e => new { e.EntityName, e.RowId });
+        });
+
         // log__login_attempts
         modelBuilder.Entity<LogLoginAttemptEventEntityModel>(entity =>
         {
@@ -1026,12 +1077,21 @@ public class AuxiliumDbContext : DbContext
             entity.Property(e => e.DeletionRequested)               .HasColumnName("deletion_requested")                        .HasColumnType("tinyint(1)")                                                    .HasDefaultValue(false)                             .IsRequired();
             entity.Property(e => e.DeletionRequestReason)           .HasColumnName("deletion_request_reason")                   .HasColumnType("text");
 
+            entity.Property(e => e.MergedIntoUserId)                .HasColumnName("merged_into_user_id")                       .HasColumnType("char(36)");
+            entity.Property(e => e.MergedAtUtc)                     .HasColumnName("merged_at_utc")                             .HasColumnType("datetime");
+            entity.Property(e => e.MergedByUserId)                  .HasColumnName("merged_by_user_id")                         .HasColumnType("char(36)");
+            entity.Property(e => e.ConcurrencyStamp)                .HasColumnName("concurrency_stamp")                         .HasColumnType("char(36)")              .IsConcurrencyToken()                                                                       .IsRequired();
+
 
 
             entity.HasOne(e => e.CreatedByUser)                     .WithMany()                                                 .HasForeignKey(e => e.CreatedByUserId)          .OnDelete(DeleteBehavior.SetNull);
             entity.HasOne(e => e.LastUpdatedByUser)                 .WithMany()                                                 .HasForeignKey(e => e.LastUpdatedByUserId)      .OnDelete(DeleteBehavior.SetNull);
 
+            entity.HasOne(e => e.MergedIntoUser)                    .WithMany()                                                 .HasForeignKey(e => e.MergedIntoUserId)         .OnDelete(DeleteBehavior.Restrict);
+            entity.HasOne(e => e.MergedByUser)                      .WithMany()                                                 .HasForeignKey(e => e.MergedByUserId)           .OnDelete(DeleteBehavior.SetNull);
+
             entity.HasIndex(e => new { e.TenantId, e.EmailAddress }).IsUnique();
+            entity.HasIndex(e => e.MergedIntoUserId);
         });
 
         // user__additional_properties

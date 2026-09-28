@@ -72,6 +72,11 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Enumerators
         [JsonPropertyName("WithinTenancy.Log.CaseMerge.EventEntry")]
         WithinTenancy_Log_CaseMerge_EventEntry,
 
+        [JsonPropertyName("WithinTenancy.Log.UserMerge.RowChange.EventEntry")]
+        WithinTenancy_Log_UserMerge_RowChange_EventEntry,
+        [JsonPropertyName("WithinTenancy.Log.UserMerge.EventEntry")]
+        WithinTenancy_Log_UserMerge_EventEntry,
+
         [JsonPropertyName("WithinTenancy.Log.LoginAttempt.EventEntry")]
         WithinTenancy_Log_LoginAttempt_EventEntry,
 
