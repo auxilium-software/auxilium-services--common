@@ -66,6 +66,8 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Utilities
             [DatabaseObjectTypeEnum.WithinTenancy_Log_CaseMessageReadBy_EventEntry]                 = "Auxilium.3.DatabaseObject.MariaDb.WithinTenancy.Log.CaseMessageReadBy.EventEntry",
             [DatabaseObjectTypeEnum.WithinTenancy_Log_CaseMerge_EventEntry]                         = "Auxilium.3.DatabaseObject.MariaDb.WithinTenancy.Log.CaseMerge.EventEntry",
             [DatabaseObjectTypeEnum.WithinTenancy_Log_CaseMerge_RowChange_EventEntry]               = "Auxilium.3.DatabaseObject.MariaDb.WithinTenancy.Log.CaseMerge.RowChange.EventEntry",
+            [DatabaseObjectTypeEnum.WithinTenancy_Log_UserMerge_EventEntry]                         = "Auxilium.3.DatabaseObject.MariaDb.WithinTenancy.Log.UserMerge.EventEntry",
+            [DatabaseObjectTypeEnum.WithinTenancy_Log_UserMerge_RowChange_EventEntry]               = "Auxilium.3.DatabaseObject.MariaDb.WithinTenancy.Log.UserMerge.RowChange.EventEntry",
 
             [DatabaseObjectTypeEnum.WithinTenancy_Log_LoginAttempt_EventEntry]                      = "Auxilium.3.DatabaseObject.MariaDb.WithinTenancy.Log.LoginAttempt.EventEntry",
 
