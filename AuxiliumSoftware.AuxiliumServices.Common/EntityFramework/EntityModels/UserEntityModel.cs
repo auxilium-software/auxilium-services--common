@@ -1,13 +1,15 @@
-﻿using AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.Abstractions;
+﻿using AuxiliumSoftware.AuxiliumServices.Common.Attributes;
+using AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.Abstractions;
 using System.ComponentModel.DataAnnotations;
 
 namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
 {
-    public class UserEntityModel : MutableTenantScopedEntityModelBase
+    public class UserEntityModel : MutableTenantScopedEntityModelBase, IConcurrencyStamped
     {
         /// <summary>
         /// The email address of the User.
         /// </summary>
+        [DataMergeResolvable]
         public required string? EmailAddress { get; set; }
         /// <summary>
         /// The hashed password of the User.
@@ -16,30 +18,37 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
         /// <summary>
         /// The full name of the User.
         /// </summary>
+        [DataMergeResolvable]
         public required string FullName { get; set; }
         /// <summary>
         /// The full address of the User.
         /// </summary>
+        [DataMergeResolvable]
         public required string? FullAddress { get; set; }
         /// <summary>
         /// The telephone number of the User.
         /// </summary>
+        [DataMergeResolvable]
         public required string? TelephoneNumber { get; set; }
         /// <summary>
         /// The gender of the User.
         /// </summary>
+        [DataMergeResolvable]
         public required string? Gender { get; set; }
         /// <summary>
         /// The date of birth of the User.
         /// </summary>
+        [DataMergeResolvable]
         public required DateOnly? DateOfBirth { get; set; }
         /// <summary>
         /// How the User found out about our service.
         /// </summary>
+        [DataMergeResolvable(allowCombine: true)]
         public required string? HowDidYouFindOutAboutOurService { get; set; }
         /// <summary>
         /// The preferred language for the User.
         /// </summary>
+        [DataMergeResolvable]
         public required string LanguagePreference { get; set; }
 
 
@@ -66,14 +75,17 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
         /// <summary>
         /// Whether the User has the "Case Worker" Role.
         /// </summary>
+        [DataMergeResolvable]
         public required bool IsCaseWorker { get; set; } = false;
         /// <summary>
         /// Whether the User has the "Case Worker Manager" Role.
         /// </summary>
+        [DataMergeResolvable]
         public required bool IsCaseWorkerManager { get; set; } = false;
         /// <summary>
         /// Whether the User has the "Administrator" Role.
         /// </summary>
+        [DataMergeResolvable]
         public required bool IsAdministrator { get; set; } = false;
 
 
@@ -111,6 +123,11 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
         /// An optional reason provided by the User for requesting account deletion.
         /// </summary>
         public string? DeletionRequestReason { get; set; }
+
+        public Guid? MergedIntoUserId { get; set; }
+        public DateTime? MergedAtUtc { get; set; }
+        public Guid? MergedByUserId { get; set; }
+        public Guid ConcurrencyStamp { get; set; }
 
 
 
@@ -212,5 +229,9 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
         /// Password Reset Tokens issued to the User.
         /// </summary>
         public ICollection<PasswordSetTokenEntityModel>? PasswordSetTokens { get; set; }
+        public UserEntityModel? MergedIntoUser { get; set; }
+        public UserEntityModel? MergedByUser { get; set; }
+        public ICollection<LogUserMergeEventEntityModel>? MergeEventsAsSurvivor { get; set; }
+        public ICollection<LogUserMergeEventEntityModel>? MergeEventsAsMerged { get; set; }
     }
 }
