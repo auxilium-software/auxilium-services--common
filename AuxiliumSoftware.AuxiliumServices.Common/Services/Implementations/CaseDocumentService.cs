@@ -262,6 +262,7 @@ public class CaseDocumentService : ICaseDocumentService
     public async Task<Guid> SaveAdditionalPropertyAsync(
         UserEntityModel currentUser,
         Guid caseId,
+        Guid? groupId,
         string additionalPropertyDisplayName,
         string additionalPropertyContent,
         string contentType
@@ -273,6 +274,7 @@ public class CaseDocumentService : ICaseDocumentService
             {
                 Id = UUIDUtilities.GenerateV5(DatabaseObjectTypeEnum.WithinTenancy_Case_AdditionalProperty),
                 CaseId = caseId,
+                GroupId = groupId,
                 ContentType = contentType ?? "text/plain",
                 CreatedByUserId = currentUser.Id,
                 CreatedAtUtc = DateTime.UtcNow,

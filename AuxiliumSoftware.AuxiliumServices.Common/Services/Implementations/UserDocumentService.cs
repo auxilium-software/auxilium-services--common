@@ -85,6 +85,7 @@ public class UserDocumentService : IUserDocumentService
     public async Task<Guid> SaveAdditionalPropertyAsync(
         UserEntityModel currentUser,
         Guid userId,
+        Guid? groupId,
         string additionalPropertyDisplayName,
         string additionalPropertyContent,
         string contentType
@@ -96,6 +97,7 @@ public class UserDocumentService : IUserDocumentService
             {
                 Id = UUIDUtilities.GenerateV5(DatabaseObjectTypeEnum.WithinTenancy_User_AdditionalProperty),
                 UserId = userId,
+                GroupId = groupId,
                 ContentType = contentType ?? "text/plain",
                 CreatedByUserId = currentUser.Id,
                 CreatedAtUtc = DateTime.UtcNow,
