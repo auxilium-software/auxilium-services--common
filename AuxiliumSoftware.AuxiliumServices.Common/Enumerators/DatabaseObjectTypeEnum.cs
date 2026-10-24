@@ -30,6 +30,10 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Enumerators
         WithinTenancy_Case,
         [JsonPropertyName("WithinTenancy.Case.AdditionalProperty")]
         WithinTenancy_Case_AdditionalProperty,
+        [JsonPropertyName("WithinTenancy.Case.AdditionalProperty.Group")]
+        WithinTenancy_Case_AdditionalProperty_Group,
+        [JsonPropertyName("WithinTenancy.Case.AdditionalProperty.Translation")]
+        WithinTenancy_Case_AdditionalProperty_Group_Translation,
         [JsonPropertyName("WithinTenancy.Case.Client")]
         WithinTenancy_Case_Client,
         [JsonPropertyName("WithinTenancy.Case.File")]
@@ -122,6 +126,10 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Enumerators
         WithinTenancy_User,
         [JsonPropertyName("WithinTenancy.User.AdditionalProperty")]
         WithinTenancy_User_AdditionalProperty,
+        [JsonPropertyName("WithinTenancy.User.AdditionalProperty.Group")]
+        WithinTenancy_User_AdditionalProperty_Group,
+        [JsonPropertyName("WithinTenancy.User.AdditionalProperty.Translation")]
+        WithinTenancy_User_AdditionalProperty_Group_Translation,
         [JsonPropertyName("WithinTenancy.User.File")]
         WithinTenancy_User_File,
         [JsonPropertyName("WithinTenancy.User.PasswordSetToken")]
