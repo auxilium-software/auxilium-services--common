@@ -1219,7 +1219,7 @@ public class AuxiliumDbContext : DbContext
             entity.HasOne(e => e.LastUpdatedByUser)                 .WithMany()                                                 .HasForeignKey(e => e.LastUpdatedByUserId)      .OnDelete(DeleteBehavior.SetNull);
             entity.HasOne(e => e.UserAdditionalPropertyGroup)       .WithMany(g => g.Translations)                              .HasForeignKey(e => e.UserAdditionalPropertyGroupId).OnDelete(DeleteBehavior.Cascade);
 
-            entity.HasIndex(e => new { e.UserAdditionalPropertyGroup, e.LanguageCode }).IsUnique();
+            entity.HasIndex(e => new { e.UserAdditionalPropertyGroupId, e.LanguageCode }).IsUnique();
         });
 
         // user__files
