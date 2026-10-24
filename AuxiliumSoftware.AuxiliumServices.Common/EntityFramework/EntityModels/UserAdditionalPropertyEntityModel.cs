@@ -9,6 +9,12 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
         /// The unique identifier of the User the Additional Property is for.
         /// </summary>
         public required Guid UserId { get; set; }
+
+
+        public required Guid? GroupId { get; set; }
+
+
+
         /// <summary>
         /// This is the Original Name of the Additional Property (eg what the User entered into the text field in the GUI) (can have spaces and special characters).
         /// I.E. This is what the User has entered.
@@ -37,5 +43,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
         /// The User the Additional Property is for.
         /// </summary>
         public UserEntityModel? User { get; set; }
+
+        public UserAdditionalPropertyGroupEntityModel? Group { get; set; }
     }
 }

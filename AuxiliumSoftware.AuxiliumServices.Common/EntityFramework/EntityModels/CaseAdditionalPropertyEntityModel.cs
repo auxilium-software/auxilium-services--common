@@ -10,6 +10,12 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
         /// The unique identifier of the Case the Additional Property is for.
         /// </summary>
         public required Guid CaseId { get; set; }
+
+
+        public required Guid? GroupId { get; set; }
+
+
+
         /// <summary>
         /// This is the Original Name of the Additional Property (eg what the User entered into the text field in the GUI) (can have spaces and special characters).
         /// I.E. This is what the User has entered.
@@ -38,5 +44,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
         /// The Case the Additional Property is for.
         /// </summary>
         public CaseEntityModel? Case { get; set; }
+
+        public CaseAdditionalPropertyGroupEntityModel? Group { get; set; }
     }
 }

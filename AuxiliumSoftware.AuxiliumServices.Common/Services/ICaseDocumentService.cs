@@ -47,6 +47,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services
         Task<Guid> SaveAdditionalPropertyAsync(
             UserEntityModel currentUser,
             Guid caseId,
+            Guid? groupId,
             string additionalPropertyDisplayName,
             string additionalPropertyContent,
             string contentType
