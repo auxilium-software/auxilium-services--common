@@ -72,6 +72,8 @@ public class UserDocumentService : IUserDocumentService
         try
         {
             return await _db.WithinTenancy_UserAdditionalProperties
+                .Include(a => a.Group)
+                    .ThenInclude(g => g!.Translations)
                 .Where(a => a.UserId == userId)
                 .ToListAsync();
         }
@@ -93,6 +95,8 @@ public class UserDocumentService : IUserDocumentService
     {
         try
         {
+            await EnsureGroupExistsAsync(groupId);
+
             var newProperty = new UserAdditionalPropertyEntityModel
             {
                 Id = UUIDUtilities.GenerateV5(DatabaseObjectTypeEnum.WithinTenancy_User_AdditionalProperty),
@@ -124,6 +128,7 @@ public class UserDocumentService : IUserDocumentService
 
             return newProperty.Id;
         }
+        catch (KeyNotFoundException) { throw; }
         catch (Exception ex)
         {
             _logger.LogError(ex, "Failed to save property {AdditionalPropertyName} for user {UserId}",
@@ -178,6 +183,54 @@ public class UserDocumentService : IUserDocumentService
         }
     }
 
+    public async Task MoveAdditionalPropertyToGroupAsync(
+        Guid userId,
+        Guid additionalPropertyId,
+        Guid? newGroupId,
+        Guid actorUserId
+    )
+    {
+        try
+        {
+            var property = await _db.WithinTenancy_UserAdditionalProperties
+                .FirstOrDefaultAsync(a => a.UserId == userId && a.Id == additionalPropertyId)
+                ?? throw new KeyNotFoundException($"Property {additionalPropertyId} not found for user {userId}");
+
+            if (property.GroupId == newGroupId) return;
+
+            await EnsureGroupExistsAsync(newGroupId);
+
+            var previousGroupId = property.GroupId;
+
+            property.GroupId = newGroupId;
+            property.LastUpdatedAtUtc = DateTime.UtcNow;
+            property.LastUpdatedByUserId = actorUserId;
+
+            var userEntity = await _db.WithinTenancy_Users.FindAsync(userId);
+            if (userEntity != null)
+            {
+                userEntity.LastUpdatedAtUtc = DateTime.UtcNow;
+                userEntity.LastUpdatedByUserId = actorUserId;
+            }
+
+            await WriteToAuditLog(actorUserId, userId, AuditLogActionTypeEnum.Modification,
+                UserEntityTypeEnum.User_AdditionalProperty, entityId: additionalPropertyId,
+                propertyName: "group_id", oldValue: previousGroupId?.ToString(), newValue: newGroupId?.ToString());
+
+            await _db.SaveChangesAsync();
+
+            _logger.LogInformation("Moved property {AdditionalPropertyId} for user {UserId} from group {PreviousGroupId} to {GroupId}",
+                additionalPropertyId, userId, previousGroupId, newGroupId);
+        }
+        catch (KeyNotFoundException) { throw; }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Failed to move property {AdditionalPropertyId} for user {UserId} to group {GroupId}",
+                additionalPropertyId, userId, newGroupId);
+            throw;
+        }
+    }
+
     public async Task DeleteAdditionalPropertyAsync(Guid userId, Guid additionalPropertyId, Guid actorUserId)
     {
         try
@@ -208,6 +261,15 @@ public class UserDocumentService : IUserDocumentService
             _logger.LogError(ex, "Failed to delete property {AdditionalPropertyId} from user {UserId}", additionalPropertyId, userId);
             throw;
         }
+    }
+
+    private async Task EnsureGroupExistsAsync(Guid? groupId)
+    {
+        if (groupId == null) return;
+
+        var exists = await _db.WithinTenancy_UserAdditionalProperty_Groups.AnyAsync(g => g.Id == groupId);
+        if (!exists)
+            throw new KeyNotFoundException($"User additional property group {groupId} not found");
     }
     #endregion
     #region ========================= PERMISSION CHECKS =========================

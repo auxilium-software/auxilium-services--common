@@ -249,6 +249,8 @@ public class CaseDocumentService : ICaseDocumentService
         try
         {
             return await _db.WithinTenancy_CaseAdditionalProperties
+                .Include(a => a.Group)
+                .ThenInclude(g => g!.Translations)
                 .Where(a => a.CaseId == caseId)
                 .ToListAsync();
         }
@@ -270,6 +272,8 @@ public class CaseDocumentService : ICaseDocumentService
     {
         try
         {
+            await EnsureGroupExistsAsync(groupId);
+
             var newProperty = new CaseAdditionalPropertyEntityModel
             {
                 Id = UUIDUtilities.GenerateV5(DatabaseObjectTypeEnum.WithinTenancy_Case_AdditionalProperty),
@@ -306,6 +310,7 @@ public class CaseDocumentService : ICaseDocumentService
 
             return newProperty.Id;
         }
+        catch (KeyNotFoundException) { throw; }
         catch (Exception ex)
         {
             _logger.LogError(ex, "Failed to save property {AdditionalPropertyName} for case {CaseId}",
@@ -347,7 +352,7 @@ public class CaseDocumentService : ICaseDocumentService
                 AuditLogActionTypeEnum.Modification,
                 CaseEntityTypeEnum.Case_AdditionalProperty,
                 entityId: additionalPropertyId,
-                propertyName: "Content",
+                propertyName: "content",
                 oldValue: previousContent,
                 newValue: content
             );
@@ -362,6 +367,60 @@ public class CaseDocumentService : ICaseDocumentService
         {
             _logger.LogError(ex, "Failed to update property {AdditionalPropertyId} for case {CaseId}",
                 additionalPropertyId, caseId);
+            throw;
+        }
+    }
+
+    public async Task MoveAdditionalPropertyToGroupAsync(
+        Guid caseId,
+        Guid additionalPropertyId,
+        Guid? newGroupId,
+        Guid actorUserId)
+    {
+        try
+        {
+            var property = await _db.WithinTenancy_CaseAdditionalProperties
+                .FirstOrDefaultAsync(a => a.CaseId == caseId && a.Id == additionalPropertyId)
+                ?? throw new KeyNotFoundException($"Property {additionalPropertyId} not found in case {caseId}");
+
+            if (property.GroupId == newGroupId) return;
+
+            await EnsureGroupExistsAsync(newGroupId);
+
+            var previousGroupId = property.GroupId;
+
+            property.GroupId = newGroupId;
+            property.LastUpdatedAtUtc = DateTime.UtcNow;
+            property.LastUpdatedByUserId = actorUserId;
+
+            var caseEntity = await _db.WithinTenancy_Cases.FindAsync(caseId);
+            if (caseEntity != null)
+            {
+                caseEntity.LastUpdatedAtUtc = DateTime.UtcNow;
+                caseEntity.LastUpdatedByUserId = actorUserId;
+            }
+
+            await WriteToAuditLog(
+                actorUserId,
+                caseId,
+                AuditLogActionTypeEnum.Modification,
+                CaseEntityTypeEnum.Case_AdditionalProperty,
+                entityId: additionalPropertyId,
+                propertyName: "group_id",
+                oldValue: previousGroupId?.ToString(),
+                newValue: newGroupId?.ToString()
+            );
+
+            await _db.SaveChangesAsync();
+
+            _logger.LogInformation("Moved property {AdditionalPropertyId} in case {CaseId} from group {PreviousGroupId} to {GroupId}",
+                additionalPropertyId, caseId, previousGroupId, newGroupId);
+        }
+        catch (KeyNotFoundException) { throw; }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Failed to move property {AdditionalPropertyId} in case {CaseId} to group {GroupId}",
+                additionalPropertyId, caseId, newGroupId);
             throw;
         }
     }
@@ -396,6 +455,15 @@ public class CaseDocumentService : ICaseDocumentService
             _logger.LogError(ex, "Failed to delete property {AdditionalPropertyId} from case {CaseId}", additionalPropertyId, caseId);
             throw;
         }
+    }
+
+    private async Task EnsureGroupExistsAsync(Guid? groupId)
+    {
+        if (groupId == null) return;
+
+        var exists = await _db.WithinTenancy_CaseAdditionalProperty_Groups.AnyAsync(g => g.Id == groupId);
+        if (!exists)
+            throw new KeyNotFoundException($"Case additional property group {groupId} not found");
     }
     #endregion
     #region ========================= TODO OPERATIONS =========================
@@ -518,6 +586,7 @@ public class CaseDocumentService : ICaseDocumentService
             var oldValue = todo.Status;
             todo.Status = newStatus;
             todo.LastUpdatedAtUtc = DateTime.UtcNow;
+            todo.LastUpdatedByUserId = actorUserId;
 
             if (newStatus == TodoStatusEnum.Completed && completedBy != null)
             {
@@ -531,6 +600,7 @@ public class CaseDocumentService : ICaseDocumentService
             if (caseEntity != null)
             {
                 caseEntity.LastUpdatedAtUtc = DateTime.UtcNow;
+                caseEntity.LastUpdatedByUserId = actorUserId;
             }
 
             await this.WriteToAuditLog(
@@ -583,6 +653,7 @@ public class CaseDocumentService : ICaseDocumentService
             if (reminder.HasValue) todo.ReminderUtc = reminder;
 
             todo.LastUpdatedAtUtc = DateTime.UtcNow;
+            todo.LastUpdatedByUserId = actorUserId;
 
             // update the LastUpdatedAt timestamp for the case
             var caseEntity = await _db.WithinTenancy_Cases.FindAsync(caseId);
@@ -756,6 +827,9 @@ public class CaseDocumentService : ICaseDocumentService
             if (occuredAt.HasValue) timelineEntry.OccurredAtUtc = occuredAt.Value;
             if (title != null) timelineEntry.Title = title;
             if (description != null) timelineEntry.Description = description;
+
+            timelineEntry.LastUpdatedAtUtc = DateTime.UtcNow;
+            timelineEntry.LastUpdatedByUserId = updatedBy;
 
             // update the LastUpdatedAt timestamp for the case
             var caseEntity = await _db.WithinTenancy_Cases.FindAsync(caseId);
