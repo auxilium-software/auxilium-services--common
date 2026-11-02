@@ -16,9 +16,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services
 
 
 
-        Task<List<UserAdditionalPropertyEntityModel>> GetAdditionalPropertiesAsync(
-            Guid userId
-        );
+        Task<List<UserAdditionalPropertyEntityModel>> GetAdditionalPropertiesAsync(Guid userId);
         Task<Guid> SaveAdditionalPropertyAsync(
             UserEntityModel currentUser,
             Guid userId,
@@ -34,11 +32,18 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services
             string contentType,
             Guid actorUserId
         );
+        Task MoveAdditionalPropertyToGroupAsync(
+            Guid userId,
+            Guid additionalPropertyId,
+            Guid? newGroupId,
+            Guid actorUserId
+        );
         Task DeleteAdditionalPropertyAsync(
             Guid userId,
             Guid additionalPropertyId,
             Guid actorUserId
         );
+        Task EnsureGroupExistsAsync(Guid? groupId);
 
 
 
