@@ -70,7 +70,6 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services
             Guid additionalPropertyId,
             Guid actorUserId
         );
-        Task EnsureGroupExistsAsync(Guid? groupId);
 
 
 
