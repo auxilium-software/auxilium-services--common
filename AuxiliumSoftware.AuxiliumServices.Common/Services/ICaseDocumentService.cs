@@ -59,11 +59,18 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services
             string contentType,
             Guid actorUserId
         );
+        Task MoveAdditionalPropertyToGroupAsync(
+            Guid caseId,
+            Guid additionalPropertyId,
+            Guid? newGroupId,
+            Guid actorUserId
+        );
         Task DeleteAdditionalPropertyAsync(
             Guid caseId,
             Guid additionalPropertyId,
             Guid actorUserId
         );
+        Task EnsureGroupExistsAsync(Guid? groupId);
 
 
 
