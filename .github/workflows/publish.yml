@@ -7,19 +7,28 @@ on:
 jobs:
   publish:
     runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
     steps:
       - uses: actions/checkout@v4
-      
+
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: '10.0.x'
-      
+
       - name: Build
         run: dotnet build AuxiliumSoftware.AuxiliumServices.Common/AuxiliumSoftware.AuxiliumServices.Common.csproj -c Release
 
       - name: Pack
         run: dotnet pack AuxiliumSoftware.AuxiliumServices.Common/AuxiliumSoftware.AuxiliumServices.Common.csproj -c Release -o ./packages --no-build
 
+      - name: NuGet login
+        id: login
+        uses: NuGet/login@v1
+        with:
+          user: ${{ secrets.NUGET_USER }}
+
       - name: Publish to NuGet
-        run: dotnet nuget push ./packages/*.nupkg --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json --skip-duplicate
+        run: dotnet nuget push ./packages/*.nupkg --api-key ${{ steps.login.outputs.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json --skip-duplicate
