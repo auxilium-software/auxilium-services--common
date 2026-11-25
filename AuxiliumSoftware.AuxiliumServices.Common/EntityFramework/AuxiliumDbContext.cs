@@ -36,6 +36,9 @@ public class AuxiliumDbContext : DbContext
     public DbSet<CaseAdditionalPropertyEntityModel> WithinTenancy_CaseAdditionalProperties { get; set; }
     public DbSet<CaseAdditionalPropertyGroupEntityModel> WithinTenancy_CaseAdditionalProperty_Groups { get; set; }
     public DbSet<CaseAdditionalPropertyGroupTranslationEntityModel> WithinTenancy_CaseAdditionalProperty_Group_Translations { get; set; }
+    public DbSet<CaseAdditionalPropertyDefinitionEntityModel> WithinTenancy_CaseAdditionalProperty_Definitions { get; set; }
+    public DbSet<CaseAdditionalPropertyDefinitionTranslationEntityModel> WithinTenancy_CaseAdditionalProperty_Definition_Translations { get; set; }
+    public DbSet<CaseAdditionalPropertyDefinitionAliasEntityModel> WithinTenancy_CaseAdditionalProperty_Definition_Aliases { get; set; }
     public DbSet<CaseClientEntityModel> WithinTenancy_CaseClients { get; set; }
     public DbSet<CaseFileEntityModel> WithinTenancy_CaseFiles { get; set; }
     public DbSet<CaseMessageEntityModel> WithinTenancy_CaseMessages { get; set; }
@@ -68,6 +71,9 @@ public class AuxiliumDbContext : DbContext
     public DbSet<UserAdditionalPropertyEntityModel> WithinTenancy_UserAdditionalProperties { get; set; }
     public DbSet<UserAdditionalPropertyGroupEntityModel> WithinTenancy_UserAdditionalProperty_Groups { get; set; }
     public DbSet<UserAdditionalPropertyGroupTranslationEntityModel> WithinTenancy_UserAdditionalProperty_Group_Translations { get; set; }
+    public DbSet<UserAdditionalPropertyDefinitionEntityModel> WithinTenancy_UserAdditionalProperty_Definitions { get; set; }
+    public DbSet<UserAdditionalPropertyDefinitionTranslationEntityModel> WithinTenancy_UserAdditionalProperty_Definition_Translations { get; set; }
+    public DbSet<UserAdditionalPropertyDefinitionAliasEntityModel> WithinTenancy_UserAdditionalProperty_Definition_Aliases { get; set; }
     public DbSet<UserFileEntityModel> WithinTenancy_UserFiles { get; set; }
     public DbSet<PasswordSetTokenEntityModel> WithinTenancy_UserPasswordSetTokens { get; set; }
     public DbSet<RefreshTokenEntityModel> WithinTenancy_UserRefreshTokens { get; set; }
@@ -305,6 +311,7 @@ public class AuxiliumDbContext : DbContext
 
             entity.Property(e => e.CaseId)                          .HasColumnName("case_id")                                   .HasColumnType("char(36)")                                                                                                          .IsRequired();
             entity.Property(e => e.GroupId)                         .HasColumnName("group_id")                                  .HasColumnType("char(36)");
+            entity.Property(e => e.DefinitionId)                    .HasColumnName("definition_id")                             .HasColumnType("char(36)");
             entity.Property(e => e.DisplayName)                     .HasColumnName("display_name")                              .HasColumnType("text")                                                                                                              .IsRequired();
             entity.Property(e => e.Content)                         .HasColumnName("content")                                   .HasColumnType("text")                                                                                                              .IsRequired();
             entity.Property(e => e.ContentType)                     .HasColumnName("content_type")                              .HasColumnType("text")                                                                                                              .IsRequired();
@@ -313,6 +320,9 @@ public class AuxiliumDbContext : DbContext
             entity.HasOne(e => e.LastUpdatedByUser)                 .WithMany()                                                 .HasForeignKey(e => e.LastUpdatedByUserId)      .OnDelete(DeleteBehavior.SetNull);
             entity.HasOne(e => e.Case)                              .WithMany(c => c.AdditionalProperties)                      .HasForeignKey(e => e.CaseId)                   .OnDelete(DeleteBehavior.Cascade);
             entity.HasOne(e => e.Group)                             .WithMany(g => g.Properties)                                .HasForeignKey(e => e.GroupId)                  .OnDelete(DeleteBehavior.SetNull);
+            entity.HasOne(e => e.Definition)                        .WithMany(d => d.Properties)                                .HasForeignKey(e => e.DefinitionId)             .OnDelete(DeleteBehavior.SetNull);
+
+            entity.HasIndex(e => new { e.TenantId, e.DefinitionId });
         });
 
         // case__additional_property_groups
@@ -361,6 +371,89 @@ public class AuxiliumDbContext : DbContext
             entity.HasOne(e => e.CaseAdditionalPropertyGroup)       .WithMany(g => g.Translations)                              .HasForeignKey(e => e.CaseAdditionalPropertyGroupId).OnDelete(DeleteBehavior.Cascade);
 
             entity.HasIndex(e => new { e.CaseAdditionalPropertyGroupId, e.LanguageCode }).IsUnique();
+        });
+
+        // case__additional_property_definitions
+        modelBuilder.Entity<CaseAdditionalPropertyDefinitionEntityModel>(entity =>
+        {
+            entity.ToTable("t__case__additional_property_definitions");
+            entity.HasKey(e => e.Id);
+            
+            entity.Property(e => e.Id)                              .HasColumnName("id")                                        .HasColumnType("char(36)")                                                                                                          .IsRequired();
+            entity.Property(e => e.TenantId)                        .HasColumnName("tenant_id")                                 .HasColumnType("char(36)")                                                                                                          .IsRequired();
+            entity.Property(e => e.CreatedAtUtc)                    .HasColumnName("created_at_utc")                            .HasColumnType("datetime")                                                      .HasDefaultValueSql("UTC_TIMESTAMP()")              .IsRequired();
+            
+            entity.Property(e => e.CreatedByUserId)                 .HasColumnName("created_by_user_id")                        .HasColumnType("char(36)");
+            entity.Property(e => e.LastUpdatedAtUtc)                .HasColumnName("last_updated_at_utc")                       .HasColumnType("datetime");
+            entity.Property(e => e.LastUpdatedByUserId)             .HasColumnName("last_updated_by_user_id")                   .HasColumnType("char(36)");
+
+            entity.Property(e => e.CanonicalName)                   .HasColumnName("canonical_name")                            .HasColumnType("varchar(191)")                                                                                                      .IsRequired();
+            entity.Property(e => e.Description)                     .HasColumnName("description")                               .HasColumnType("text");
+            entity.Property(e => e.DataType)                        .HasColumnName("data_type")                                 .HasColumnType("text")                          .HasConversion(new JsonPropertyNameEnumConverter<AdditionalPropertyDataTypeEnum>()) .IsRequired();
+            entity.Property(e => e.DataEnumeratorId)                .HasColumnName("data_enumerator_id")                        .HasColumnType("char(36)");
+            entity.Property(e => e.DefaultGroupId)                  .HasColumnName("default_group_id")                          .HasColumnType("char(36)");
+            entity.Property(e => e.IsBuiltIn)                       .HasColumnName("is_built_in")                               .HasColumnType("tinyint(1)")                                                    .HasDefaultValue(false)                             .IsRequired();
+            entity.Property(e => e.IsActive)                        .HasColumnName("is_active")                                 .HasColumnType("tinyint(1)")                                                    .HasDefaultValue(true)                              .IsRequired();
+            entity.Property(e => e.SortOrder)                       .HasColumnName("sort_order")                                .HasColumnType("int")                                                           .HasDefaultValue(0)                                 .IsRequired();
+
+            entity.HasOne(e => e.CreatedByUser)                     .WithMany()                                                 .HasForeignKey(e => e.CreatedByUserId)          .OnDelete(DeleteBehavior.SetNull);
+            entity.HasOne(e => e.LastUpdatedByUser)                 .WithMany()                                                 .HasForeignKey(e => e.LastUpdatedByUserId)      .OnDelete(DeleteBehavior.SetNull);
+            entity.HasOne(e => e.DataEnumerator)                    .WithMany()                                                 .HasForeignKey(e => e.DataEnumeratorId)         .OnDelete(DeleteBehavior.Restrict);
+            entity.HasOne(e => e.DefaultGroup)                      .WithMany()                                                 .HasForeignKey(e => e.DefaultGroupId)           .OnDelete(DeleteBehavior.SetNull);
+
+            entity.HasIndex(e => new { e.TenantId, e.CanonicalName }).IsUnique();
+        });
+
+        // case__additional_property_definition_translations
+        modelBuilder.Entity<CaseAdditionalPropertyDefinitionTranslationEntityModel>(entity =>
+        {
+            entity.ToTable("t__case__additional_property_definition_translations");
+            entity.HasKey(e => e.Id);
+            
+            entity.Property(e => e.Id)                              .HasColumnName("id")                                        .HasColumnType("char(36)")                                                                                                          .IsRequired();
+            entity.Property(e => e.TenantId)                        .HasColumnName("tenant_id")                                 .HasColumnType("char(36)")                                                                                                          .IsRequired();
+            entity.Property(e => e.CreatedAtUtc)                    .HasColumnName("created_at_utc")                            .HasColumnType("datetime")                                                      .HasDefaultValueSql("UTC_TIMESTAMP()")              .IsRequired();
+            
+            entity.Property(e => e.CreatedByUserId)                 .HasColumnName("created_by_user_id")                        .HasColumnType("char(36)");
+            entity.Property(e => e.LastUpdatedAtUtc)                .HasColumnName("last_updated_at_utc")                       .HasColumnType("datetime");
+            entity.Property(e => e.LastUpdatedByUserId)             .HasColumnName("last_updated_by_user_id")                   .HasColumnType("char(36)");
+
+            entity.Property(e => e.CaseAdditionalPropertyDefinitionId) .HasColumnName("definition_id")                          .HasColumnType("char(36)")                                                                                                          .IsRequired();
+            entity.Property(e => e.LanguageCode)                    .HasColumnName("language_code")                             .HasColumnType("varchar(35)")                                                                                                       .IsRequired();
+            entity.Property(e => e.Translation)                     .HasColumnName("translation")                               .HasColumnType("text")                                                                                                              .IsRequired();
+
+            entity.HasOne(e => e.CreatedByUser)                     .WithMany()                                                 .HasForeignKey(e => e.CreatedByUserId)          .OnDelete(DeleteBehavior.SetNull);
+            entity.HasOne(e => e.LastUpdatedByUser)                 .WithMany()                                                 .HasForeignKey(e => e.LastUpdatedByUserId)      .OnDelete(DeleteBehavior.SetNull);
+            entity.HasOne(e => e.CaseAdditionalPropertyDefinition)  .WithMany(d => d.Translations)                              .HasForeignKey(e => e.CaseAdditionalPropertyDefinitionId) .OnDelete(DeleteBehavior.Cascade);
+
+            entity.HasIndex(e => new { e.CaseAdditionalPropertyDefinitionId, e.LanguageCode }).IsUnique();
+        });
+
+        // case__additional_property_definition_aliases
+        modelBuilder.Entity<CaseAdditionalPropertyDefinitionAliasEntityModel>(entity =>
+        {
+            entity.ToTable("t__case__additional_property_definition_aliases");
+            entity.HasKey(e => e.Id);
+            
+            entity.Property(e => e.Id)                              .HasColumnName("id")                                        .HasColumnType("char(36)")                                                                                                          .IsRequired();
+            entity.Property(e => e.TenantId)                        .HasColumnName("tenant_id")                                 .HasColumnType("char(36)")                                                                                                          .IsRequired();
+            entity.Property(e => e.CreatedAtUtc)                    .HasColumnName("created_at_utc")                            .HasColumnType("datetime")                                                      .HasDefaultValueSql("UTC_TIMESTAMP()")              .IsRequired();
+            
+            entity.Property(e => e.CreatedByUserId)                 .HasColumnName("created_by_user_id")                        .HasColumnType("char(36)");
+            entity.Property(e => e.LastUpdatedAtUtc)                .HasColumnName("last_updated_at_utc")                       .HasColumnType("datetime");
+            entity.Property(e => e.LastUpdatedByUserId)             .HasColumnName("last_updated_by_user_id")                   .HasColumnType("char(36)");
+
+            entity.Property(e => e.CaseAdditionalPropertyDefinitionId) .HasColumnName("definition_id")                          .HasColumnType("char(36)")                                                                                                          .IsRequired();
+            entity.Property(e => e.Alias)                           .HasColumnName("alias")                                     .HasColumnType("text")                                                                                                              .IsRequired();
+            entity.Property(e => e.NormalisedAlias)                 .HasColumnName("normalised_alias")                          .HasColumnType("varchar(191)")                                                                                                      .IsRequired();
+
+            entity.HasOne(e => e.CreatedByUser)                     .WithMany()                                                 .HasForeignKey(e => e.CreatedByUserId)          .OnDelete(DeleteBehavior.SetNull);
+            entity.HasOne(e => e.LastUpdatedByUser)                 .WithMany()                                                 .HasForeignKey(e => e.LastUpdatedByUserId)      .OnDelete(DeleteBehavior.SetNull);
+            entity.HasOne(e => e.CaseAdditionalPropertyDefinition)  .WithMany(d => d.Aliases)                                   .HasForeignKey(e => e.CaseAdditionalPropertyDefinitionId) .OnDelete(DeleteBehavior.Cascade);
+
+            // unique per tenant (not per definition) so an alias can never resolve to two definitions
+            entity.HasIndex(e => new { e.TenantId, e.NormalisedAlias }).IsUnique();
+            entity.HasIndex(e => e.CaseAdditionalPropertyDefinitionId);
         });
 
         // case__clients
@@ -1159,6 +1252,7 @@ public class AuxiliumDbContext : DbContext
 
             entity.Property(e => e.UserId)                          .HasColumnName("user_id")                                   .HasColumnType("char(36)")                                                                                                          .IsRequired();
             entity.Property(e => e.GroupId)                         .HasColumnName("group_id")                                  .HasColumnType("char(36)");
+            entity.Property(e => e.DefinitionId)                    .HasColumnName("definition_id")                             .HasColumnType("char(36)");
             entity.Property(e => e.DisplayName)                     .HasColumnName("display_name")                              .HasColumnType("text")                                                                                                              .IsRequired();
             entity.Property(e => e.Content)                         .HasColumnName("content")                                   .HasColumnType("text")                                                                                                              .IsRequired();
             entity.Property(e => e.ContentType)                     .HasColumnName("content_type")                              .HasColumnType("text")                                                                                                              .IsRequired();
@@ -1167,6 +1261,9 @@ public class AuxiliumDbContext : DbContext
             entity.HasOne(e => e.LastUpdatedByUser)                 .WithMany()                                                 .HasForeignKey(e => e.LastUpdatedByUserId)      .OnDelete(DeleteBehavior.SetNull);
             entity.HasOne(e => e.User)                              .WithMany(u => u.AdditionalProperties)                      .HasForeignKey(e => e.UserId)                   .OnDelete(DeleteBehavior.Cascade);
             entity.HasOne(e => e.Group)                             .WithMany(g => g.Properties)                                .HasForeignKey(e => e.GroupId)                  .OnDelete(DeleteBehavior.SetNull);
+            entity.HasOne(e => e.Definition)                        .WithMany(d => d.Properties)                                .HasForeignKey(e => e.DefinitionId)             .OnDelete(DeleteBehavior.SetNull);
+
+            entity.HasIndex(e => new { e.TenantId, e.DefinitionId });
         });
 
         // user__additional_property_groups
@@ -1215,6 +1312,89 @@ public class AuxiliumDbContext : DbContext
             entity.HasOne(e => e.UserAdditionalPropertyGroup)       .WithMany(g => g.Translations)                              .HasForeignKey(e => e.UserAdditionalPropertyGroupId).OnDelete(DeleteBehavior.Cascade);
 
             entity.HasIndex(e => new { e.UserAdditionalPropertyGroupId, e.LanguageCode }).IsUnique();
+        });
+
+        // user__additional_property_definitions
+        modelBuilder.Entity<UserAdditionalPropertyDefinitionEntityModel>(entity =>
+        {
+            entity.ToTable("t__user__additional_property_definitions");
+            entity.HasKey(e => e.Id);
+            
+            entity.Property(e => e.Id)                              .HasColumnName("id")                                        .HasColumnType("char(36)")                                                                                                          .IsRequired();
+            entity.Property(e => e.TenantId)                        .HasColumnName("tenant_id")                                 .HasColumnType("char(36)")                                                                                                          .IsRequired();
+            entity.Property(e => e.CreatedAtUtc)                    .HasColumnName("created_at_utc")                            .HasColumnType("datetime")                                                      .HasDefaultValueSql("UTC_TIMESTAMP()")              .IsRequired();
+            
+            entity.Property(e => e.CreatedByUserId)                 .HasColumnName("created_by_user_id")                        .HasColumnType("char(36)");
+            entity.Property(e => e.LastUpdatedAtUtc)                .HasColumnName("last_updated_at_utc")                       .HasColumnType("datetime");
+            entity.Property(e => e.LastUpdatedByUserId)             .HasColumnName("last_updated_by_user_id")                   .HasColumnType("char(36)");
+
+            entity.Property(e => e.CanonicalName)                   .HasColumnName("canonical_name")                            .HasColumnType("varchar(191)")                                                                                                      .IsRequired();
+            entity.Property(e => e.Description)                     .HasColumnName("description")                               .HasColumnType("text");
+            entity.Property(e => e.DataType)                        .HasColumnName("data_type")                                 .HasColumnType("text")                          .HasConversion(new JsonPropertyNameEnumConverter<AdditionalPropertyDataTypeEnum>()) .IsRequired();
+            entity.Property(e => e.DataEnumeratorId)                .HasColumnName("data_enumerator_id")                        .HasColumnType("char(36)");
+            entity.Property(e => e.DefaultGroupId)                  .HasColumnName("default_group_id")                          .HasColumnType("char(36)");
+            entity.Property(e => e.IsBuiltIn)                       .HasColumnName("is_built_in")                               .HasColumnType("tinyint(1)")                                                    .HasDefaultValue(false)                             .IsRequired();
+            entity.Property(e => e.IsActive)                        .HasColumnName("is_active")                                 .HasColumnType("tinyint(1)")                                                    .HasDefaultValue(true)                              .IsRequired();
+            entity.Property(e => e.SortOrder)                       .HasColumnName("sort_order")                                .HasColumnType("int")                                                           .HasDefaultValue(0)                                 .IsRequired();
+
+            entity.HasOne(e => e.CreatedByUser)                     .WithMany()                                                 .HasForeignKey(e => e.CreatedByUserId)          .OnDelete(DeleteBehavior.SetNull);
+            entity.HasOne(e => e.LastUpdatedByUser)                 .WithMany()                                                 .HasForeignKey(e => e.LastUpdatedByUserId)      .OnDelete(DeleteBehavior.SetNull);
+            entity.HasOne(e => e.DataEnumerator)                    .WithMany()                                                 .HasForeignKey(e => e.DataEnumeratorId)         .OnDelete(DeleteBehavior.Restrict);
+            entity.HasOne(e => e.DefaultGroup)                      .WithMany()                                                 .HasForeignKey(e => e.DefaultGroupId)           .OnDelete(DeleteBehavior.SetNull);
+
+            entity.HasIndex(e => new { e.TenantId, e.CanonicalName }).IsUnique();
+        });
+
+        // user__additional_property_definition_translations
+        modelBuilder.Entity<UserAdditionalPropertyDefinitionTranslationEntityModel>(entity =>
+        {
+            entity.ToTable("t__user__additional_property_definition_translations");
+            entity.HasKey(e => e.Id);
+            
+            entity.Property(e => e.Id)                              .HasColumnName("id")                                        .HasColumnType("char(36)")                                                                                                          .IsRequired();
+            entity.Property(e => e.TenantId)                        .HasColumnName("tenant_id")                                 .HasColumnType("char(36)")                                                                                                          .IsRequired();
+            entity.Property(e => e.CreatedAtUtc)                    .HasColumnName("created_at_utc")                            .HasColumnType("datetime")                                                      .HasDefaultValueSql("UTC_TIMESTAMP()")              .IsRequired();
+            
+            entity.Property(e => e.CreatedByUserId)                 .HasColumnName("created_by_user_id")                        .HasColumnType("char(36)");
+            entity.Property(e => e.LastUpdatedAtUtc)                .HasColumnName("last_updated_at_utc")                       .HasColumnType("datetime");
+            entity.Property(e => e.LastUpdatedByUserId)             .HasColumnName("last_updated_by_user_id")                   .HasColumnType("char(36)");
+
+            entity.Property(e => e.UserAdditionalPropertyDefinitionId) .HasColumnName("definition_id")                          .HasColumnType("char(36)")                                                                                                          .IsRequired();
+            entity.Property(e => e.LanguageCode)                    .HasColumnName("language_code")                             .HasColumnType("varchar(35)")                                                                                                       .IsRequired();
+            entity.Property(e => e.Translation)                     .HasColumnName("translation")                               .HasColumnType("text")                                                                                                              .IsRequired();
+
+            entity.HasOne(e => e.CreatedByUser)                     .WithMany()                                                 .HasForeignKey(e => e.CreatedByUserId)          .OnDelete(DeleteBehavior.SetNull);
+            entity.HasOne(e => e.LastUpdatedByUser)                 .WithMany()                                                 .HasForeignKey(e => e.LastUpdatedByUserId)      .OnDelete(DeleteBehavior.SetNull);
+            entity.HasOne(e => e.UserAdditionalPropertyDefinition)  .WithMany(d => d.Translations)                              .HasForeignKey(e => e.UserAdditionalPropertyDefinitionId) .OnDelete(DeleteBehavior.Cascade);
+
+            entity.HasIndex(e => new { e.UserAdditionalPropertyDefinitionId, e.LanguageCode }).IsUnique();
+        });
+
+        // user__additional_property_definition_aliases
+        modelBuilder.Entity<UserAdditionalPropertyDefinitionAliasEntityModel>(entity =>
+        {
+            entity.ToTable("t__user__additional_property_definition_aliases");
+            entity.HasKey(e => e.Id);
+            
+            entity.Property(e => e.Id)                              .HasColumnName("id")                                        .HasColumnType("char(36)")                                                                                                          .IsRequired();
+            entity.Property(e => e.TenantId)                        .HasColumnName("tenant_id")                                 .HasColumnType("char(36)")                                                                                                          .IsRequired();
+            entity.Property(e => e.CreatedAtUtc)                    .HasColumnName("created_at_utc")                            .HasColumnType("datetime")                                                      .HasDefaultValueSql("UTC_TIMESTAMP()")              .IsRequired();
+            
+            entity.Property(e => e.CreatedByUserId)                 .HasColumnName("created_by_user_id")                        .HasColumnType("char(36)");
+            entity.Property(e => e.LastUpdatedAtUtc)                .HasColumnName("last_updated_at_utc")                       .HasColumnType("datetime");
+            entity.Property(e => e.LastUpdatedByUserId)             .HasColumnName("last_updated_by_user_id")                   .HasColumnType("char(36)");
+
+            entity.Property(e => e.UserAdditionalPropertyDefinitionId) .HasColumnName("definition_id")                          .HasColumnType("char(36)")                                                                                                          .IsRequired();
+            entity.Property(e => e.Alias)                           .HasColumnName("alias")                                     .HasColumnType("text")                                                                                                              .IsRequired();
+            entity.Property(e => e.NormalisedAlias)                 .HasColumnName("normalised_alias")                          .HasColumnType("varchar(191)")                                                                                                      .IsRequired();
+
+            entity.HasOne(e => e.CreatedByUser)                     .WithMany()                                                 .HasForeignKey(e => e.CreatedByUserId)          .OnDelete(DeleteBehavior.SetNull);
+            entity.HasOne(e => e.LastUpdatedByUser)                 .WithMany()                                                 .HasForeignKey(e => e.LastUpdatedByUserId)      .OnDelete(DeleteBehavior.SetNull);
+            entity.HasOne(e => e.UserAdditionalPropertyDefinition)  .WithMany(d => d.Aliases)                                   .HasForeignKey(e => e.UserAdditionalPropertyDefinitionId) .OnDelete(DeleteBehavior.Cascade);
+
+            // unique per tenant (not per definition) so an alias can never resolve to two definitions
+            entity.HasIndex(e => new { e.TenantId, e.NormalisedAlias }).IsUnique();
+            entity.HasIndex(e => e.UserAdditionalPropertyDefinitionId);
         });
 
         // user__files

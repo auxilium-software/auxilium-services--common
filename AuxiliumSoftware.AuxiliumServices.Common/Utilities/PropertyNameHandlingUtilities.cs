@@ -39,6 +39,32 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Utilities
             return string.IsNullOrEmpty(snake) ? "untitled" : snake;
         }
 
+        public const int MaxMatchingKeyLength = 191;
+
+        public static string NormaliseForMatching(string name)
+        {
+            if (string.IsNullOrWhiteSpace(name))
+                return string.Empty;
+
+            var decomposed = name.Normalize(NormalizationForm.FormD);
+            var stringBuilder = new StringBuilder(decomposed.Length);
+
+            foreach (var c in decomposed)
+            {
+                if (CharUnicodeInfo.GetUnicodeCategory(c) == UnicodeCategory.NonSpacingMark)
+                    continue;
+
+                if (char.IsLetterOrDigit(c))
+                    stringBuilder.Append(char.ToLowerInvariant(c));
+            }
+
+            var key = stringBuilder.ToString().Normalize(NormalizationForm.FormC);
+
+            return key.Length > MaxMatchingKeyLength
+                ? key[..MaxMatchingKeyLength]
+                : key;
+        }
+
         public static (string storageKey, string displayName) HandlePropertyName(string rawName)
         {
             // check if it's already snake_case
@@ -58,3 +84,4 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Utilities
         }
     }
 }
+

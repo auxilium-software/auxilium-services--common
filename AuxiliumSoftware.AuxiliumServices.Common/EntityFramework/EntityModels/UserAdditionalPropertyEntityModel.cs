@@ -12,6 +12,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
 
 
         public required Guid? GroupId { get; set; }
+        public Guid? DefinitionId { get; set; }
 
 
 
@@ -45,5 +46,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
         public UserEntityModel? User { get; set; }
 
         public UserAdditionalPropertyGroupEntityModel? Group { get; set; }
+        public UserAdditionalPropertyDefinitionEntityModel? Definition { get; set; }
     }
 }
+

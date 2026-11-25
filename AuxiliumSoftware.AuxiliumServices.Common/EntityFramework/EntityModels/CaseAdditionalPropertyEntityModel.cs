@@ -46,5 +46,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
         public CaseEntityModel? Case { get; set; }
 
         public CaseAdditionalPropertyGroupEntityModel? Group { get; set; }
+        public CaseAdditionalPropertyDefinitionEntityModel? Definition { get; set; }
     }
 }
+

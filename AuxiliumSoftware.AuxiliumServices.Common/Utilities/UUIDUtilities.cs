@@ -38,6 +38,9 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Utilities
             [DatabaseObjectTypeEnum.WithinTenancy_User_AdditionalProperty]                          = "Auxilium.3.DatabaseObject.MariaDb.WithinTenancy.User.AdditionalProperty",
             [DatabaseObjectTypeEnum.WithinTenancy_User_AdditionalProperty_Group]                    = "Auxilium.3.DatabaseObject.MariaDb.WithinTenancy.User.AdditionalProperty.Group",
             [DatabaseObjectTypeEnum.WithinTenancy_User_AdditionalProperty_Group_Translation]        = "Auxilium.3.DatabaseObject.MariaDb.WithinTenancy.User.AdditionalProperty.Group.Translation",
+            [DatabaseObjectTypeEnum.WithinTenancy_User_AdditionalProperty_Definition]               = "Auxilium.3.DatabaseObject.MariaDb.WithinTenancy.User.AdditionalProperty.Definition",
+            [DatabaseObjectTypeEnum.WithinTenancy_User_AdditionalProperty_Definition_Translation]   = "Auxilium.3.DatabaseObject.MariaDb.WithinTenancy.User.AdditionalProperty.Definition.Translation",
+            [DatabaseObjectTypeEnum.WithinTenancy_User_AdditionalProperty_Definition_Alias]         = "Auxilium.3.DatabaseObject.MariaDb.WithinTenancy.User.AdditionalProperty.Definition.Alias",
             [DatabaseObjectTypeEnum.WithinTenancy_User_File]                                        = "Auxilium.3.DatabaseObject.MariaDb.WithinTenancy.User.File",
             [DatabaseObjectTypeEnum.WithinTenancy_User_RefreshToken]                                = "Auxilium.3.DatabaseObject.MariaDb.WithinTenancy.User.RefreshToken",
             [DatabaseObjectTypeEnum.WithinTenancy_User_TotpRecoveryCode]                            = "Auxilium.3.DatabaseObject.MariaDb.WithinTenancy.User.TotpRecoveryCode",
@@ -50,6 +53,9 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Utilities
             [DatabaseObjectTypeEnum.WithinTenancy_Case_AdditionalProperty]                          = "Auxilium.3.DatabaseObject.MariaDb.WithinTenancy.Case.AdditionalProperty",
             [DatabaseObjectTypeEnum.WithinTenancy_Case_AdditionalProperty_Group]                    = "Auxilium.3.DatabaseObject.MariaDb.WithinTenancy.Case.AdditionalProperty.Group",
             [DatabaseObjectTypeEnum.WithinTenancy_Case_AdditionalProperty_Group_Translation]        = "Auxilium.3.DatabaseObject.MariaDb.WithinTenancy.Case.AdditionalProperty.Group.Translation",
+            [DatabaseObjectTypeEnum.WithinTenancy_Case_AdditionalProperty_Definition]               = "Auxilium.3.DatabaseObject.MariaDb.WithinTenancy.Case.AdditionalProperty.Definition",
+            [DatabaseObjectTypeEnum.WithinTenancy_Case_AdditionalProperty_Definition_Translation]   = "Auxilium.3.DatabaseObject.MariaDb.WithinTenancy.Case.AdditionalProperty.Definition.Translation",
+            [DatabaseObjectTypeEnum.WithinTenancy_Case_AdditionalProperty_Definition_Alias]         = "Auxilium.3.DatabaseObject.MariaDb.WithinTenancy.Case.AdditionalProperty.Definition.Alias",
             [DatabaseObjectTypeEnum.WithinTenancy_Case_Worker]                                      = "Auxilium.3.DatabaseObject.MariaDb.WithinTenancy.Case.Worker",
             [DatabaseObjectTypeEnum.WithinTenancy_Case_Client]                                      = "Auxilium.3.DatabaseObject.MariaDb.WithinTenancy.Case.Client",
             [DatabaseObjectTypeEnum.WithinTenancy_Case_Message]                                     = "Auxilium.3.DatabaseObject.MariaDb.WithinTenancy.Case.Message",
@@ -175,3 +181,4 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Utilities
         }
     }
 }
+
