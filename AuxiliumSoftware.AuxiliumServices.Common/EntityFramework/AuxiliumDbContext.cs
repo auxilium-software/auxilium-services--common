@@ -1109,11 +1109,6 @@ public class AuxiliumDbContext : DbContext
             entity.Property(e => e.PasswordHash)                    .HasColumnName("password_hash")                             .HasColumnType("text");
             entity.Property(e => e.FullName)                        .HasColumnName("full_name")                                 .HasColumnType("text")                                                                                                              .IsRequired();
 
-            entity.Property(e => e.FullAddress)                     .HasColumnName("full_address")                              .HasColumnType("text");
-            entity.Property(e => e.TelephoneNumber)                 .HasColumnName("telephone_number")                          .HasColumnType("text");
-            entity.Property(e => e.Gender)                          .HasColumnName("gender")                                    .HasColumnType("text");
-            entity.Property(e => e.DateOfBirth)                     .HasColumnName("date_of_birth")                             .HasColumnType("date");
-            entity.Property(e => e.HowDidYouFindOutAboutOurService) .HasColumnName("how_did_you_find_out_about_our_service")    .HasColumnType("text");
             entity.Property(e => e.LanguagePreference)              .HasColumnName("language_preference")                       .HasColumnType("text")                                                          .HasDefaultValue("en-GB")                           .IsRequired();
             
             entity.Property(e => e.TotpSecret)                      .HasColumnName("totp_secret")                               .HasColumnType("text");

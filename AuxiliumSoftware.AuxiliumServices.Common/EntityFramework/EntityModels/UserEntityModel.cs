@@ -21,31 +21,6 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
         [DataMergeResolvable]
         public required string FullName { get; set; }
         /// <summary>
-        /// The full address of the User.
-        /// </summary>
-        [DataMergeResolvable]
-        public required string? FullAddress { get; set; }
-        /// <summary>
-        /// The telephone number of the User.
-        /// </summary>
-        [DataMergeResolvable]
-        public required string? TelephoneNumber { get; set; }
-        /// <summary>
-        /// The gender of the User.
-        /// </summary>
-        [DataMergeResolvable]
-        public required string? Gender { get; set; }
-        /// <summary>
-        /// The date of birth of the User.
-        /// </summary>
-        [DataMergeResolvable]
-        public required DateOnly? DateOfBirth { get; set; }
-        /// <summary>
-        /// How the User found out about our service.
-        /// </summary>
-        [DataMergeResolvable(allowCombine: true)]
-        public required string? HowDidYouFindOutAboutOurService { get; set; }
-        /// <summary>
         /// The preferred language for the User.
         /// </summary>
         [DataMergeResolvable]
