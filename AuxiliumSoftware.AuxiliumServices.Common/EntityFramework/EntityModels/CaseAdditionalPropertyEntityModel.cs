@@ -13,6 +13,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
 
 
         public required Guid? GroupId { get; set; }
+        public Guid? DefinitionId { get; set; }
 
 
 
