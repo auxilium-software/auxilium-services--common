@@ -65,4 +65,17 @@
     <PackageReference Include="Cronos" />
   </ItemGroup>
 
+
+  <ItemGroup>
+    <None Update="Resources\AdditionalPropertyDefinitions\definitions.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Resources\AdditionalPropertyDefinitions\Languages\cy-GB.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Resources\AdditionalPropertyDefinitions\Languages\en-GB.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

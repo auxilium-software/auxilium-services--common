@@ -3,6 +3,7 @@ using AuxiliumSoftware.AuxiliumServices.Common.EntityFramework;
 using AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels;
 using AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.Enumerators;
 using AuxiliumSoftware.AuxiliumServices.Common.Enumerators;
+using AuxiliumSoftware.AuxiliumServices.Common.Extensions;
 using AuxiliumSoftware.AuxiliumServices.Common.Services;
 using AuxiliumSoftware.AuxiliumServices.Common.Utilities;
 using Microsoft.EntityFrameworkCore;
@@ -272,6 +273,9 @@ public class CaseDocumentService : ICaseDocumentService
     {
         try
         {
+            var definition = await _db.ResolveCaseAdditionalPropertyDefinitionAsync(additionalPropertyDisplayName);
+            groupId ??= definition?.DefaultGroupId;
+
             await EnsureGroupExistsAsync(groupId);
 
             var newProperty = new CaseAdditionalPropertyEntityModel
@@ -279,6 +283,7 @@ public class CaseDocumentService : ICaseDocumentService
                 Id = UUIDUtilities.GenerateV5(DatabaseObjectTypeEnum.WithinTenancy_Case_AdditionalProperty),
                 CaseId = caseId,
                 GroupId = groupId,
+                DefinitionId = definition?.Id,
                 ContentType = contentType ?? "text/plain",
                 CreatedByUserId = currentUser.Id,
                 CreatedAtUtc = DateTime.UtcNow,

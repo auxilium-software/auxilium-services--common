@@ -1,0 +1,30 @@
+{
+  "user": [
+    {
+      "canonicalName": "/additional-property/builtin/full-address",
+      "dataType": "PostalAddress",
+      "description": "The person's full postal address, collected at sign-up."
+    },
+    {
+      "canonicalName": "/additional-property/builtin/telephone-number",
+      "dataType": "TelephoneNumber",
+      "description": "The person's main contact telephone number, collected at sign-up."
+    },
+    {
+      "canonicalName": "/additional-property/builtin/gender",
+      "dataType": "Text",
+      "description": "The person's gender, as they described it at sign-up."
+    },
+    {
+      "canonicalName": "/additional-property/builtin/date-of-birth",
+      "dataType": "Date",
+      "description": "The person's date of birth (yyyy-MM-dd), collected at sign-up."
+    },
+    {
+      "canonicalName": "/additional-property/builtin/referral-source",
+      "dataType": "Text",
+      "description": "How the person found out about the service, collected at sign-up."
+    }
+  ],
+  "case": []
+}
