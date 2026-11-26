@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
 {
-    public class UserEntityModel : MutableTenantScopedEntityModelBase, IConcurrencyStamped
+    public class UserEntityModel : MutableEntityModelBase, IConcurrencyStamped
     {
         /// <summary>
         /// The email address of the User.

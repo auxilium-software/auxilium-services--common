@@ -35,7 +35,7 @@ public class UserDocumentService : IUserDocumentService
     {
         try
         {
-            return await _db.WithinTenancy_Users
+            return await _db.Users
                 .Include(u => u.AdditionalProperties)
                 .FirstOrDefaultAsync(u => u.Id == userId);
         }
@@ -55,7 +55,7 @@ public class UserDocumentService : IUserDocumentService
             var entry = _db.Entry(userDoc);
             if (entry.State == EntityState.Detached)
             {
-                _db.WithinTenancy_Users.Update(userDoc);
+                _db.Users.Update(userDoc);
             }
 
             await _db.SaveChangesAsync();
@@ -72,7 +72,7 @@ public class UserDocumentService : IUserDocumentService
     {
         try
         {
-            return await _db.WithinTenancy_UserAdditionalProperties
+            return await _db.UserAdditionalProperties
                 .Include(a => a.Group)
                     .ThenInclude(g => g!.Translations)
                 .Where(a => a.UserId == userId)
@@ -103,7 +103,7 @@ public class UserDocumentService : IUserDocumentService
 
             var newProperty = new UserAdditionalPropertyEntityModel
             {
-                Id = UUIDUtilities.GenerateV5(DatabaseObjectTypeEnum.WithinTenancy_User_AdditionalProperty),
+                Id = UUIDUtilities.GenerateV5(DatabaseObjectTypeEnum.User_AdditionalProperty),
                 UserId = userId,
                 GroupId = groupId,
                 DefinitionId = definition?.Id,
@@ -114,9 +114,9 @@ public class UserDocumentService : IUserDocumentService
                 Content = additionalPropertyContent,
             };
 
-            _db.WithinTenancy_UserAdditionalProperties.Add(newProperty);
+            _db.UserAdditionalProperties.Add(newProperty);
 
-            var userEntity = await _db.WithinTenancy_Users.FindAsync(userId);
+            var userEntity = await _db.Users.FindAsync(userId);
             if (userEntity != null)
             {
                 userEntity.LastUpdatedAtUtc = DateTime.UtcNow;
@@ -152,7 +152,7 @@ public class UserDocumentService : IUserDocumentService
     {
         try
         {
-            var property = await _db.WithinTenancy_UserAdditionalProperties
+            var property = await _db.UserAdditionalProperties
                 .FirstOrDefaultAsync(a => a.UserId == userId && a.Id == additionalPropertyId)
                 ?? throw new KeyNotFoundException($"Property {additionalPropertyId} not found for user {userId}");
 
@@ -163,7 +163,7 @@ public class UserDocumentService : IUserDocumentService
             property.LastUpdatedAtUtc = DateTime.UtcNow;
             property.LastUpdatedByUserId = actorUserId;
 
-            var userEntity = await _db.WithinTenancy_Users.FindAsync(userId);
+            var userEntity = await _db.Users.FindAsync(userId);
             if (userEntity != null)
             {
                 userEntity.LastUpdatedAtUtc = DateTime.UtcNow;
@@ -197,7 +197,7 @@ public class UserDocumentService : IUserDocumentService
     {
         try
         {
-            var property = await _db.WithinTenancy_UserAdditionalProperties
+            var property = await _db.UserAdditionalProperties
                 .FirstOrDefaultAsync(a => a.UserId == userId && a.Id == additionalPropertyId)
                 ?? throw new KeyNotFoundException($"Property {additionalPropertyId} not found for user {userId}");
 
@@ -211,7 +211,7 @@ public class UserDocumentService : IUserDocumentService
             property.LastUpdatedAtUtc = DateTime.UtcNow;
             property.LastUpdatedByUserId = actorUserId;
 
-            var userEntity = await _db.WithinTenancy_Users.FindAsync(userId);
+            var userEntity = await _db.Users.FindAsync(userId);
             if (userEntity != null)
             {
                 userEntity.LastUpdatedAtUtc = DateTime.UtcNow;
@@ -240,13 +240,13 @@ public class UserDocumentService : IUserDocumentService
     {
         try
         {
-            var property = await _db.WithinTenancy_UserAdditionalProperties
+            var property = await _db.UserAdditionalProperties
                 .FirstOrDefaultAsync(a => a.UserId == userId && a.Id == additionalPropertyId)
                 ?? throw new KeyNotFoundException($"Property {additionalPropertyId} not found for user {userId}");
 
-            _db.WithinTenancy_UserAdditionalProperties.Remove(property);
+            _db.UserAdditionalProperties.Remove(property);
 
-            var userEntity = await _db.WithinTenancy_Users.FindAsync(userId);
+            var userEntity = await _db.Users.FindAsync(userId);
             if (userEntity != null)
             {
                 userEntity.LastUpdatedAtUtc = DateTime.UtcNow;
@@ -272,7 +272,7 @@ public class UserDocumentService : IUserDocumentService
     {
         if (groupId == null) return;
 
-        var exists = await _db.WithinTenancy_UserAdditionalProperty_Groups.AnyAsync(g => g.Id == groupId);
+        var exists = await _db.UserAdditionalProperty_Groups.AnyAsync(g => g.Id == groupId);
         if (!exists)
             throw new KeyNotFoundException($"User additional property group {groupId} not found");
     }
@@ -344,7 +344,7 @@ public class UserDocumentService : IUserDocumentService
         // actually logging
         var logEntry = new LogUserModificationEventEntityModel
         {
-            Id = UUIDUtilities.GenerateV5(DatabaseObjectTypeEnum.WithinTenancy_Log_UserModification_EventEntry),
+            Id = UUIDUtilities.GenerateV5(DatabaseObjectTypeEnum.Log_UserModification_EventEntry),
             CreatedAtUtc = DateTime.UtcNow,
             CreatedByUserId = actorUserId,
             UserId = targetUserId,
@@ -357,7 +357,7 @@ public class UserDocumentService : IUserDocumentService
         };
 
         // commiting
-        _db.WithinTenancy_Log_UserModificationEvents.Add(logEntry);
+        _db.Log_UserModificationEvents.Add(logEntry);
     }
     #endregion
 }

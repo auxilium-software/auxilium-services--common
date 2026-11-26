@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
 {
-    public class UserAdditionalPropertyEntityModel : MutableTenantScopedEntityModelBase
+    public class UserAdditionalPropertyEntityModel : MutableEntityModelBase
     {
         /// <summary>
         /// The unique identifier of the User the Additional Property is for.

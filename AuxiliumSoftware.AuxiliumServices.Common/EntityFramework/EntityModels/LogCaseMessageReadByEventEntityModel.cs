@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
 {
-    public class LogCaseMessageReadByEventEntityModel : TenantScopedEntityModelBase
+    public class LogCaseMessageReadByEventEntityModel : EntityModelBase
     {
         /// <summary>
         /// The unique identifier of the User who read the Message.

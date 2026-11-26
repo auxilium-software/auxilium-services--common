@@ -6,7 +6,7 @@ using System.Text;
 
 namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
 {
-    public class LogSystemMessageQueueSentEmailEntityModel : TenantScopedEntityModelBase
+    public class LogSystemMessageQueueSentEmailEntityModel : EntityModelBase
     {
         /// <summary>
         /// </summary>

@@ -7,7 +7,7 @@ using System.Text;
 
 namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
 {
-    public class CalendarEventInviteEntityModel : MutableTenantScopedEntityModelBase
+    public class CalendarEventInviteEntityModel : MutableEntityModelBase
     {
         public Guid CalendarEventId { get; set; }
 

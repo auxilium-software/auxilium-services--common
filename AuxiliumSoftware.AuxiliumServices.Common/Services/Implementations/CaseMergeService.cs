@@ -29,20 +29,20 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
         #region ========================= REFERENCE REGISTRY =========================
         public static readonly IReadOnlyList<IEntityMergeReference> References =
         [
-            EntityMergeReference.Repoint(db => db.WithinTenancy_CalendarEvents,             e => e.CaseId),
-            EntityMergeReference.Repoint(db => db.WithinTenancy_CaseAdditionalProperties,   e => e.CaseId),
-            EntityMergeReference.Repoint(db => db.WithinTenancy_CaseClients,                e => e.CaseId, collidesOn: e => e.UserId),
-            EntityMergeReference.Repoint(db => db.WithinTenancy_CaseFiles,                  e => e.CaseId),
-            EntityMergeReference.Repoint(db => db.WithinTenancy_CaseMessages,               e => e.CaseId),
-            EntityMergeReference.Repoint(db => db.WithinTenancy_CaseTimelineEntries,        e => e.CaseId),
-            EntityMergeReference.Repoint(db => db.WithinTenancy_CaseTodos,                  e => e.CaseId),
-            EntityMergeReference.Repoint(db => db.WithinTenancy_CaseWorkers,                e => e.CaseId, collidesOn: e => e.UserId),
+            EntityMergeReference.Repoint(db => db.CalendarEvents,             e => e.CaseId),
+            EntityMergeReference.Repoint(db => db.CaseAdditionalProperties,   e => e.CaseId),
+            EntityMergeReference.Repoint(db => db.CaseClients,                e => e.CaseId, collidesOn: e => e.UserId),
+            EntityMergeReference.Repoint(db => db.CaseFiles,                  e => e.CaseId),
+            EntityMergeReference.Repoint(db => db.CaseMessages,               e => e.CaseId),
+            EntityMergeReference.Repoint(db => db.CaseTimelineEntries,        e => e.CaseId),
+            EntityMergeReference.Repoint(db => db.CaseTodos,                  e => e.CaseId),
+            EntityMergeReference.Repoint(db => db.CaseWorkers,                e => e.CaseId, collidesOn: e => e.UserId),
 
-            EntityMergeReference.Preserve(db => db.WithinTenancy_Log_CaseModificationEvents, e => e.CaseId),
-            EntityMergeReference.Preserve(db => db.WithinTenancy_Log_CaseMergeEvents,        e => e.SurvivorCaseId),
-            EntityMergeReference.Preserve(db => db.WithinTenancy_Log_CaseMergeEvents,        e => e.TombstoneCaseId),
+            EntityMergeReference.Preserve(db => db.Log_CaseModificationEvents, e => e.CaseId),
+            EntityMergeReference.Preserve(db => db.Log_CaseMergeEvents,        e => e.SurvivorCaseId),
+            EntityMergeReference.Preserve(db => db.Log_CaseMergeEvents,        e => e.TombstoneCaseId),
 
-            EntityMergeReference.Repoint(db => db.WithinTenancy_Cases,                      e => e.MergedIntoCaseId),
+            EntityMergeReference.Repoint(db => db.Cases,                      e => e.MergedIntoCaseId),
         ];
 
         public static void VerifyReferenceCoverage(IModel model) =>
@@ -264,9 +264,9 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
                         ct: ct
                     );
 
-                    _db.WithinTenancy_CaseTimelineEntries.Add(new CaseTimelineEntryEntityModel
+                    _db.CaseTimelineEntries.Add(new CaseTimelineEntryEntityModel
                     {
-                        Id = UUIDUtilities.GenerateV5(DatabaseObjectTypeEnum.WithinTenancy_Case_TimelineEntry),
+                        Id = UUIDUtilities.GenerateV5(DatabaseObjectTypeEnum.Case_TimelineEntry),
                         CaseId = survivor.Id,
                         EntryType = CaseTimelineEntryTypeEnum.Note_System,
                         OccurredAtUtc = now,
@@ -276,9 +276,9 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
                         CreatedByUserId = actorUserId,
                     });
 
-                    Guid mergeEventId = UUIDUtilities.GenerateV5(DatabaseObjectTypeEnum.WithinTenancy_Log_CaseMerge_EventEntry);
+                    Guid mergeEventId = UUIDUtilities.GenerateV5(DatabaseObjectTypeEnum.Log_CaseMerge_EventEntry);
 
-                    _db.WithinTenancy_Log_CaseMergeEvents.Add(new LogCaseMergeEventEntityModel
+                    _db.Log_CaseMergeEvents.Add(new LogCaseMergeEventEntityModel
                     {
                         Id = mergeEventId,
                         CreatedAtUtc = now,
@@ -290,7 +290,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
                         SurvivorPreviousValuesJson = JsonSerializer.Serialize(survivorBefore, RecordJsonOptions),
                         TombstoneSnapshotJson = JsonSerializer.Serialize(duplicateSnapshot, RecordJsonOptions),
                     });
-                    _db.WithinTenancy_Log_CaseMergeEventRowChanges.AddRange(BuildRowChanges(mergeEventId, referenceChanges, now));
+                    _db.Log_CaseMergeEventRowChanges.AddRange(BuildRowChanges(mergeEventId, referenceChanges, now));
 
                     await _db.SaveChangesAsync(ct);
                     await transaction.CommitAsync(ct);
@@ -345,7 +345,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
                 {
                     yield return new LogCaseMergeEventRowChangeEntityModel
                     {
-                        Id = UUIDUtilities.GenerateV5(DatabaseObjectTypeEnum.WithinTenancy_Log_CaseMerge_RowChange_EventEntry),
+                        Id = UUIDUtilities.GenerateV5(DatabaseObjectTypeEnum.Log_CaseMerge_RowChange_EventEntry),
                         CreatedAtUtc = now,
                         CaseMergeEventId = mergeEventId,
                         EntityName = change.Entity,
@@ -359,7 +359,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
                 {
                     yield return new LogCaseMergeEventRowChangeEntityModel
                     {
-                        Id = UUIDUtilities.GenerateV5(DatabaseObjectTypeEnum.WithinTenancy_Log_CaseMerge_RowChange_EventEntry),
+                        Id = UUIDUtilities.GenerateV5(DatabaseObjectTypeEnum.Log_CaseMerge_RowChange_EventEntry),
                         CreatedAtUtc = now,
                         CaseMergeEventId = mergeEventId,
                         EntityName = change.Entity,
@@ -395,7 +395,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
                 throw new DataMergeRejectedException(DataMergeRejectionReasonEnum.Invalid, "A case cannot be merged into itself.");
             }
 
-            IQueryable<CaseEntityModel> query = _db.WithinTenancy_Cases;
+            IQueryable<CaseEntityModel> query = _db.Cases;
             if (!track)
             {
                 query = query.AsNoTracking();

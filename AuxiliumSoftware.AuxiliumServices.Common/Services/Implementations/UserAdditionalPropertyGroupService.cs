@@ -30,7 +30,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
         {
             try
             {
-                return await _db.WithinTenancy_UserAdditionalProperty_Groups
+                return await _db.UserAdditionalProperty_Groups
                     .Include(g => g.Translations)
                     .OrderBy(g => g.SortOrder)
                     .ThenBy(g => g.CanonicalName)
@@ -47,7 +47,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
         {
             try
             {
-                return await _db.WithinTenancy_UserAdditionalProperty_Groups
+                return await _db.UserAdditionalProperty_Groups
                     .Include(g => g.Translations)
                     .FirstOrDefaultAsync(g => g.Id == groupId, ct);
             }
@@ -68,17 +68,17 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
         {
             try
             {
-                if (await _db.WithinTenancy_UserAdditionalProperty_Groups.AnyAsync(g => g.CanonicalName == canonicalName, ct))
+                if (await _db.UserAdditionalProperty_Groups.AnyAsync(g => g.CanonicalName == canonicalName, ct))
                     throw new InvalidOperationException($"A user additional property group named '{canonicalName}' already exists");
 
-                var nextSortOrder = (await _db.WithinTenancy_UserAdditionalProperty_Groups
+                var nextSortOrder = (await _db.UserAdditionalProperty_Groups
                     .MaxAsync(g => (int?)g.SortOrder, ct) ?? -1) + 1;
 
                 var now = DateTime.UtcNow;
 
                 var group = new UserAdditionalPropertyGroupEntityModel
                 {
-                    Id = UUIDUtilities.GenerateV5(DatabaseObjectTypeEnum.WithinTenancy_User_AdditionalProperty_Group),
+                    Id = UUIDUtilities.GenerateV5(DatabaseObjectTypeEnum.User_AdditionalProperty_Group),
                     CanonicalName = canonicalName,
                     SortOrder = nextSortOrder,
                     CreatedByUserId = actorUserId,
@@ -92,7 +92,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
                     {
                         group.Translations.Add(new UserAdditionalPropertyGroupTranslationEntityModel
                         {
-                            Id = UUIDUtilities.GenerateV5(DatabaseObjectTypeEnum.WithinTenancy_User_AdditionalProperty_Group_Translation),
+                            Id = UUIDUtilities.GenerateV5(DatabaseObjectTypeEnum.User_AdditionalProperty_Group_Translation),
                             UserAdditionalPropertyGroupId = group.Id,
                             LanguageCode = languageCode.Trim(),
                             Translation = translation.Trim(),
@@ -102,7 +102,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
                     }
                 }
 
-                _db.WithinTenancy_UserAdditionalProperty_Groups.Add(group);
+                _db.UserAdditionalProperty_Groups.Add(group);
                 await _db.SaveChangesAsync(ct);
 
                 _logger.LogInformation("Created user additional property group {GroupId} ({CanonicalName})", group.Id, canonicalName);
@@ -120,13 +120,13 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
         {
             try
             {
-                var group = await _db.WithinTenancy_UserAdditionalProperty_Groups
+                var group = await _db.UserAdditionalProperty_Groups
                     .FirstOrDefaultAsync(g => g.Id == groupId, ct)
                     ?? throw new KeyNotFoundException($"User additional property group {groupId} not found");
 
                 if (group.CanonicalName == newCanonicalName) return;
 
-                if (await _db.WithinTenancy_UserAdditionalProperty_Groups.AnyAsync(g => g.Id != groupId && g.CanonicalName == newCanonicalName, ct))
+                if (await _db.UserAdditionalProperty_Groups.AnyAsync(g => g.Id != groupId && g.CanonicalName == newCanonicalName, ct))
                     throw new InvalidOperationException($"A user additional property group named '{newCanonicalName}' already exists");
 
                 var previousName = group.CanonicalName;
@@ -154,7 +154,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
                 if (orderedGroupIds.Distinct().Count() != orderedGroupIds.Count)
                     throw new ArgumentException("The group ordering contains duplicate ids", nameof(orderedGroupIds));
 
-                var groups = await _db.WithinTenancy_UserAdditionalProperty_Groups.ToListAsync(ct);
+                var groups = await _db.UserAdditionalProperty_Groups.ToListAsync(ct);
 
                 if (groups.Count != orderedGroupIds.Count || groups.Any(g => !orderedGroupIds.Contains(g.Id)))
                     throw new ArgumentException("The group ordering must contain every existing group exactly once", nameof(orderedGroupIds));
@@ -187,13 +187,13 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
         {
             try
             {
-                var group = await _db.WithinTenancy_UserAdditionalProperty_Groups
+                var group = await _db.UserAdditionalProperty_Groups
                     .Include(g => g.Translations)
                     .FirstOrDefaultAsync(g => g.Id == groupId, ct)
                     ?? throw new KeyNotFoundException($"User additional property group {groupId} not found");
 
                 var now = DateTime.UtcNow;
-                var properties = await _db.WithinTenancy_UserAdditionalProperties
+                var properties = await _db.UserAdditionalProperties
                     .Where(p => p.GroupId == groupId)
                     .ToListAsync(ct);
 
@@ -204,7 +204,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
                     property.LastUpdatedByUserId = actorUserId;
                 }
 
-                _db.WithinTenancy_UserAdditionalProperty_Groups.Remove(group);
+                _db.UserAdditionalProperty_Groups.Remove(group);
                 await _db.SaveChangesAsync(ct);
 
                 _logger.LogInformation("Deleted user additional property group {GroupId} ({CanonicalName}), ungrouping {Count} properties",
@@ -224,20 +224,20 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
         {
             try
             {
-                var group = await _db.WithinTenancy_UserAdditionalProperty_Groups
+                var group = await _db.UserAdditionalProperty_Groups
                     .FirstOrDefaultAsync(g => g.Id == groupId, ct)
                     ?? throw new KeyNotFoundException($"User additional property group {groupId} not found");
 
                 var now = DateTime.UtcNow;
 
-                var existing = await _db.WithinTenancy_UserAdditionalProperty_Group_Translations
+                var existing = await _db.UserAdditionalProperty_Group_Translations
                     .FirstOrDefaultAsync(t => t.UserAdditionalPropertyGroupId == groupId && t.LanguageCode == languageCode, ct);
 
                 if (existing == null)
                 {
-                    _db.WithinTenancy_UserAdditionalProperty_Group_Translations.Add(new UserAdditionalPropertyGroupTranslationEntityModel
+                    _db.UserAdditionalProperty_Group_Translations.Add(new UserAdditionalPropertyGroupTranslationEntityModel
                     {
-                        Id = UUIDUtilities.GenerateV5(DatabaseObjectTypeEnum.WithinTenancy_User_AdditionalProperty_Group_Translation),
+                        Id = UUIDUtilities.GenerateV5(DatabaseObjectTypeEnum.User_AdditionalProperty_Group_Translation),
                         UserAdditionalPropertyGroupId = groupId,
                         LanguageCode = languageCode,
                         Translation = translation,
@@ -272,15 +272,15 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
         {
             try
             {
-                var group = await _db.WithinTenancy_UserAdditionalProperty_Groups
+                var group = await _db.UserAdditionalProperty_Groups
                     .FirstOrDefaultAsync(g => g.Id == groupId, ct)
                     ?? throw new KeyNotFoundException($"User additional property group {groupId} not found");
 
-                var translation = await _db.WithinTenancy_UserAdditionalProperty_Group_Translations
+                var translation = await _db.UserAdditionalProperty_Group_Translations
                     .FirstOrDefaultAsync(t => t.UserAdditionalPropertyGroupId == groupId && t.LanguageCode == languageCode, ct)
                     ?? throw new KeyNotFoundException($"No {languageCode} translation for user additional property group {groupId}");
 
-                _db.WithinTenancy_UserAdditionalProperty_Group_Translations.Remove(translation);
+                _db.UserAdditionalProperty_Group_Translations.Remove(translation);
 
                 group.LastUpdatedAtUtc = DateTime.UtcNow;
                 group.LastUpdatedByUserId = actorUserId;

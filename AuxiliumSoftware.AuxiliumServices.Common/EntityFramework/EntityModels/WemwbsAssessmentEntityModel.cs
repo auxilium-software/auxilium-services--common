@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
 {
-    public class WemwbsAssessmentEntityModel : TenantScopedEntityModelBase
+    public class WemwbsAssessmentEntityModel : EntityModelBase
     {
         /// <summary>
         /// The unique identifier of the User who created/completed the WEMWBS Assessment.

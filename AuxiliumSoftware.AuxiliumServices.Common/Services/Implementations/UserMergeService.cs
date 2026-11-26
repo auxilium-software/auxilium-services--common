@@ -25,82 +25,82 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
         #region ========================= REFERENCE REGISTRY =========================
         public static readonly IReadOnlyList<IEntityMergeReference> References =
         [
-            EntityMergeReference.Repoint(db => db.WithinTenancy_CalendarEvents,                             e => e.CreatedByUserId),
-            EntityMergeReference.Repoint(db => db.WithinTenancy_CalendarEvents,                             e => e.LastUpdatedByUserId),
-            EntityMergeReference.Repoint(db => db.WithinTenancy_CalendarEventInvites,                       e => e.CreatedByUserId),
-            EntityMergeReference.Repoint(db => db.WithinTenancy_CalendarEventInvites,                       e => e.LastUpdatedByUserId),
-            EntityMergeReference.Repoint(db => db.WithinTenancy_CalendarEventInvites,                       e => e.InvitedUserId, collidesOn: e => e.CalendarEventId),
-            EntityMergeReference.Repoint(db => db.WithinTenancy_CalendarEventInvites,                       e => e.InvitedByUserId),
-            EntityMergeReference.Repoint(db => db.WithinTenancy_Cases,                                      e => e.CreatedByUserId),
-            EntityMergeReference.Repoint(db => db.WithinTenancy_Cases,                                      e => e.LastUpdatedByUserId),
-            EntityMergeReference.Repoint(db => db.WithinTenancy_CaseAdditionalProperties,                   e => e.CreatedByUserId),
-            EntityMergeReference.Repoint(db => db.WithinTenancy_CaseAdditionalProperties,                   e => e.LastUpdatedByUserId),
-            EntityMergeReference.Repoint(db => db.WithinTenancy_CaseClients,                                e => e.CreatedByUserId),
-            EntityMergeReference.Repoint(db => db.WithinTenancy_CaseClients,                                e => e.UserId, collidesOn: e => e.CaseId),
-            EntityMergeReference.Repoint(db => db.WithinTenancy_CaseFiles,                                  e => e.CreatedByUserId),
-            EntityMergeReference.Repoint(db => db.WithinTenancy_CaseFiles,                                  e => e.LastUpdatedByUserId),
-            EntityMergeReference.Repoint(db => db.WithinTenancy_CaseMessages,                               e => e.CreatedByUserId),
-            EntityMergeReference.Repoint(db => db.WithinTenancy_CaseMessages,                               e => e.LastUpdatedByUserId),
-            EntityMergeReference.Repoint(db => db.WithinTenancy_CaseMessages,                               e => e.SenderUserId),
-            EntityMergeReference.Repoint(db => db.WithinTenancy_CaseTimelineEntries,                        e => e.CreatedByUserId),
-            EntityMergeReference.Repoint(db => db.WithinTenancy_CaseTimelineEntries,                        e => e.LastUpdatedByUserId),
-            EntityMergeReference.Repoint(db => db.WithinTenancy_CaseTodos,                                  e => e.CreatedByUserId),
-            EntityMergeReference.Repoint(db => db.WithinTenancy_CaseTodos,                                  e => e.LastUpdatedByUserId),
-            EntityMergeReference.Repoint(db => db.WithinTenancy_CaseTodos,                                  e => e.AssignedToUserId),
-            EntityMergeReference.Repoint(db => db.WithinTenancy_CaseTodos,                                  e => e.CompletedByUserId),
-            EntityMergeReference.Repoint(db => db.WithinTenancy_CaseWorkers,                                e => e.CreatedByUserId),
-            EntityMergeReference.Repoint(db => db.WithinTenancy_CaseWorkers,                                e => e.UserId, collidesOn: e => e.CaseId),
-            EntityMergeReference.Repoint(db => db.WithinTenancy_DataEnumerator_Enumerators,                 e => e.CreatedByUserId),
-            EntityMergeReference.Repoint(db => db.WithinTenancy_DataEnumerator_Enumerators,                 e => e.LastUpdatedByUserId),
-            EntityMergeReference.Repoint(db => db.WithinTenancy_DataEnumerator_EnumeratorTranslations,      e => e.CreatedByUserId),
-            EntityMergeReference.Repoint(db => db.WithinTenancy_DataEnumerator_EnumeratorTranslations,      e => e.LastUpdatedByUserId),
-            EntityMergeReference.Repoint(db => db.WithinTenancy_DataEnumerator_EnumeratorValues,            e => e.CreatedByUserId),
-            EntityMergeReference.Repoint(db => db.WithinTenancy_DataEnumerator_EnumeratorValues,            e => e.LastUpdatedByUserId),
-            EntityMergeReference.Repoint(db => db.WithinTenancy_DataEnumerator_EnumeratorValueTranslations, e => e.CreatedByUserId),
-            EntityMergeReference.Repoint(db => db.WithinTenancy_DataEnumerator_EnumeratorValueTranslations, e => e.LastUpdatedByUserId),
-            EntityMergeReference.Repoint(db => db.WithinTenancy_Log_CaseMessageReadBys,                     e => e.CreatedByUserId, collidesOn: e => e.MessageId),
-            EntityMergeReference.Repoint(db => db.WithinTenancy_Log_SystemBulletinEntryDismissals,          e => e.CreatedByUserId, collidesOn: e => e.SystemBulletinId),
-            EntityMergeReference.Repoint(db => db.WithinTenancy_Log_SystemBulletinEntryViews,               e => e.CreatedByUserId),
-            EntityMergeReference.Repoint(db => db.WithinTenancy_System_Bulletins,                           e => e.CreatedByUserId),
-            EntityMergeReference.Repoint(db => db.WithinTenancy_System_Bulletins,                           e => e.SpecificUserId),
-            EntityMergeReference.Repoint(db => db.WithinTenancy_System_Waf_UserBlacklist,                   e => e.UserId),
-            EntityMergeReference.Repoint(db => db.WithinTenancy_Users,                                      e => e.CreatedByUserId),
-            EntityMergeReference.Repoint(db => db.WithinTenancy_Users,                                      e => e.LastUpdatedByUserId),
-            EntityMergeReference.Repoint(db => db.WithinTenancy_Users,                                      e => e.MergedIntoUserId),
-            EntityMergeReference.Repoint(db => db.WithinTenancy_UserAdditionalProperties,                   e => e.CreatedByUserId),
-            EntityMergeReference.Repoint(db => db.WithinTenancy_UserAdditionalProperties,                   e => e.LastUpdatedByUserId),
-            EntityMergeReference.Repoint(db => db.WithinTenancy_UserAdditionalProperties,                   e => e.UserId),
-            EntityMergeReference.Repoint(db => db.WithinTenancy_UserFiles,                                  e => e.CreatedByUserId),
-            EntityMergeReference.Repoint(db => db.WithinTenancy_UserFiles,                                  e => e.LastUpdatedByUserId),
-            EntityMergeReference.Repoint(db => db.WithinTenancy_UserFiles,                                  e => e.UserId),
-            EntityMergeReference.Repoint(db => db.WithinTenancy_UserPasswordSetTokens,                      e => e.CreatedByUserId),
-            EntityMergeReference.Repoint(db => db.WithinTenancy_UserWemwbsAssessments,                      e => e.CreatedByUserId),
-            EntityMergeReference.Repoint(db => db.WithinTenancy_UserWemwbsAssessments,                      e => e.UserId),
-            EntityMergeReference.Repoint(db => db.WithinTenancy_System_Waf_UserWhitelist,                   e => e.UserId),
+            EntityMergeReference.Repoint(db => db.CalendarEvents,                             e => e.CreatedByUserId),
+            EntityMergeReference.Repoint(db => db.CalendarEvents,                             e => e.LastUpdatedByUserId),
+            EntityMergeReference.Repoint(db => db.CalendarEventInvites,                       e => e.CreatedByUserId),
+            EntityMergeReference.Repoint(db => db.CalendarEventInvites,                       e => e.LastUpdatedByUserId),
+            EntityMergeReference.Repoint(db => db.CalendarEventInvites,                       e => e.InvitedUserId, collidesOn: e => e.CalendarEventId),
+            EntityMergeReference.Repoint(db => db.CalendarEventInvites,                       e => e.InvitedByUserId),
+            EntityMergeReference.Repoint(db => db.Cases,                                      e => e.CreatedByUserId),
+            EntityMergeReference.Repoint(db => db.Cases,                                      e => e.LastUpdatedByUserId),
+            EntityMergeReference.Repoint(db => db.CaseAdditionalProperties,                   e => e.CreatedByUserId),
+            EntityMergeReference.Repoint(db => db.CaseAdditionalProperties,                   e => e.LastUpdatedByUserId),
+            EntityMergeReference.Repoint(db => db.CaseClients,                                e => e.CreatedByUserId),
+            EntityMergeReference.Repoint(db => db.CaseClients,                                e => e.UserId, collidesOn: e => e.CaseId),
+            EntityMergeReference.Repoint(db => db.CaseFiles,                                  e => e.CreatedByUserId),
+            EntityMergeReference.Repoint(db => db.CaseFiles,                                  e => e.LastUpdatedByUserId),
+            EntityMergeReference.Repoint(db => db.CaseMessages,                               e => e.CreatedByUserId),
+            EntityMergeReference.Repoint(db => db.CaseMessages,                               e => e.LastUpdatedByUserId),
+            EntityMergeReference.Repoint(db => db.CaseMessages,                               e => e.SenderUserId),
+            EntityMergeReference.Repoint(db => db.CaseTimelineEntries,                        e => e.CreatedByUserId),
+            EntityMergeReference.Repoint(db => db.CaseTimelineEntries,                        e => e.LastUpdatedByUserId),
+            EntityMergeReference.Repoint(db => db.CaseTodos,                                  e => e.CreatedByUserId),
+            EntityMergeReference.Repoint(db => db.CaseTodos,                                  e => e.LastUpdatedByUserId),
+            EntityMergeReference.Repoint(db => db.CaseTodos,                                  e => e.AssignedToUserId),
+            EntityMergeReference.Repoint(db => db.CaseTodos,                                  e => e.CompletedByUserId),
+            EntityMergeReference.Repoint(db => db.CaseWorkers,                                e => e.CreatedByUserId),
+            EntityMergeReference.Repoint(db => db.CaseWorkers,                                e => e.UserId, collidesOn: e => e.CaseId),
+            EntityMergeReference.Repoint(db => db.DataEnumerator_Enumerators,                 e => e.CreatedByUserId),
+            EntityMergeReference.Repoint(db => db.DataEnumerator_Enumerators,                 e => e.LastUpdatedByUserId),
+            EntityMergeReference.Repoint(db => db.DataEnumerator_EnumeratorTranslations,      e => e.CreatedByUserId),
+            EntityMergeReference.Repoint(db => db.DataEnumerator_EnumeratorTranslations,      e => e.LastUpdatedByUserId),
+            EntityMergeReference.Repoint(db => db.DataEnumerator_EnumeratorValues,            e => e.CreatedByUserId),
+            EntityMergeReference.Repoint(db => db.DataEnumerator_EnumeratorValues,            e => e.LastUpdatedByUserId),
+            EntityMergeReference.Repoint(db => db.DataEnumerator_EnumeratorValueTranslations, e => e.CreatedByUserId),
+            EntityMergeReference.Repoint(db => db.DataEnumerator_EnumeratorValueTranslations, e => e.LastUpdatedByUserId),
+            EntityMergeReference.Repoint(db => db.Log_CaseMessageReadBys,                     e => e.CreatedByUserId, collidesOn: e => e.MessageId),
+            EntityMergeReference.Repoint(db => db.Log_SystemBulletinEntryDismissals,          e => e.CreatedByUserId, collidesOn: e => e.SystemBulletinId),
+            EntityMergeReference.Repoint(db => db.Log_SystemBulletinEntryViews,               e => e.CreatedByUserId),
+            EntityMergeReference.Repoint(db => db.System_Bulletins,                           e => e.CreatedByUserId),
+            EntityMergeReference.Repoint(db => db.System_Bulletins,                           e => e.SpecificUserId),
+            EntityMergeReference.Repoint(db => db.System_Waf_UserBlacklist,                   e => e.UserId),
+            EntityMergeReference.Repoint(db => db.Users,                                      e => e.CreatedByUserId),
+            EntityMergeReference.Repoint(db => db.Users,                                      e => e.LastUpdatedByUserId),
+            EntityMergeReference.Repoint(db => db.Users,                                      e => e.MergedIntoUserId),
+            EntityMergeReference.Repoint(db => db.UserAdditionalProperties,                   e => e.CreatedByUserId),
+            EntityMergeReference.Repoint(db => db.UserAdditionalProperties,                   e => e.LastUpdatedByUserId),
+            EntityMergeReference.Repoint(db => db.UserAdditionalProperties,                   e => e.UserId),
+            EntityMergeReference.Repoint(db => db.UserFiles,                                  e => e.CreatedByUserId),
+            EntityMergeReference.Repoint(db => db.UserFiles,                                  e => e.LastUpdatedByUserId),
+            EntityMergeReference.Repoint(db => db.UserFiles,                                  e => e.UserId),
+            EntityMergeReference.Repoint(db => db.UserPasswordSetTokens,                      e => e.CreatedByUserId),
+            EntityMergeReference.Repoint(db => db.UserWemwbsAssessments,                      e => e.CreatedByUserId),
+            EntityMergeReference.Repoint(db => db.UserWemwbsAssessments,                      e => e.UserId),
+            EntityMergeReference.Repoint(db => db.System_Waf_UserWhitelist,                   e => e.UserId),
 
-            EntityMergeReference.Preserve(db => db.WithinTenancy_Cases,                                     e => e.MergedByUserId),
-            EntityMergeReference.Preserve(db => db.WithinTenancy_Log_CaseModificationEvents,                e => e.CreatedByUserId),
-            EntityMergeReference.Preserve(db => db.WithinTenancy_Log_CaseMergeEvents,                       e => e.CreatedByUserId),
-            EntityMergeReference.Preserve(db => db.WithinTenancy_Log_UserMergeEvents,                       e => e.CreatedByUserId),
-            EntityMergeReference.Preserve(db => db.WithinTenancy_Log_UserMergeEvents,                       e => e.SurvivorUserId),
-            EntityMergeReference.Preserve(db => db.WithinTenancy_Log_UserMergeEvents,                       e => e.TombstoneUserId),
-            EntityMergeReference.Preserve(db => db.WithinTenancy_Log_LoginAttempts,                         e => e.TargetUserId),
-            EntityMergeReference.Preserve(db => db.WithinTenancy_Log_UserModificationEvents,                e => e.CreatedByUserId),
-            EntityMergeReference.Preserve(db => db.WithinTenancy_Log_UserModificationEvents,                e => e.UserId),
-            EntityMergeReference.Preserve(db => db.WithinTenancy_System_Settings,                           e => e.CreatedByUserId),
-            EntityMergeReference.Preserve(db => db.WithinTenancy_System_Waf_IpBlacklist,                    e => e.CreatedByUserId),
-            EntityMergeReference.Preserve(db => db.WithinTenancy_System_Waf_IpBlacklist,                    e => e.UnblacklistedBy),
-            EntityMergeReference.Preserve(db => db.WithinTenancy_System_Waf_IpWhitelist,                    e => e.CreatedByUserId),
-            EntityMergeReference.Preserve(db => db.WithinTenancy_System_Waf_UserBlacklist,                  e => e.CreatedByUserId),
-            EntityMergeReference.Preserve(db => db.WithinTenancy_System_Waf_UserBlacklist,                  e => e.UnblacklistedBy),
-            EntityMergeReference.Preserve(db => db.WithinTenancy_System_Waf_UserWhitelist,                  e => e.CreatedByUserId),
-            EntityMergeReference.Preserve(db => db.WithinTenancy_Users,                                     e => e.MergedByUserId),
-            EntityMergeReference.Preserve(db => db.WithinTenancy_System_Waf_IpWhitelist,                    e => e.UnwhitelistedBy),
-            EntityMergeReference.Preserve(db => db.WithinTenancy_System_Waf_UserWhitelist,                  e => e.UnwhitelistedBy),
+            EntityMergeReference.Preserve(db => db.Cases,                                     e => e.MergedByUserId),
+            EntityMergeReference.Preserve(db => db.Log_CaseModificationEvents,                e => e.CreatedByUserId),
+            EntityMergeReference.Preserve(db => db.Log_CaseMergeEvents,                       e => e.CreatedByUserId),
+            EntityMergeReference.Preserve(db => db.Log_UserMergeEvents,                       e => e.CreatedByUserId),
+            EntityMergeReference.Preserve(db => db.Log_UserMergeEvents,                       e => e.SurvivorUserId),
+            EntityMergeReference.Preserve(db => db.Log_UserMergeEvents,                       e => e.TombstoneUserId),
+            EntityMergeReference.Preserve(db => db.Log_LoginAttempts,                         e => e.TargetUserId),
+            EntityMergeReference.Preserve(db => db.Log_UserModificationEvents,                e => e.CreatedByUserId),
+            EntityMergeReference.Preserve(db => db.Log_UserModificationEvents,                e => e.UserId),
+            EntityMergeReference.Preserve(db => db.System_Settings,                           e => e.CreatedByUserId),
+            EntityMergeReference.Preserve(db => db.System_Waf_IpBlacklist,                    e => e.CreatedByUserId),
+            EntityMergeReference.Preserve(db => db.System_Waf_IpBlacklist,                    e => e.UnblacklistedBy),
+            EntityMergeReference.Preserve(db => db.System_Waf_IpWhitelist,                    e => e.CreatedByUserId),
+            EntityMergeReference.Preserve(db => db.System_Waf_UserBlacklist,                  e => e.CreatedByUserId),
+            EntityMergeReference.Preserve(db => db.System_Waf_UserBlacklist,                  e => e.UnblacklistedBy),
+            EntityMergeReference.Preserve(db => db.System_Waf_UserWhitelist,                  e => e.CreatedByUserId),
+            EntityMergeReference.Preserve(db => db.Users,                                     e => e.MergedByUserId),
+            EntityMergeReference.Preserve(db => db.System_Waf_IpWhitelist,                    e => e.UnwhitelistedBy),
+            EntityMergeReference.Preserve(db => db.System_Waf_UserWhitelist,                  e => e.UnwhitelistedBy),
 
-            EntityMergeReference.Discard(db => db.WithinTenancy_UserPasswordSetTokens,                      e => e.UserId),
-            EntityMergeReference.Discard(db => db.WithinTenancy_UserRefreshTokens,                          e => e.CreatedByUserId),
-            EntityMergeReference.Discard(db => db.WithinTenancy_UserTotpRecoveryCodes,                      e => e.CreatedByUserId),
+            EntityMergeReference.Discard(db => db.UserPasswordSetTokens,                      e => e.UserId),
+            EntityMergeReference.Discard(db => db.UserRefreshTokens,                          e => e.CreatedByUserId),
+            EntityMergeReference.Discard(db => db.UserTotpRecoveryCodes,                      e => e.CreatedByUserId),
         ];
 
         public static void VerifyReferenceCoverage(IModel model) =>
@@ -262,7 +262,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
                         }
                     }
 
-                    await _db.WithinTenancy_Users
+                    await _db.Users
                         .Where(u => u.Id == duplicate.Id)
                         .ExecuteUpdateAsync(setters => setters.SetProperty(u => u.EmailAddress, (string?)null), ct);
 
@@ -323,9 +323,9 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
                         ct: ct
                     );
 
-                    Guid mergeEventId = UUIDUtilities.GenerateV5(DatabaseObjectTypeEnum.WithinTenancy_Log_UserMerge_EventEntry);
+                    Guid mergeEventId = UUIDUtilities.GenerateV5(DatabaseObjectTypeEnum.Log_UserMerge_EventEntry);
 
-                    _db.WithinTenancy_Log_UserMergeEvents.Add(new LogUserMergeEventEntityModel
+                    _db.Log_UserMergeEvents.Add(new LogUserMergeEventEntityModel
                     {
                         Id = mergeEventId,
                         CreatedAtUtc = now,
@@ -337,7 +337,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
                         SurvivorPreviousValuesJson = JsonSerializer.Serialize(survivorBefore, RecordJsonOptions),
                         TombstoneSnapshotJson = JsonSerializer.Serialize(duplicateSnapshot, RecordJsonOptions),
                     });
-                    _db.WithinTenancy_Log_UserMergeEventRowChanges.AddRange(BuildRowChanges(mergeEventId, referenceChanges, now));
+                    _db.Log_UserMergeEventRowChanges.AddRange(BuildRowChanges(mergeEventId, referenceChanges, now));
 
                     await _db.SaveChangesAsync(ct);
                     await transaction.CommitAsync(ct);
@@ -392,7 +392,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
                 {
                     yield return new LogUserMergeEventRowChangeEntityModel
                     {
-                        Id = UUIDUtilities.GenerateV5(DatabaseObjectTypeEnum.WithinTenancy_Log_UserMerge_RowChange_EventEntry),
+                        Id = UUIDUtilities.GenerateV5(DatabaseObjectTypeEnum.Log_UserMerge_RowChange_EventEntry),
                         CreatedAtUtc = now,
                         UserMergeEventId = mergeEventId,
                         EntityName = change.Entity,
@@ -406,7 +406,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
                 {
                     yield return new LogUserMergeEventRowChangeEntityModel
                     {
-                        Id = UUIDUtilities.GenerateV5(DatabaseObjectTypeEnum.WithinTenancy_Log_UserMerge_RowChange_EventEntry),
+                        Id = UUIDUtilities.GenerateV5(DatabaseObjectTypeEnum.Log_UserMerge_RowChange_EventEntry),
                         CreatedAtUtc = now,
                         UserMergeEventId = mergeEventId,
                         EntityName = change.Entity,
@@ -451,7 +451,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
                 );
             }
 
-            IQueryable<UserEntityModel> query = _db.WithinTenancy_Users;
+            IQueryable<UserEntityModel> query = _db.Users;
             if (!track)
             {
                 query = query.AsNoTracking();

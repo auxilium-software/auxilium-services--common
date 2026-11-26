@@ -5,7 +5,7 @@ using System.Text;
 
 namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
 {
-    public class UserAdditionalPropertyGroupEntityModel : MutableTenantScopedEntityModelBase
+    public class UserAdditionalPropertyGroupEntityModel : MutableEntityModelBase
     {
         public required string CanonicalName { get; set; }
         public int SortOrder { get; set; }

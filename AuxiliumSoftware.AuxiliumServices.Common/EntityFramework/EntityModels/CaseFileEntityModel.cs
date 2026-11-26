@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
 {
-    public class CaseFileEntityModel : MutableTenantScopedEntityModelBase
+    public class CaseFileEntityModel : MutableEntityModelBase
     {
         /// <summary>
         /// The unique identifier for the Case the File is for.

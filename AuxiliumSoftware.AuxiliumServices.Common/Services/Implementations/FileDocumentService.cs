@@ -32,7 +32,7 @@ public class FileDocumentService : IFileDocumentService
     {
         try
         {
-            return await _db.WithinTenancy_CaseFiles
+            return await _db.CaseFiles
                 .Include(f => f.Case)
                 .Include(f => f.CreatedByUser)
                 .FirstOrDefaultAsync(f => f.Id == fileId);
@@ -48,7 +48,7 @@ public class FileDocumentService : IFileDocumentService
     {
         try
         {
-            return await _db.WithinTenancy_CaseFiles
+            return await _db.CaseFiles
                 .Include(f => f.CreatedByUser)
                 .Where(f => f.CaseId == caseId)
                 .OrderByDescending(f => f.CreatedAtUtc)
@@ -71,7 +71,7 @@ public class FileDocumentService : IFileDocumentService
     {
         try
         {
-            var fileId = UUIDUtilities.GenerateV5(DatabaseObjectTypeEnum.WithinTenancy_Case_File);
+            var fileId = UUIDUtilities.GenerateV5(DatabaseObjectTypeEnum.Case_File);
             var filePath = Path.Combine(_lfsBasePath, $"{fileId}.bin");
 
             // just make sure the directory actually exists
@@ -102,10 +102,10 @@ public class FileDocumentService : IFileDocumentService
                 LastUpdatedByUserId = uploadedBy
             };
 
-            _db.WithinTenancy_CaseFiles.Add(fileMetadata);
+            _db.CaseFiles.Add(fileMetadata);
 
             // update the parent case LastUpdatedAt timestamp
-            var caseEntity = await _db.WithinTenancy_Cases.FindAsync(caseId);
+            var caseEntity = await _db.Cases.FindAsync(caseId);
             if (caseEntity != null)
             {
                 caseEntity.LastUpdatedAtUtc = DateTime.UtcNow;
@@ -133,10 +133,10 @@ public class FileDocumentService : IFileDocumentService
             var metadata = await GetCaseFileMetadataAsync(fileId)
                 ?? throw new KeyNotFoundException($"Case file {fileId} not found");
 
-            _db.WithinTenancy_CaseFiles.Remove(metadata);
+            _db.CaseFiles.Remove(metadata);
 
             // update the parent case LastUpdatedAt timestamp
-            var caseEntity = await _db.WithinTenancy_Cases.FindAsync(metadata.CaseId);
+            var caseEntity = await _db.Cases.FindAsync(metadata.CaseId);
             if (caseEntity != null)
             {
                 caseEntity.LastUpdatedAtUtc = DateTime.UtcNow;
@@ -166,7 +166,7 @@ public class FileDocumentService : IFileDocumentService
     {
         try
         {
-            return await _db.WithinTenancy_UserFiles
+            return await _db.UserFiles
                 .Include(f => f.User)
                 .Include(f => f.CreatedByUser)
                 .FirstOrDefaultAsync(f => f.Id == fileId);
@@ -182,7 +182,7 @@ public class FileDocumentService : IFileDocumentService
     {
         try
         {
-            return await _db.WithinTenancy_UserFiles
+            return await _db.UserFiles
                 .Include(f => f.CreatedByUser)
                 .Where(f => f.UserId == userId)
                 .OrderByDescending(f => f.CreatedAtUtc)
@@ -205,7 +205,7 @@ public class FileDocumentService : IFileDocumentService
     {
         try
         {
-            var fileId = UUIDUtilities.GenerateV5(DatabaseObjectTypeEnum.WithinTenancy_User_File);
+            var fileId = UUIDUtilities.GenerateV5(DatabaseObjectTypeEnum.User_File);
             var filePath = Path.Combine(_lfsBasePath, $"{fileId}.bin");
 
             // just make sure the directory actually exists
@@ -236,10 +236,10 @@ public class FileDocumentService : IFileDocumentService
                 LastUpdatedByUserId = uploadedBy
             };
 
-            _db.WithinTenancy_UserFiles.Add(fileMetadata);
+            _db.UserFiles.Add(fileMetadata);
 
             // update the parent user's LastUpdatedAt timestamp
-            var userEntity = await _db.WithinTenancy_Users.FindAsync(userId);
+            var userEntity = await _db.Users.FindAsync(userId);
             if (userEntity != null)
             {
                 userEntity.LastUpdatedAtUtc = DateTime.UtcNow;
@@ -267,10 +267,10 @@ public class FileDocumentService : IFileDocumentService
             var metadata = await GetUserFileMetadataAsync(fileId)
                 ?? throw new KeyNotFoundException($"User file {fileId} not found");
 
-            _db.WithinTenancy_UserFiles.Remove(metadata);
+            _db.UserFiles.Remove(metadata);
 
             // update the LastUpdatedAt timestamp
-            var userEntity = await _db.WithinTenancy_Users.FindAsync(metadata.UserId);
+            var userEntity = await _db.Users.FindAsync(metadata.UserId);
             if (userEntity != null)
             {
                 userEntity.LastUpdatedAtUtc = DateTime.UtcNow;
@@ -321,7 +321,7 @@ public class FileDocumentService : IFileDocumentService
     {
         try
         {
-            var file = await _db.WithinTenancy_CaseFiles
+            var file = await _db.CaseFiles
                 .Include(f => f.Case)
                     .ThenInclude(c => c!.Workers)
                 .Include(f => f.Case)
@@ -345,7 +345,7 @@ public class FileDocumentService : IFileDocumentService
     {
         try
         {
-            var file = await _db.WithinTenancy_UserFiles.FirstOrDefaultAsync(f => f.Id == fileId);
+            var file = await _db.UserFiles.FirstOrDefaultAsync(f => f.Id == fileId);
             if (file == null) return false;
 
             // only admins or file owner

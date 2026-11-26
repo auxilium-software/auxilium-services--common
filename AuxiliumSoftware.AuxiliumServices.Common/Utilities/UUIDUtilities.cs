@@ -12,82 +12,83 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Utilities
         /// <summary>
         /// Takes in a DatabaseObjectType and generates a Version 5 UUID
         /// </summary>
+        /// <remarks>
+        /// The "WithinTenancy" segment in these paths is a leftover from the multi-tenancy era.
+        /// It is kept deliberately: changing a path changes the namespace UUID every new ID of
+        /// that type is generated in, which would split existing and new rows across two namespaces.
+        /// </remarks>
         private static readonly Dictionary<DatabaseObjectTypeEnum, string> NamespacePaths = new()
         {
-            [DatabaseObjectTypeEnum.Global_Tenant_Tenant]                                           = "Auxilium.3.DatabaseObject.MariaDb.Global.Tenant.Tenant",
+            [DatabaseObjectTypeEnum.Calendar_Event]                                    = "Auxilium.3.DatabaseObject.MariaDb.WithinTenancy.Calendar.Event",
+            [DatabaseObjectTypeEnum.Calendar_EventInvite]                              = "Auxilium.3.DatabaseObject.MariaDb.WithinTenancy.Calendar.EventInvite",
 
 
 
-            [DatabaseObjectTypeEnum.WithinTenancy_Calendar_Event]                                   = "Auxilium.3.DatabaseObject.MariaDb.WithinTenancy.Calendar.Event",
-            [DatabaseObjectTypeEnum.WithinTenancy_Calendar_EventInvite]                             = "Auxilium.3.DatabaseObject.MariaDb.WithinTenancy.Calendar.EventInvite",
-
-
-
-            [DatabaseObjectTypeEnum.WithinTenancy_System_Waf_IpWhitelistEntry]                      = "Auxilium.3.DatabaseObject.MariaDb.WithinTenancy.System.Waf.IpWhitelistEntry",
-            [DatabaseObjectTypeEnum.WithinTenancy_System_Waf_IpBlacklistEntry]                      = "Auxilium.3.DatabaseObject.MariaDb.WithinTenancy.System.Waf.IpBlacklistEntry",
-            [DatabaseObjectTypeEnum.WithinTenancy_System_Waf_UserWhitelistEntry]                    = "Auxilium.3.DatabaseObject.MariaDb.WithinTenancy.System.Waf.UserWhitelistEntry",
-            [DatabaseObjectTypeEnum.WithinTenancy_System_Waf_UserBlacklistEntry]                    = "Auxilium.3.DatabaseObject.MariaDb.WithinTenancy.System.Waf.UserBlacklistEntry",
+            [DatabaseObjectTypeEnum.System_Waf_IpWhitelistEntry]                       = "Auxilium.3.DatabaseObject.MariaDb.WithinTenancy.System.Waf.IpWhitelistEntry",
+            [DatabaseObjectTypeEnum.System_Waf_IpBlacklistEntry]                       = "Auxilium.3.DatabaseObject.MariaDb.WithinTenancy.System.Waf.IpBlacklistEntry",
+            [DatabaseObjectTypeEnum.System_Waf_UserWhitelistEntry]                     = "Auxilium.3.DatabaseObject.MariaDb.WithinTenancy.System.Waf.UserWhitelistEntry",
+            [DatabaseObjectTypeEnum.System_Waf_UserBlacklistEntry]                     = "Auxilium.3.DatabaseObject.MariaDb.WithinTenancy.System.Waf.UserBlacklistEntry",
             
-            [DatabaseObjectTypeEnum.WithinTenancy_System_BulletinEntry]                             = "Auxilium.3.DatabaseObject.MariaDb.WithinTenancy.System.BulletinEntry",
-            [DatabaseObjectTypeEnum.WithinTenancy_System_MetricEntry]                               = "Auxilium.3.DatabaseObject.MariaDb.WithinTenancy.System.MetricEntry",
-            [DatabaseObjectTypeEnum.WithinTenancy_System_SettingEntry]                              = "Auxilium.3.DatabaseObject.MariaDb.WithinTenancy.System.SettingEntry",
+            [DatabaseObjectTypeEnum.System_BulletinEntry]                              = "Auxilium.3.DatabaseObject.MariaDb.WithinTenancy.System.BulletinEntry",
+            [DatabaseObjectTypeEnum.System_MetricEntry]                                = "Auxilium.3.DatabaseObject.MariaDb.WithinTenancy.System.MetricEntry",
+            [DatabaseObjectTypeEnum.System_SettingEntry]                               = "Auxilium.3.DatabaseObject.MariaDb.WithinTenancy.System.SettingEntry",
             
 
 
-            [DatabaseObjectTypeEnum.WithinTenancy_User]                                             = "Auxilium.3.DatabaseObject.MariaDb.WithinTenancy.User",
-            [DatabaseObjectTypeEnum.WithinTenancy_User_AdditionalProperty]                          = "Auxilium.3.DatabaseObject.MariaDb.WithinTenancy.User.AdditionalProperty",
-            [DatabaseObjectTypeEnum.WithinTenancy_User_AdditionalProperty_Group]                    = "Auxilium.3.DatabaseObject.MariaDb.WithinTenancy.User.AdditionalProperty.Group",
-            [DatabaseObjectTypeEnum.WithinTenancy_User_AdditionalProperty_Group_Translation]        = "Auxilium.3.DatabaseObject.MariaDb.WithinTenancy.User.AdditionalProperty.Group.Translation",
-            [DatabaseObjectTypeEnum.WithinTenancy_User_AdditionalProperty_Definition]               = "Auxilium.3.DatabaseObject.MariaDb.WithinTenancy.User.AdditionalProperty.Definition",
-            [DatabaseObjectTypeEnum.WithinTenancy_User_AdditionalProperty_Definition_Translation]   = "Auxilium.3.DatabaseObject.MariaDb.WithinTenancy.User.AdditionalProperty.Definition.Translation",
-            [DatabaseObjectTypeEnum.WithinTenancy_User_AdditionalProperty_Definition_Alias]         = "Auxilium.3.DatabaseObject.MariaDb.WithinTenancy.User.AdditionalProperty.Definition.Alias",
-            [DatabaseObjectTypeEnum.WithinTenancy_User_File]                                        = "Auxilium.3.DatabaseObject.MariaDb.WithinTenancy.User.File",
-            [DatabaseObjectTypeEnum.WithinTenancy_User_RefreshToken]                                = "Auxilium.3.DatabaseObject.MariaDb.WithinTenancy.User.RefreshToken",
-            [DatabaseObjectTypeEnum.WithinTenancy_User_TotpRecoveryCode]                            = "Auxilium.3.DatabaseObject.MariaDb.WithinTenancy.User.TotpRecoveryCode",
-            [DatabaseObjectTypeEnum.WithinTenancy_User_WemwbsAssessment]                            = "Auxilium.3.DatabaseObject.MariaDb.WithinTenancy.User.WemwbsAssessment",
-            [DatabaseObjectTypeEnum.WithinTenancy_User_PasswordSetToken]                            = "Auxilium.3.DatabaseObject.MariaDb.WithinTenancy.User.PasswordSetToken",
+            [DatabaseObjectTypeEnum.User]                                              = "Auxilium.3.DatabaseObject.MariaDb.WithinTenancy.User",
+            [DatabaseObjectTypeEnum.User_AdditionalProperty]                           = "Auxilium.3.DatabaseObject.MariaDb.WithinTenancy.User.AdditionalProperty",
+            [DatabaseObjectTypeEnum.User_AdditionalProperty_Group]                     = "Auxilium.3.DatabaseObject.MariaDb.WithinTenancy.User.AdditionalProperty.Group",
+            [DatabaseObjectTypeEnum.User_AdditionalProperty_Group_Translation]         = "Auxilium.3.DatabaseObject.MariaDb.WithinTenancy.User.AdditionalProperty.Group.Translation",
+            [DatabaseObjectTypeEnum.User_AdditionalProperty_Definition]                = "Auxilium.3.DatabaseObject.MariaDb.WithinTenancy.User.AdditionalProperty.Definition",
+            [DatabaseObjectTypeEnum.User_AdditionalProperty_Definition_Translation]    = "Auxilium.3.DatabaseObject.MariaDb.WithinTenancy.User.AdditionalProperty.Definition.Translation",
+            [DatabaseObjectTypeEnum.User_AdditionalProperty_Definition_Alias]          = "Auxilium.3.DatabaseObject.MariaDb.WithinTenancy.User.AdditionalProperty.Definition.Alias",
+            [DatabaseObjectTypeEnum.User_File]                                         = "Auxilium.3.DatabaseObject.MariaDb.WithinTenancy.User.File",
+            [DatabaseObjectTypeEnum.User_RefreshToken]                                 = "Auxilium.3.DatabaseObject.MariaDb.WithinTenancy.User.RefreshToken",
+            [DatabaseObjectTypeEnum.User_TotpRecoveryCode]                             = "Auxilium.3.DatabaseObject.MariaDb.WithinTenancy.User.TotpRecoveryCode",
+            [DatabaseObjectTypeEnum.User_WemwbsAssessment]                             = "Auxilium.3.DatabaseObject.MariaDb.WithinTenancy.User.WemwbsAssessment",
+            [DatabaseObjectTypeEnum.User_PasswordSetToken]                             = "Auxilium.3.DatabaseObject.MariaDb.WithinTenancy.User.PasswordSetToken",
             
 
 
-            [DatabaseObjectTypeEnum.WithinTenancy_Case]                                             = "Auxilium.3.DatabaseObject.MariaDb.WithinTenancy.Case",
-            [DatabaseObjectTypeEnum.WithinTenancy_Case_AdditionalProperty]                          = "Auxilium.3.DatabaseObject.MariaDb.WithinTenancy.Case.AdditionalProperty",
-            [DatabaseObjectTypeEnum.WithinTenancy_Case_AdditionalProperty_Group]                    = "Auxilium.3.DatabaseObject.MariaDb.WithinTenancy.Case.AdditionalProperty.Group",
-            [DatabaseObjectTypeEnum.WithinTenancy_Case_AdditionalProperty_Group_Translation]        = "Auxilium.3.DatabaseObject.MariaDb.WithinTenancy.Case.AdditionalProperty.Group.Translation",
-            [DatabaseObjectTypeEnum.WithinTenancy_Case_AdditionalProperty_Definition]               = "Auxilium.3.DatabaseObject.MariaDb.WithinTenancy.Case.AdditionalProperty.Definition",
-            [DatabaseObjectTypeEnum.WithinTenancy_Case_AdditionalProperty_Definition_Translation]   = "Auxilium.3.DatabaseObject.MariaDb.WithinTenancy.Case.AdditionalProperty.Definition.Translation",
-            [DatabaseObjectTypeEnum.WithinTenancy_Case_AdditionalProperty_Definition_Alias]         = "Auxilium.3.DatabaseObject.MariaDb.WithinTenancy.Case.AdditionalProperty.Definition.Alias",
-            [DatabaseObjectTypeEnum.WithinTenancy_Case_Worker]                                      = "Auxilium.3.DatabaseObject.MariaDb.WithinTenancy.Case.Worker",
-            [DatabaseObjectTypeEnum.WithinTenancy_Case_Client]                                      = "Auxilium.3.DatabaseObject.MariaDb.WithinTenancy.Case.Client",
-            [DatabaseObjectTypeEnum.WithinTenancy_Case_Message]                                     = "Auxilium.3.DatabaseObject.MariaDb.WithinTenancy.Case.Message",
-            [DatabaseObjectTypeEnum.WithinTenancy_Case_File]                                        = "Auxilium.3.DatabaseObject.MariaDb.WithinTenancy.Case.File",
-            [DatabaseObjectTypeEnum.WithinTenancy_Case_TimelineEntry]                               = "Auxilium.3.DatabaseObject.MariaDb.WithinTenancy.Case.TimelineEntry",
-            [DatabaseObjectTypeEnum.WithinTenancy_Case_Todo]                                        = "Auxilium.3.DatabaseObject.MariaDb.WithinTenancy.Case.Todo",
+            [DatabaseObjectTypeEnum.Case]                                              = "Auxilium.3.DatabaseObject.MariaDb.WithinTenancy.Case",
+            [DatabaseObjectTypeEnum.Case_AdditionalProperty]                           = "Auxilium.3.DatabaseObject.MariaDb.WithinTenancy.Case.AdditionalProperty",
+            [DatabaseObjectTypeEnum.Case_AdditionalProperty_Group]                     = "Auxilium.3.DatabaseObject.MariaDb.WithinTenancy.Case.AdditionalProperty.Group",
+            [DatabaseObjectTypeEnum.Case_AdditionalProperty_Group_Translation]         = "Auxilium.3.DatabaseObject.MariaDb.WithinTenancy.Case.AdditionalProperty.Group.Translation",
+            [DatabaseObjectTypeEnum.Case_AdditionalProperty_Definition]                = "Auxilium.3.DatabaseObject.MariaDb.WithinTenancy.Case.AdditionalProperty.Definition",
+            [DatabaseObjectTypeEnum.Case_AdditionalProperty_Definition_Translation]    = "Auxilium.3.DatabaseObject.MariaDb.WithinTenancy.Case.AdditionalProperty.Definition.Translation",
+            [DatabaseObjectTypeEnum.Case_AdditionalProperty_Definition_Alias]          = "Auxilium.3.DatabaseObject.MariaDb.WithinTenancy.Case.AdditionalProperty.Definition.Alias",
+            [DatabaseObjectTypeEnum.Case_Worker]                                       = "Auxilium.3.DatabaseObject.MariaDb.WithinTenancy.Case.Worker",
+            [DatabaseObjectTypeEnum.Case_Client]                                       = "Auxilium.3.DatabaseObject.MariaDb.WithinTenancy.Case.Client",
+            [DatabaseObjectTypeEnum.Case_Message]                                      = "Auxilium.3.DatabaseObject.MariaDb.WithinTenancy.Case.Message",
+            [DatabaseObjectTypeEnum.Case_File]                                         = "Auxilium.3.DatabaseObject.MariaDb.WithinTenancy.Case.File",
+            [DatabaseObjectTypeEnum.Case_TimelineEntry]                                = "Auxilium.3.DatabaseObject.MariaDb.WithinTenancy.Case.TimelineEntry",
+            [DatabaseObjectTypeEnum.Case_Todo]                                         = "Auxilium.3.DatabaseObject.MariaDb.WithinTenancy.Case.Todo",
 
 
 
-            [DatabaseObjectTypeEnum.WithinTenancy_Enumerator]                                       = "Auxilium.3.DatabaseObject.MariaDb.WithinTenancy.Enumerator",
-            [DatabaseObjectTypeEnum.WithinTenancy_Enumerator_Translation]                           = "Auxilium.3.DatabaseObject.MariaDb.WithinTenancy.Enumerator.Translation",
-            [DatabaseObjectTypeEnum.WithinTenancy_Enumerator_Value]                                 = "Auxilium.3.DatabaseObject.MariaDb.WithinTenancy.Enumerator.Value",
-            [DatabaseObjectTypeEnum.WithinTenancy_Enumerator_ValueTranslation]                      = "Auxilium.3.DatabaseObject.MariaDb.WithinTenancy.Enumerator.ValueTranslation",
+            [DatabaseObjectTypeEnum.Enumerator]                                        = "Auxilium.3.DatabaseObject.MariaDb.WithinTenancy.Enumerator",
+            [DatabaseObjectTypeEnum.Enumerator_Translation]                            = "Auxilium.3.DatabaseObject.MariaDb.WithinTenancy.Enumerator.Translation",
+            [DatabaseObjectTypeEnum.Enumerator_Value]                                  = "Auxilium.3.DatabaseObject.MariaDb.WithinTenancy.Enumerator.Value",
+            [DatabaseObjectTypeEnum.Enumerator_ValueTranslation]                       = "Auxilium.3.DatabaseObject.MariaDb.WithinTenancy.Enumerator.ValueTranslation",
 
 
 
-            [DatabaseObjectTypeEnum.WithinTenancy_Log_CaseModification_EventEntry]                  = "Auxilium.3.DatabaseObject.MariaDb.WithinTenancy.Log.CaseModification.EventEntry",
-            [DatabaseObjectTypeEnum.WithinTenancy_Log_CaseMessageReadBy_EventEntry]                 = "Auxilium.3.DatabaseObject.MariaDb.WithinTenancy.Log.CaseMessageReadBy.EventEntry",
-            [DatabaseObjectTypeEnum.WithinTenancy_Log_CaseMerge_EventEntry]                         = "Auxilium.3.DatabaseObject.MariaDb.WithinTenancy.Log.CaseMerge.EventEntry",
-            [DatabaseObjectTypeEnum.WithinTenancy_Log_CaseMerge_RowChange_EventEntry]               = "Auxilium.3.DatabaseObject.MariaDb.WithinTenancy.Log.CaseMerge.RowChange.EventEntry",
-            [DatabaseObjectTypeEnum.WithinTenancy_Log_UserMerge_EventEntry]                         = "Auxilium.3.DatabaseObject.MariaDb.WithinTenancy.Log.UserMerge.EventEntry",
-            [DatabaseObjectTypeEnum.WithinTenancy_Log_UserMerge_RowChange_EventEntry]               = "Auxilium.3.DatabaseObject.MariaDb.WithinTenancy.Log.UserMerge.RowChange.EventEntry",
+            [DatabaseObjectTypeEnum.Log_CaseModification_EventEntry]                   = "Auxilium.3.DatabaseObject.MariaDb.WithinTenancy.Log.CaseModification.EventEntry",
+            [DatabaseObjectTypeEnum.Log_CaseMessageReadBy_EventEntry]                  = "Auxilium.3.DatabaseObject.MariaDb.WithinTenancy.Log.CaseMessageReadBy.EventEntry",
+            [DatabaseObjectTypeEnum.Log_CaseMerge_EventEntry]                          = "Auxilium.3.DatabaseObject.MariaDb.WithinTenancy.Log.CaseMerge.EventEntry",
+            [DatabaseObjectTypeEnum.Log_CaseMerge_RowChange_EventEntry]                = "Auxilium.3.DatabaseObject.MariaDb.WithinTenancy.Log.CaseMerge.RowChange.EventEntry",
+            [DatabaseObjectTypeEnum.Log_UserMerge_EventEntry]                          = "Auxilium.3.DatabaseObject.MariaDb.WithinTenancy.Log.UserMerge.EventEntry",
+            [DatabaseObjectTypeEnum.Log_UserMerge_RowChange_EventEntry]                = "Auxilium.3.DatabaseObject.MariaDb.WithinTenancy.Log.UserMerge.RowChange.EventEntry",
 
-            [DatabaseObjectTypeEnum.WithinTenancy_Log_LoginAttempt_EventEntry]                      = "Auxilium.3.DatabaseObject.MariaDb.WithinTenancy.Log.LoginAttempt.EventEntry",
+            [DatabaseObjectTypeEnum.Log_LoginAttempt_EventEntry]                       = "Auxilium.3.DatabaseObject.MariaDb.WithinTenancy.Log.LoginAttempt.EventEntry",
 
-            [DatabaseObjectTypeEnum.WithinTenancy_Log_SystemMessageQueue_EmailSent_EventEntry]      = "Auxilium.3.DatabaseObject.MariaDb.WithinTenancy.Log.System.MessageQueue.EmailSent.EventEntry",
-            [DatabaseObjectTypeEnum.WithinTenancy_Log_SystemMessageQueue_FailedAction_EventEntry]   = "Auxilium.3.DatabaseObject.MariaDb.WithinTenancy.Log.System.MessageQueue.FailedAction.EventEntry",
+            [DatabaseObjectTypeEnum.Log_SystemMessageQueue_EmailSent_EventEntry]       = "Auxilium.3.DatabaseObject.MariaDb.WithinTenancy.Log.System.MessageQueue.EmailSent.EventEntry",
+            [DatabaseObjectTypeEnum.Log_SystemMessageQueue_FailedAction_EventEntry]    = "Auxilium.3.DatabaseObject.MariaDb.WithinTenancy.Log.System.MessageQueue.FailedAction.EventEntry",
 
-            [DatabaseObjectTypeEnum.WithinTenancy_Log_SystemBulletin_EntryDismissal_EventEntry]     = "Auxilium.3.DatabaseObject.MariaDb.WithinTenancy.Log.System.BulletinEntry.Dismissal.EventEntry",
-            [DatabaseObjectTypeEnum.WithinTenancy_Log_SystemBulletin_EntryView_EventEntry]          = "Auxilium.3.DatabaseObject.MariaDb.WithinTenancy.Log.System.BulletinEntry.View.EventEntry",
+            [DatabaseObjectTypeEnum.Log_SystemBulletin_EntryDismissal_EventEntry]      = "Auxilium.3.DatabaseObject.MariaDb.WithinTenancy.Log.System.BulletinEntry.Dismissal.EventEntry",
+            [DatabaseObjectTypeEnum.Log_SystemBulletin_EntryView_EventEntry]           = "Auxilium.3.DatabaseObject.MariaDb.WithinTenancy.Log.System.BulletinEntry.View.EventEntry",
 
-            [DatabaseObjectTypeEnum.WithinTenancy_Log_UserModification_EventEntry]                  = "Auxilium.3.DatabaseObject.MariaDb.WithinTenancy.Log.UserModification.EventEntry",
+            [DatabaseObjectTypeEnum.Log_UserModification_EventEntry]                   = "Auxilium.3.DatabaseObject.MariaDb.WithinTenancy.Log.UserModification.EventEntry",
         };
 
 

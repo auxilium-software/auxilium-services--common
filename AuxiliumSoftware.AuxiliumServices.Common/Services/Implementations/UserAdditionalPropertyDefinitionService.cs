@@ -30,7 +30,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
         {
             try
             {
-                return await _db.WithinTenancy_UserAdditionalProperty_Definitions
+                return await _db.UserAdditionalProperty_Definitions
                     .Include(d => d.Translations)
                     .Include(d => d.Aliases)
                     .Where(d => includeInactive || d.IsActive)
@@ -49,7 +49,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
         {
             try
             {
-                return await _db.WithinTenancy_UserAdditionalProperty_Definitions
+                return await _db.UserAdditionalProperty_Definitions
                     .Include(d => d.Translations)
                     .Include(d => d.Aliases)
                     .FirstOrDefaultAsync(d => d.Id == definitionId, ct);
@@ -65,7 +65,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
         {
             try
             {
-                List<string> names = await _db.WithinTenancy_UserAdditionalProperties
+                List<string> names = await _db.UserAdditionalProperties
                     .Where(p => p.DefinitionId == null)
                     .Select(p => p.DisplayName)
                     .ToListAsync(ct);
@@ -114,7 +114,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
                 canonicalName = ValidateCanonicalName(canonicalName);
                 await ValidateReferencesAsync(dataType, dataEnumeratorId, defaultGroupId, ct);
 
-                if (await _db.WithinTenancy_UserAdditionalProperty_Definitions.AnyAsync(d => d.CanonicalName == canonicalName, ct))
+                if (await _db.UserAdditionalProperty_Definitions.AnyAsync(d => d.CanonicalName == canonicalName, ct))
                 {
                     throw new InvalidOperationException($"A user additional property definition named '{canonicalName}' already exists");
                 }
@@ -122,14 +122,14 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
                 Dictionary<string, string> normalisedAliases = NormaliseAliases(aliases);
                 await EnsureAliasesAvailableAsync(normalisedAliases.Keys, null, ct);
 
-                int nextSortOrder = (await _db.WithinTenancy_UserAdditionalProperty_Definitions
+                int nextSortOrder = (await _db.UserAdditionalProperty_Definitions
                     .MaxAsync(d => (int?)d.SortOrder, ct) ?? -1) + 1;
 
                 DateTime now = DateTime.UtcNow;
 
                 UserAdditionalPropertyDefinitionEntityModel definition = new()
                 {
-                    Id = UUIDUtilities.GenerateV5(DatabaseObjectTypeEnum.WithinTenancy_User_AdditionalProperty_Definition),
+                    Id = UUIDUtilities.GenerateV5(DatabaseObjectTypeEnum.User_AdditionalProperty_Definition),
                     CanonicalName = canonicalName,
                     Description = string.IsNullOrWhiteSpace(description) ? null : description.Trim(),
                     DataType = dataType,
@@ -150,7 +150,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
                     definition.Aliases.Add(NewAlias(definition.Id, alias, normalisedAlias, actorUserId, now));
                 }
 
-                _db.WithinTenancy_UserAdditionalProperty_Definitions.Add(definition);
+                _db.UserAdditionalProperty_Definitions.Add(definition);
 
                 int linked = await LinkUnlinkedPropertiesAsync(definition.Id, normalisedAliases.Keys.ToHashSet(), actorUserId, now, ct);
 
@@ -184,7 +184,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
         {
             try
             {
-                UserAdditionalPropertyDefinitionEntityModel definition = await _db.WithinTenancy_UserAdditionalProperty_Definitions
+                UserAdditionalPropertyDefinitionEntityModel definition = await _db.UserAdditionalProperty_Definitions
                     .FirstOrDefaultAsync(d => d.Id == definitionId, ct)
                     ?? throw new KeyNotFoundException($"User additional property definition {definitionId} not found");
 
@@ -198,7 +198,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
 
                 if (
                     definition.CanonicalName != canonicalName
-                    && await _db.WithinTenancy_UserAdditionalProperty_Definitions.AnyAsync(d => d.Id != definitionId && d.CanonicalName == canonicalName, ct)
+                    && await _db.UserAdditionalProperty_Definitions.AnyAsync(d => d.Id != definitionId && d.CanonicalName == canonicalName, ct)
                 )
                 {
                     throw new InvalidOperationException($"A user additional property definition named '{canonicalName}' already exists");
@@ -233,7 +233,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
                     throw new ArgumentException("The definition ordering contains duplicate ids", nameof(orderedDefinitionIds));
                 }
 
-                List<UserAdditionalPropertyDefinitionEntityModel> definitions = await _db.WithinTenancy_UserAdditionalProperty_Definitions.ToListAsync(ct);
+                List<UserAdditionalPropertyDefinitionEntityModel> definitions = await _db.UserAdditionalProperty_Definitions.ToListAsync(ct);
 
                 if (definitions.Count != orderedDefinitionIds.Count || definitions.Any(d => !orderedDefinitionIds.Contains(d.Id)))
                 {
@@ -271,7 +271,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
         {
             try
             {
-                UserAdditionalPropertyDefinitionEntityModel definition = await _db.WithinTenancy_UserAdditionalProperty_Definitions
+                UserAdditionalPropertyDefinitionEntityModel definition = await _db.UserAdditionalProperty_Definitions
                     .Include(d => d.Translations)
                     .Include(d => d.Aliases)
                     .FirstOrDefaultAsync(d => d.Id == definitionId, ct)
@@ -283,7 +283,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
                 }
 
                 DateTime now = DateTime.UtcNow;
-                List<UserAdditionalPropertyEntityModel> properties = await _db.WithinTenancy_UserAdditionalProperties
+                List<UserAdditionalPropertyEntityModel> properties = await _db.UserAdditionalProperties
                     .Where(p => p.DefinitionId == definitionId)
                     .ToListAsync(ct);
 
@@ -294,7 +294,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
                     property.LastUpdatedByUserId = actorUserId;
                 }
 
-                _db.WithinTenancy_UserAdditionalProperty_Definitions.Remove(definition);
+                _db.UserAdditionalProperty_Definitions.Remove(definition);
                 await _db.SaveChangesAsync(ct);
 
                 _logger.LogInformation(
@@ -327,20 +327,20 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
                     throw new ArgumentException("A translation is required", nameof(translation));
                 }
 
-                UserAdditionalPropertyDefinitionEntityModel definition = await _db.WithinTenancy_UserAdditionalProperty_Definitions
+                UserAdditionalPropertyDefinitionEntityModel definition = await _db.UserAdditionalProperty_Definitions
                     .FirstOrDefaultAsync(d => d.Id == definitionId, ct)
                     ?? throw new KeyNotFoundException($"User additional property definition {definitionId} not found");
 
                 DateTime now = DateTime.UtcNow;
 
-                UserAdditionalPropertyDefinitionTranslationEntityModel existing = await _db.WithinTenancy_UserAdditionalProperty_Definition_Translations
+                UserAdditionalPropertyDefinitionTranslationEntityModel existing = await _db.UserAdditionalProperty_Definition_Translations
                     .FirstOrDefaultAsync(t => t.UserAdditionalPropertyDefinitionId == definitionId && t.LanguageCode == languageCode, ct);
 
                 if (existing == null)
                 {
-                    _db.WithinTenancy_UserAdditionalProperty_Definition_Translations.Add(new UserAdditionalPropertyDefinitionTranslationEntityModel
+                    _db.UserAdditionalProperty_Definition_Translations.Add(new UserAdditionalPropertyDefinitionTranslationEntityModel
                     {
-                        Id = UUIDUtilities.GenerateV5(DatabaseObjectTypeEnum.WithinTenancy_User_AdditionalProperty_Definition_Translation),
+                        Id = UUIDUtilities.GenerateV5(DatabaseObjectTypeEnum.User_AdditionalProperty_Definition_Translation),
                         UserAdditionalPropertyDefinitionId = definitionId,
                         LanguageCode = languageCode,
                         Translation = translation,
@@ -378,15 +378,15 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
         {
             try
             {
-                UserAdditionalPropertyDefinitionEntityModel definition = await _db.WithinTenancy_UserAdditionalProperty_Definitions
+                UserAdditionalPropertyDefinitionEntityModel definition = await _db.UserAdditionalProperty_Definitions
                     .FirstOrDefaultAsync(d => d.Id == definitionId, ct)
                     ?? throw new KeyNotFoundException($"User additional property definition {definitionId} not found");
 
-                UserAdditionalPropertyDefinitionTranslationEntityModel translation = await _db.WithinTenancy_UserAdditionalProperty_Definition_Translations
+                UserAdditionalPropertyDefinitionTranslationEntityModel translation = await _db.UserAdditionalProperty_Definition_Translations
                     .FirstOrDefaultAsync(t => t.UserAdditionalPropertyDefinitionId == definitionId && t.LanguageCode == languageCode, ct)
                     ?? throw new KeyNotFoundException($"No {languageCode} translation for user additional property definition {definitionId}");
 
-                _db.WithinTenancy_UserAdditionalProperty_Definition_Translations.Remove(translation);
+                _db.UserAdditionalProperty_Definition_Translations.Remove(translation);
 
                 definition.LastUpdatedAtUtc = DateTime.UtcNow;
                 definition.LastUpdatedByUserId = actorUserId;
@@ -417,11 +417,11 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
                 if (normalisedAlias.Length == 0)
                     throw new ArgumentException("The alias must contain at least one letter or digit", nameof(alias));
 
-                UserAdditionalPropertyDefinitionEntityModel definition = await _db.WithinTenancy_UserAdditionalProperty_Definitions
+                UserAdditionalPropertyDefinitionEntityModel definition = await _db.UserAdditionalProperty_Definitions
                     .FirstOrDefaultAsync(d => d.Id == definitionId, ct)
                     ?? throw new KeyNotFoundException($"User additional property definition {definitionId} not found");
 
-                UserAdditionalPropertyDefinitionAliasEntityModel existing = await _db.WithinTenancy_UserAdditionalProperty_Definition_Aliases
+                UserAdditionalPropertyDefinitionAliasEntityModel existing = await _db.UserAdditionalProperty_Definition_Aliases
                     .Include(a => a.UserAdditionalPropertyDefinition)
                     .FirstOrDefaultAsync(a => a.NormalisedAlias == normalisedAlias, ct);
 
@@ -438,7 +438,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
                 else
                 {
                     result = NewAlias(definitionId, alias, normalisedAlias, actorUserId, now);
-                    _db.WithinTenancy_UserAdditionalProperty_Definition_Aliases.Add(result);
+                    _db.UserAdditionalProperty_Definition_Aliases.Add(result);
 
                     definition.LastUpdatedAtUtc = now;
                     definition.LastUpdatedByUserId = actorUserId;
@@ -464,15 +464,15 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
         {
             try
             {
-                UserAdditionalPropertyDefinitionEntityModel definition = await _db.WithinTenancy_UserAdditionalProperty_Definitions
+                UserAdditionalPropertyDefinitionEntityModel definition = await _db.UserAdditionalProperty_Definitions
                     .FirstOrDefaultAsync(d => d.Id == definitionId, ct)
                     ?? throw new KeyNotFoundException($"User additional property definition {definitionId} not found");
 
-                UserAdditionalPropertyDefinitionAliasEntityModel alias = await _db.WithinTenancy_UserAdditionalProperty_Definition_Aliases
+                UserAdditionalPropertyDefinitionAliasEntityModel alias = await _db.UserAdditionalProperty_Definition_Aliases
                     .FirstOrDefaultAsync(a => a.Id == aliasId && a.UserAdditionalPropertyDefinitionId == definitionId, ct)
                     ?? throw new KeyNotFoundException($"Alias {aliasId} not found on user additional property definition {definitionId}");
 
-                _db.WithinTenancy_UserAdditionalProperty_Definition_Aliases.Remove(alias);
+                _db.UserAdditionalProperty_Definition_Aliases.Remove(alias);
 
                 definition.LastUpdatedAtUtc = DateTime.UtcNow;
                 definition.LastUpdatedByUserId = actorUserId;
@@ -496,12 +496,12 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
                 AdditionalPropertyDefinitionSeedResultDTO result = new();
                 DateTime now = DateTime.UtcNow;
 
-                List<UserAdditionalPropertyDefinitionEntityModel> definitions = await _db.WithinTenancy_UserAdditionalProperty_Definitions
+                List<UserAdditionalPropertyDefinitionEntityModel> definitions = await _db.UserAdditionalProperty_Definitions
                     .Include(d => d.Aliases)
                     .ToListAsync(ct);
                 Dictionary<string, UserAdditionalPropertyDefinitionEntityModel> definitionsByName = definitions.ToDictionary(d => d.CanonicalName);
 
-                Dictionary<string, Guid> takenAliases = await _db.WithinTenancy_UserAdditionalProperty_Definition_Aliases
+                Dictionary<string, Guid> takenAliases = await _db.UserAdditionalProperty_Definition_Aliases
                     .ToDictionaryAsync(a => a.NormalisedAlias, a => a.UserAdditionalPropertyDefinitionId, ct);
 
                 int nextSortOrder = definitions.Count == 0 ? 0 : definitions.Max(d => d.SortOrder) + 1;
@@ -513,7 +513,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
                     {
                         definition = new UserAdditionalPropertyDefinitionEntityModel
                         {
-                            Id = UUIDUtilities.GenerateV5(DatabaseObjectTypeEnum.WithinTenancy_User_AdditionalProperty_Definition),
+                            Id = UUIDUtilities.GenerateV5(DatabaseObjectTypeEnum.User_AdditionalProperty_Definition),
                             CanonicalName = entry.CanonicalName,
                             Description = entry.Description,
                             DataType = entry.DataType,
@@ -527,7 +527,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
                         };
                         AddTranslations(definition, entry.Translations, actorUserId, now);
 
-                        _db.WithinTenancy_UserAdditionalProperty_Definitions.Add(definition);
+                        _db.UserAdditionalProperty_Definitions.Add(definition);
                         definitionsByName[entry.CanonicalName] = definition;
                         result.CreatedDefinitionCount++;
                     }
@@ -607,7 +607,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
                     throw new ArgumentException("A data enumerator is required for the DataEnumeratorValue data type", nameof(dataEnumeratorId));
                 }
 
-                if (!await _db.WithinTenancy_DataEnumerator_Enumerators.AnyAsync(e => e.Id == dataEnumeratorId && e.Scope == DataEnumeratorScopeEnum.AdditionalProperty, ct))
+                if (!await _db.DataEnumerator_Enumerators.AnyAsync(e => e.Id == dataEnumeratorId && e.Scope == DataEnumeratorScopeEnum.AdditionalProperty, ct))
                 {
                     throw new ArgumentException($"Data enumerator {dataEnumeratorId} not found, or isn't an additional property enumerator", nameof(dataEnumeratorId));
                 }
@@ -617,7 +617,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
                 throw new ArgumentException("A data enumerator can only be set for the DataEnumeratorValue data type", nameof(dataEnumeratorId));
             }
 
-            if (defaultGroupId != null && !await _db.WithinTenancy_UserAdditionalProperty_Groups.AnyAsync(g => g.Id == defaultGroupId, ct))
+            if (defaultGroupId != null && !await _db.UserAdditionalProperty_Groups.AnyAsync(g => g.Id == defaultGroupId, ct))
             {
                 throw new ArgumentException($"User additional property group {defaultGroupId} not found", nameof(defaultGroupId));
             }
@@ -649,7 +649,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
             List<string> keys = normalisedAliases.ToList();
             if (keys.Count == 0) return;
 
-            UserAdditionalPropertyDefinitionAliasEntityModel clash = await _db.WithinTenancy_UserAdditionalProperty_Definition_Aliases
+            UserAdditionalPropertyDefinitionAliasEntityModel clash = await _db.UserAdditionalProperty_Definition_Aliases
                 .Include(a => a.UserAdditionalPropertyDefinition)
                 .Where(a => keys.Contains(a.NormalisedAlias) && a.UserAdditionalPropertyDefinitionId != exceptDefinitionId)
                 .FirstOrDefaultAsync(ct);
@@ -682,7 +682,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
 
                 definition.Translations.Add(new UserAdditionalPropertyDefinitionTranslationEntityModel
                 {
-                    Id = UUIDUtilities.GenerateV5(DatabaseObjectTypeEnum.WithinTenancy_User_AdditionalProperty_Definition_Translation),
+                    Id = UUIDUtilities.GenerateV5(DatabaseObjectTypeEnum.User_AdditionalProperty_Definition_Translation),
                     UserAdditionalPropertyDefinitionId = definition.Id,
                     LanguageCode = languageCode.Trim(),
                     Translation = translation.Trim(),
@@ -702,7 +702,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
         {
             return new UserAdditionalPropertyDefinitionAliasEntityModel
             {
-                Id = UUIDUtilities.GenerateV5(DatabaseObjectTypeEnum.WithinTenancy_User_AdditionalProperty_Definition_Alias),
+                Id = UUIDUtilities.GenerateV5(DatabaseObjectTypeEnum.User_AdditionalProperty_Definition_Alias),
                 UserAdditionalPropertyDefinitionId = definitionId,
                 Alias = alias,
                 NormalisedAlias = normalisedAlias,
@@ -724,7 +724,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
                 return 0;
             }
 
-            var candidates = await _db.WithinTenancy_UserAdditionalProperties
+            var candidates = await _db.UserAdditionalProperties
                 .Where(p => p.DefinitionId == null)
                 .Select(p => new { p.Id, p.DisplayName })
                 .ToListAsync(ct);
@@ -736,7 +736,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
 
             foreach (Guid[] batch in matchingIds.Chunk(LinkBatchSize))
             {
-                List<UserAdditionalPropertyEntityModel> properties = await _db.WithinTenancy_UserAdditionalProperties
+                List<UserAdditionalPropertyEntityModel> properties = await _db.UserAdditionalProperties
                     .Where(p => batch.Contains(p.Id))
                     .ToListAsync(ct);
 

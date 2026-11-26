@@ -9,7 +9,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Enumerators
     public enum DataMergeRejectionReasonEnum
     {
         /// <summary>
-        /// One or both records do not exist within the current Tenant.
+        /// One or both records do not exist.
         /// </summary>
         [JsonPropertyName("NotFound")]
         NotFound,

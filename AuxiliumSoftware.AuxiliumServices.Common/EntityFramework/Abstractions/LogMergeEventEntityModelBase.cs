@@ -5,7 +5,7 @@ using System.Text;
 
 namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.Abstractions
 {
-    public abstract class LogMergeEventEntityModelBase : TenantScopedEntityModelBase
+    public abstract class LogMergeEventEntityModelBase : EntityModelBase
     {
         public required Guid CreatedByUserId { get; set; }
 

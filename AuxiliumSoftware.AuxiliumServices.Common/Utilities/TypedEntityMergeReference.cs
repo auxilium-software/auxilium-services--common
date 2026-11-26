@@ -16,7 +16,7 @@ using System.Text.Json.Serialization;
 namespace AuxiliumSoftware.AuxiliumServices.Common.Utilities
 {
     internal sealed class TypedEntityMergeReference<TEntity, TKey> : IEntityMergeReference
-        where TEntity : TenantScopedEntityModelBase
+        where TEntity : EntityModelBase
     {
         private static readonly JsonSerializerOptions SnapshotJsonOptions = new()
         {

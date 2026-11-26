@@ -7,7 +7,7 @@ using System.Text;
 
 namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
 {
-    public class PasswordSetTokenEntityModel : TenantScopedEntityModelBase
+    public class PasswordSetTokenEntityModel : EntityModelBase
     {
         /// <summary>
         /// The unique identifier of the User who issued the Password Set Token.
