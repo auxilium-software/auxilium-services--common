@@ -9,7 +9,7 @@ using System.Text;
 
 namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
 {
-    public class LogCaseModificationEventEntityModel : TenantScopedEntityModelBase
+    public class LogCaseModificationEventEntityModel : EntityModelBase
     {
         /// <summary>
         /// The unique identifier of the user who created the Additional Property.

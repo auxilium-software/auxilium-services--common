@@ -6,7 +6,7 @@ using System.Text;
 
 namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
 {
-    public class LogCaseMergeEventRowChangeEntityModel : TenantScopedEntityModelBase
+    public class LogCaseMergeEventRowChangeEntityModel : EntityModelBase
     {
         public required Guid CaseMergeEventId { get; set; }
 

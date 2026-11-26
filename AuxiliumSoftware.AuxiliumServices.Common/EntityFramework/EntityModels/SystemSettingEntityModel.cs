@@ -7,7 +7,7 @@ using System.Text;
 
 namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
 {
-    public class SystemSettingEntityModel : TenantScopedEntityModelBase
+    public class SystemSettingEntityModel : EntityModelBase
     {
         /// <summary>
         /// The unique identifier of the user who created the Configuration Value.

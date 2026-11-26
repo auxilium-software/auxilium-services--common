@@ -18,7 +18,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Factories
             DbSet<TEntity>> set,
             Expression<Func<TEntity, Guid>> reference,
             Expression<Func<TEntity, Guid>>? collidesOn = null
-        ) where TEntity : TenantScopedEntityModelBase
+        ) where TEntity : EntityModelBase
             => new TypedEntityMergeReference<TEntity, Guid>(set, reference, DataMergeBehaviourEnum.Repoint, collidesOn);
 
         public static IEntityMergeReference Repoint<TEntity>(
@@ -26,7 +26,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Factories
             DbSet<TEntity>> set,
             Expression<Func<TEntity, Guid?>> reference,
             Expression<Func<TEntity, Guid>>? collidesOn = null
-        ) where TEntity : TenantScopedEntityModelBase
+        ) where TEntity : EntityModelBase
             => new TypedEntityMergeReference<TEntity, Guid?>(set, reference, DataMergeBehaviourEnum.Repoint, collidesOn);
 
 
@@ -37,14 +37,14 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Factories
             Func<AuxiliumDbContext,
             DbSet<TEntity>> set,
             Expression<Func<TEntity, Guid>> reference
-        ) where TEntity : TenantScopedEntityModelBase
+        ) where TEntity : EntityModelBase
             => new TypedEntityMergeReference<TEntity, Guid>(set, reference, DataMergeBehaviourEnum.Preserve, null);
 
         public static IEntityMergeReference Preserve<TEntity>(
             Func<AuxiliumDbContext,
             DbSet<TEntity>> set,
             Expression<Func<TEntity, Guid?>> reference
-        ) where TEntity : TenantScopedEntityModelBase
+        ) where TEntity : EntityModelBase
             => new TypedEntityMergeReference<TEntity, Guid?>(set, reference, DataMergeBehaviourEnum.Preserve, null);
 
 
@@ -55,14 +55,14 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Factories
             Func<AuxiliumDbContext,
             DbSet<TEntity>> set,
             Expression<Func<TEntity, Guid>> reference
-        ) where TEntity : TenantScopedEntityModelBase
+        ) where TEntity : EntityModelBase
             => new TypedEntityMergeReference<TEntity, Guid>(set, reference, DataMergeBehaviourEnum.Discard, null);
 
         public static IEntityMergeReference Discard<TEntity>(
             Func<AuxiliumDbContext,
             DbSet<TEntity>> set,
             Expression<Func<TEntity, Guid?>> reference
-        ) where TEntity : TenantScopedEntityModelBase
+        ) where TEntity : EntityModelBase
             => new TypedEntityMergeReference<TEntity, Guid?>(set, reference, DataMergeBehaviourEnum.Discard, null);
     }
 }

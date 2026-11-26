@@ -6,152 +6,144 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Enumerators
     public enum DatabaseObjectTypeEnum
     {
         // ####################################################################################################
-        // Global -> Tenant
+        // Calendar
         // ####################################################################################################
-        [JsonPropertyName("Global.Tenant.Tenant")]
-        Global_Tenant_Tenant,
-
-
-
-        // ####################################################################################################
-        // Within Tenancy -> Calendar
-        // ####################################################################################################
-        [JsonPropertyName("WithinTenancy.Calendar.Event")]
-        WithinTenancy_Calendar_Event,
-        [JsonPropertyName("WithinTenancy.Calendar.EventInvite")]
-        WithinTenancy_Calendar_EventInvite,
+        [JsonPropertyName("Calendar.Event")]
+        Calendar_Event,
+        [JsonPropertyName("Calendar.EventInvite")]
+        Calendar_EventInvite,
 
 
 
         // ####################################################################################################
-        // Within Tenancy -> Case
+        // Case
         // ####################################################################################################
-        [JsonPropertyName("WithinTenancy.Case.Case")]
-        WithinTenancy_Case,
-        [JsonPropertyName("WithinTenancy.Case.AdditionalProperty")]
-        WithinTenancy_Case_AdditionalProperty,
-        [JsonPropertyName("WithinTenancy.Case.AdditionalProperty.Group")]
-        WithinTenancy_Case_AdditionalProperty_Group,
-        [JsonPropertyName("WithinTenancy.Case.AdditionalProperty.Translation")]
-        WithinTenancy_Case_AdditionalProperty_Group_Translation,
-        [JsonPropertyName("WithinTenancy.Case.AdditionalProperty.Definition")]
-        WithinTenancy_Case_AdditionalProperty_Definition,
-        [JsonPropertyName("WithinTenancy.Case.AdditionalProperty.Definition.Translation")]
-        WithinTenancy_Case_AdditionalProperty_Definition_Translation,
-        [JsonPropertyName("WithinTenancy.Case.AdditionalProperty.Definition.Alias")]
-        WithinTenancy_Case_AdditionalProperty_Definition_Alias,
-        [JsonPropertyName("WithinTenancy.Case.Client")]
-        WithinTenancy_Case_Client,
-        [JsonPropertyName("WithinTenancy.Case.File")]
-        WithinTenancy_Case_File,
-        [JsonPropertyName("WithinTenancy.Case.Message")]
-        WithinTenancy_Case_Message,
-        [JsonPropertyName("WithinTenancy.Case.TimelineEntry")]
-        WithinTenancy_Case_TimelineEntry,
-        [JsonPropertyName("WithinTenancy.Case.Todo")]
-        WithinTenancy_Case_Todo,
-        [JsonPropertyName("WithinTenancy.Case.Worker")]
-        WithinTenancy_Case_Worker,
-
-
-
-        // ####################################################################################################
-        // Within Tenancy -> Enumerator
-        // ####################################################################################################
-        [JsonPropertyName("WithinTenancy.Enumerator.Enumerator")]
-        WithinTenancy_Enumerator,
-        [JsonPropertyName("WithinTenancy.Enumerator.Translation")]
-        WithinTenancy_Enumerator_Translation,
-        [JsonPropertyName("WithinTenancy.Enumerator.Value")]
-        WithinTenancy_Enumerator_Value,
-        [JsonPropertyName("WithinTenancy.Enumerator.ValueTranslation")]
-        WithinTenancy_Enumerator_ValueTranslation,
+        [JsonPropertyName("Case.Case")]
+        Case,
+        [JsonPropertyName("Case.AdditionalProperty")]
+        Case_AdditionalProperty,
+        [JsonPropertyName("Case.AdditionalProperty.Group")]
+        Case_AdditionalProperty_Group,
+        [JsonPropertyName("Case.AdditionalProperty.Translation")]
+        Case_AdditionalProperty_Group_Translation,
+        [JsonPropertyName("Case.AdditionalProperty.Definition")]
+        Case_AdditionalProperty_Definition,
+        [JsonPropertyName("Case.AdditionalProperty.Definition.Translation")]
+        Case_AdditionalProperty_Definition_Translation,
+        [JsonPropertyName("Case.AdditionalProperty.Definition.Alias")]
+        Case_AdditionalProperty_Definition_Alias,
+        [JsonPropertyName("Case.Client")]
+        Case_Client,
+        [JsonPropertyName("Case.File")]
+        Case_File,
+        [JsonPropertyName("Case.Message")]
+        Case_Message,
+        [JsonPropertyName("Case.TimelineEntry")]
+        Case_TimelineEntry,
+        [JsonPropertyName("Case.Todo")]
+        Case_Todo,
+        [JsonPropertyName("Case.Worker")]
+        Case_Worker,
 
 
 
         // ####################################################################################################
-        // Within Tenancy -> Log
+        // Enumerator
         // ####################################################################################################
-        [JsonPropertyName("WithinTenancy.Log.CaseMessageReadBy.EventEntry")]
-        WithinTenancy_Log_CaseMessageReadBy_EventEntry,
-        [JsonPropertyName("WithinTenancy.Log.CaseModification.EventEntry")]
-        WithinTenancy_Log_CaseModification_EventEntry,
-
-        [JsonPropertyName("WithinTenancy.Log.CaseMerge.RowChange.EventEntry")]
-        WithinTenancy_Log_CaseMerge_RowChange_EventEntry,
-        [JsonPropertyName("WithinTenancy.Log.CaseMerge.EventEntry")]
-        WithinTenancy_Log_CaseMerge_EventEntry,
-
-        [JsonPropertyName("WithinTenancy.Log.UserMerge.RowChange.EventEntry")]
-        WithinTenancy_Log_UserMerge_RowChange_EventEntry,
-        [JsonPropertyName("WithinTenancy.Log.UserMerge.EventEntry")]
-        WithinTenancy_Log_UserMerge_EventEntry,
-
-        [JsonPropertyName("WithinTenancy.Log.LoginAttempt.EventEntry")]
-        WithinTenancy_Log_LoginAttempt_EventEntry,
-
-        [JsonPropertyName("WithinTenancy.Log.SystemMessageQueue.EmailSent.EventEntry")]
-        WithinTenancy_Log_SystemMessageQueue_EmailSent_EventEntry,
-        [JsonPropertyName("WithinTenancy.Log.SystemMessageQueue.FailedAction.EventEntry")]
-        WithinTenancy_Log_SystemMessageQueue_FailedAction_EventEntry,
-
-        [JsonPropertyName("WithinTenancy.Log.SystemBulletin.EntryDismissal.EventEntry")]
-        WithinTenancy_Log_SystemBulletin_EntryDismissal_EventEntry,
-        [JsonPropertyName("WithinTenancy.Log.SystemBulletin.EntryView.EventEntry")]
-        WithinTenancy_Log_SystemBulletin_EntryView_EventEntry,
-
-        [JsonPropertyName("WithinTenancy.Log.UserModification.EventEntry")]
-        WithinTenancy_Log_UserModification_EventEntry,
+        [JsonPropertyName("Enumerator.Enumerator")]
+        Enumerator,
+        [JsonPropertyName("Enumerator.Translation")]
+        Enumerator_Translation,
+        [JsonPropertyName("Enumerator.Value")]
+        Enumerator_Value,
+        [JsonPropertyName("Enumerator.ValueTranslation")]
+        Enumerator_ValueTranslation,
 
 
 
         // ####################################################################################################
-        // Within Tenancy -> System
+        // Log
         // ####################################################################################################
-        [JsonPropertyName("WithinTenancy.System.BulletinEntry")]
-        WithinTenancy_System_BulletinEntry,
-        [JsonPropertyName("WithinTenancy.System.MetricEntry")]
-        WithinTenancy_System_MetricEntry,
-        [JsonPropertyName("WithinTenancy.System.SettingEntry")]
-        WithinTenancy_System_SettingEntry,
-        [JsonPropertyName("WithinTenancy.System.Waf.IpBlacklistEntry")]
-        WithinTenancy_System_Waf_IpBlacklistEntry,
-        [JsonPropertyName("WithinTenancy.System.Waf.IpWhitelistEntry")]
-        WithinTenancy_System_Waf_IpWhitelistEntry,
-        [JsonPropertyName("WithinTenancy.System.Waf.UserBlacklistEntry")]
-        WithinTenancy_System_Waf_UserBlacklistEntry,
-        [JsonPropertyName("WithinTenancy.System.Waf.UserWhitelistEntry")]
-        WithinTenancy_System_Waf_UserWhitelistEntry,
+        [JsonPropertyName("Log.CaseMessageReadBy.EventEntry")]
+        Log_CaseMessageReadBy_EventEntry,
+        [JsonPropertyName("Log.CaseModification.EventEntry")]
+        Log_CaseModification_EventEntry,
+
+        [JsonPropertyName("Log.CaseMerge.RowChange.EventEntry")]
+        Log_CaseMerge_RowChange_EventEntry,
+        [JsonPropertyName("Log.CaseMerge.EventEntry")]
+        Log_CaseMerge_EventEntry,
+
+        [JsonPropertyName("Log.UserMerge.RowChange.EventEntry")]
+        Log_UserMerge_RowChange_EventEntry,
+        [JsonPropertyName("Log.UserMerge.EventEntry")]
+        Log_UserMerge_EventEntry,
+
+        [JsonPropertyName("Log.LoginAttempt.EventEntry")]
+        Log_LoginAttempt_EventEntry,
+
+        [JsonPropertyName("Log.SystemMessageQueue.EmailSent.EventEntry")]
+        Log_SystemMessageQueue_EmailSent_EventEntry,
+        [JsonPropertyName("Log.SystemMessageQueue.FailedAction.EventEntry")]
+        Log_SystemMessageQueue_FailedAction_EventEntry,
+
+        [JsonPropertyName("Log.SystemBulletin.EntryDismissal.EventEntry")]
+        Log_SystemBulletin_EntryDismissal_EventEntry,
+        [JsonPropertyName("Log.SystemBulletin.EntryView.EventEntry")]
+        Log_SystemBulletin_EntryView_EventEntry,
+
+        [JsonPropertyName("Log.UserModification.EventEntry")]
+        Log_UserModification_EventEntry,
 
 
 
         // ####################################################################################################
-        // Within Tenancy -> User
+        // System
         // ####################################################################################################
-        [JsonPropertyName("WithinTenancy.User.User")]
-        WithinTenancy_User,
-        [JsonPropertyName("WithinTenancy.User.AdditionalProperty")]
-        WithinTenancy_User_AdditionalProperty,
-        [JsonPropertyName("WithinTenancy.User.AdditionalProperty.Group")]
-        WithinTenancy_User_AdditionalProperty_Group,
-        [JsonPropertyName("WithinTenancy.User.AdditionalProperty.Translation")]
-        WithinTenancy_User_AdditionalProperty_Group_Translation,
-        [JsonPropertyName("WithinTenancy.User.AdditionalProperty.Definition")]
-        WithinTenancy_User_AdditionalProperty_Definition,
-        [JsonPropertyName("WithinTenancy.User.AdditionalProperty.Definition.Translation")]
-        WithinTenancy_User_AdditionalProperty_Definition_Translation,
-        [JsonPropertyName("WithinTenancy.User.AdditionalProperty.Definition.Alias")]
-        WithinTenancy_User_AdditionalProperty_Definition_Alias,
-        [JsonPropertyName("WithinTenancy.User.File")]
-        WithinTenancy_User_File,
-        [JsonPropertyName("WithinTenancy.User.PasswordSetToken")]
-        WithinTenancy_User_PasswordSetToken,
-        [JsonPropertyName("WithinTenancy.User.RefreshToken")]
-        WithinTenancy_User_RefreshToken,
-        [JsonPropertyName("WithinTenancy.User.TotpRecoveryCode")]
-        WithinTenancy_User_TotpRecoveryCode,
-        [JsonPropertyName("WithinTenancy.User.WemwbsAssessment")]
-        WithinTenancy_User_WemwbsAssessment,
+        [JsonPropertyName("System.BulletinEntry")]
+        System_BulletinEntry,
+        [JsonPropertyName("System.MetricEntry")]
+        System_MetricEntry,
+        [JsonPropertyName("System.SettingEntry")]
+        System_SettingEntry,
+        [JsonPropertyName("System.Waf.IpBlacklistEntry")]
+        System_Waf_IpBlacklistEntry,
+        [JsonPropertyName("System.Waf.IpWhitelistEntry")]
+        System_Waf_IpWhitelistEntry,
+        [JsonPropertyName("System.Waf.UserBlacklistEntry")]
+        System_Waf_UserBlacklistEntry,
+        [JsonPropertyName("System.Waf.UserWhitelistEntry")]
+        System_Waf_UserWhitelistEntry,
+
+
+
+        // ####################################################################################################
+        // User
+        // ####################################################################################################
+        [JsonPropertyName("User.User")]
+        User,
+        [JsonPropertyName("User.AdditionalProperty")]
+        User_AdditionalProperty,
+        [JsonPropertyName("User.AdditionalProperty.Group")]
+        User_AdditionalProperty_Group,
+        [JsonPropertyName("User.AdditionalProperty.Translation")]
+        User_AdditionalProperty_Group_Translation,
+        [JsonPropertyName("User.AdditionalProperty.Definition")]
+        User_AdditionalProperty_Definition,
+        [JsonPropertyName("User.AdditionalProperty.Definition.Translation")]
+        User_AdditionalProperty_Definition_Translation,
+        [JsonPropertyName("User.AdditionalProperty.Definition.Alias")]
+        User_AdditionalProperty_Definition_Alias,
+        [JsonPropertyName("User.File")]
+        User_File,
+        [JsonPropertyName("User.PasswordSetToken")]
+        User_PasswordSetToken,
+        [JsonPropertyName("User.RefreshToken")]
+        User_RefreshToken,
+        [JsonPropertyName("User.TotpRecoveryCode")]
+        User_TotpRecoveryCode,
+        [JsonPropertyName("User.WemwbsAssessment")]
+        User_WemwbsAssessment,
     }
 }
 

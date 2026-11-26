@@ -5,7 +5,7 @@ using System.Text;
 
 namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
 {
-    public class UserAdditionalPropertyGroupTranslationEntityModel : MutableTenantScopedEntityModelBase
+    public class UserAdditionalPropertyGroupTranslationEntityModel : MutableEntityModelBase
     {
         /// <summary>
         /// </summary>

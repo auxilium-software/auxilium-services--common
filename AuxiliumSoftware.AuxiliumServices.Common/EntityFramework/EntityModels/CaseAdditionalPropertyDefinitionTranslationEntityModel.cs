@@ -2,7 +2,7 @@
 
 namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
 {
-    public class CaseAdditionalPropertyDefinitionTranslationEntityModel : MutableTenantScopedEntityModelBase
+    public class CaseAdditionalPropertyDefinitionTranslationEntityModel : MutableEntityModelBase
     {
         public required Guid CaseAdditionalPropertyDefinitionId { get; set; }
 

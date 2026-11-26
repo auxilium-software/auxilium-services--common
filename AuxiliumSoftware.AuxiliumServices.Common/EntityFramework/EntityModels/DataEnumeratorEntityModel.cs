@@ -7,7 +7,7 @@ using System.Text;
 
 namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
 {
-    public class DataEnumeratorEntityModel : MutableTenantScopedEntityModelBase
+    public class DataEnumeratorEntityModel : MutableEntityModelBase
     {
         /// <summary>
         /// </summary>

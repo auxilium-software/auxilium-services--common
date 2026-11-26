@@ -7,7 +7,7 @@ using System.Text;
 
 namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
 {
-    public class CaseTimelineEntryEntityModel : MutableTenantScopedEntityModelBase
+    public class CaseTimelineEntryEntityModel : MutableEntityModelBase
     {
         /// <summary>
         /// </summary>

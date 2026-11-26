@@ -30,7 +30,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
         {
             try
             {
-                return await _db.WithinTenancy_CaseAdditionalProperty_Definitions
+                return await _db.CaseAdditionalProperty_Definitions
                     .Include(d => d.Translations)
                     .Include(d => d.Aliases)
                     .Where(d => includeInactive || d.IsActive)
@@ -49,7 +49,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
         {
             try
             {
-                return await _db.WithinTenancy_CaseAdditionalProperty_Definitions
+                return await _db.CaseAdditionalProperty_Definitions
                     .Include(d => d.Translations)
                     .Include(d => d.Aliases)
                     .FirstOrDefaultAsync(d => d.Id == definitionId, ct);
@@ -65,7 +65,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
         {
             try
             {
-                List<string> names = await _db.WithinTenancy_CaseAdditionalProperties
+                List<string> names = await _db.CaseAdditionalProperties
                     .Where(p => p.DefinitionId == null)
                     .Select(p => p.DisplayName)
                     .ToListAsync(ct);
@@ -114,7 +114,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
                 canonicalName = ValidateCanonicalName(canonicalName);
                 await ValidateReferencesAsync(dataType, dataEnumeratorId, defaultGroupId, ct);
 
-                if (await _db.WithinTenancy_CaseAdditionalProperty_Definitions.AnyAsync(d => d.CanonicalName == canonicalName, ct))
+                if (await _db.CaseAdditionalProperty_Definitions.AnyAsync(d => d.CanonicalName == canonicalName, ct))
                 {
                     throw new InvalidOperationException($"A case additional property definition named '{canonicalName}' already exists");
                 }
@@ -122,14 +122,14 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
                 Dictionary<string, string> normalisedAliases = NormaliseAliases(aliases);
                 await EnsureAliasesAvailableAsync(normalisedAliases.Keys, null, ct);
 
-                int nextSortOrder = (await _db.WithinTenancy_CaseAdditionalProperty_Definitions
+                int nextSortOrder = (await _db.CaseAdditionalProperty_Definitions
                     .MaxAsync(d => (int?)d.SortOrder, ct) ?? -1) + 1;
 
                 DateTime now = DateTime.UtcNow;
 
                 CaseAdditionalPropertyDefinitionEntityModel definition = new()
                 {
-                    Id = UUIDUtilities.GenerateV5(DatabaseObjectTypeEnum.WithinTenancy_Case_AdditionalProperty_Definition),
+                    Id = UUIDUtilities.GenerateV5(DatabaseObjectTypeEnum.Case_AdditionalProperty_Definition),
                     CanonicalName = canonicalName,
                     Description = string.IsNullOrWhiteSpace(description) ? null : description.Trim(),
                     DataType = dataType,
@@ -150,7 +150,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
                     definition.Aliases.Add(NewAlias(definition.Id, alias, normalisedAlias, actorUserId, now));
                 }
 
-                _db.WithinTenancy_CaseAdditionalProperty_Definitions.Add(definition);
+                _db.CaseAdditionalProperty_Definitions.Add(definition);
 
                 int linked = await LinkUnlinkedPropertiesAsync(definition.Id, normalisedAliases.Keys.ToHashSet(), actorUserId, now, ct);
 
@@ -184,7 +184,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
         {
             try
             {
-                CaseAdditionalPropertyDefinitionEntityModel definition = await _db.WithinTenancy_CaseAdditionalProperty_Definitions
+                CaseAdditionalPropertyDefinitionEntityModel definition = await _db.CaseAdditionalProperty_Definitions
                     .FirstOrDefaultAsync(d => d.Id == definitionId, ct)
                     ?? throw new KeyNotFoundException($"Case additional property definition {definitionId} not found");
 
@@ -198,7 +198,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
 
                 if (
                     definition.CanonicalName != canonicalName
-                    && await _db.WithinTenancy_CaseAdditionalProperty_Definitions.AnyAsync(d => d.Id != definitionId && d.CanonicalName == canonicalName, ct)
+                    && await _db.CaseAdditionalProperty_Definitions.AnyAsync(d => d.Id != definitionId && d.CanonicalName == canonicalName, ct)
                 )
                 {
                     throw new InvalidOperationException($"A case additional property definition named '{canonicalName}' already exists");
@@ -233,7 +233,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
                     throw new ArgumentException("The definition ordering contains duplicate ids", nameof(orderedDefinitionIds));
                 }
 
-                List<CaseAdditionalPropertyDefinitionEntityModel> definitions = await _db.WithinTenancy_CaseAdditionalProperty_Definitions.ToListAsync(ct);
+                List<CaseAdditionalPropertyDefinitionEntityModel> definitions = await _db.CaseAdditionalProperty_Definitions.ToListAsync(ct);
 
                 if (definitions.Count != orderedDefinitionIds.Count || definitions.Any(d => !orderedDefinitionIds.Contains(d.Id)))
                 {
@@ -271,7 +271,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
         {
             try
             {
-                CaseAdditionalPropertyDefinitionEntityModel definition = await _db.WithinTenancy_CaseAdditionalProperty_Definitions
+                CaseAdditionalPropertyDefinitionEntityModel definition = await _db.CaseAdditionalProperty_Definitions
                     .Include(d => d.Translations)
                     .Include(d => d.Aliases)
                     .FirstOrDefaultAsync(d => d.Id == definitionId, ct)
@@ -283,7 +283,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
                 }
 
                 DateTime now = DateTime.UtcNow;
-                List<CaseAdditionalPropertyEntityModel> properties = await _db.WithinTenancy_CaseAdditionalProperties
+                List<CaseAdditionalPropertyEntityModel> properties = await _db.CaseAdditionalProperties
                     .Where(p => p.DefinitionId == definitionId)
                     .ToListAsync(ct);
 
@@ -294,7 +294,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
                     property.LastUpdatedByUserId = actorUserId;
                 }
 
-                _db.WithinTenancy_CaseAdditionalProperty_Definitions.Remove(definition);
+                _db.CaseAdditionalProperty_Definitions.Remove(definition);
                 await _db.SaveChangesAsync(ct);
 
                 _logger.LogInformation(
@@ -327,20 +327,20 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
                     throw new ArgumentException("A translation is required", nameof(translation));
                 }
 
-                CaseAdditionalPropertyDefinitionEntityModel definition = await _db.WithinTenancy_CaseAdditionalProperty_Definitions
+                CaseAdditionalPropertyDefinitionEntityModel definition = await _db.CaseAdditionalProperty_Definitions
                     .FirstOrDefaultAsync(d => d.Id == definitionId, ct)
                     ?? throw new KeyNotFoundException($"Case additional property definition {definitionId} not found");
 
                 DateTime now = DateTime.UtcNow;
 
-                CaseAdditionalPropertyDefinitionTranslationEntityModel existing = await _db.WithinTenancy_CaseAdditionalProperty_Definition_Translations
+                CaseAdditionalPropertyDefinitionTranslationEntityModel existing = await _db.CaseAdditionalProperty_Definition_Translations
                     .FirstOrDefaultAsync(t => t.CaseAdditionalPropertyDefinitionId == definitionId && t.LanguageCode == languageCode, ct);
 
                 if (existing == null)
                 {
-                    _db.WithinTenancy_CaseAdditionalProperty_Definition_Translations.Add(new CaseAdditionalPropertyDefinitionTranslationEntityModel
+                    _db.CaseAdditionalProperty_Definition_Translations.Add(new CaseAdditionalPropertyDefinitionTranslationEntityModel
                     {
-                        Id = UUIDUtilities.GenerateV5(DatabaseObjectTypeEnum.WithinTenancy_Case_AdditionalProperty_Definition_Translation),
+                        Id = UUIDUtilities.GenerateV5(DatabaseObjectTypeEnum.Case_AdditionalProperty_Definition_Translation),
                         CaseAdditionalPropertyDefinitionId = definitionId,
                         LanguageCode = languageCode,
                         Translation = translation,
@@ -378,15 +378,15 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
         {
             try
             {
-                CaseAdditionalPropertyDefinitionEntityModel definition = await _db.WithinTenancy_CaseAdditionalProperty_Definitions
+                CaseAdditionalPropertyDefinitionEntityModel definition = await _db.CaseAdditionalProperty_Definitions
                     .FirstOrDefaultAsync(d => d.Id == definitionId, ct)
                     ?? throw new KeyNotFoundException($"Case additional property definition {definitionId} not found");
 
-                CaseAdditionalPropertyDefinitionTranslationEntityModel translation = await _db.WithinTenancy_CaseAdditionalProperty_Definition_Translations
+                CaseAdditionalPropertyDefinitionTranslationEntityModel translation = await _db.CaseAdditionalProperty_Definition_Translations
                     .FirstOrDefaultAsync(t => t.CaseAdditionalPropertyDefinitionId == definitionId && t.LanguageCode == languageCode, ct)
                     ?? throw new KeyNotFoundException($"No {languageCode} translation for case additional property definition {definitionId}");
 
-                _db.WithinTenancy_CaseAdditionalProperty_Definition_Translations.Remove(translation);
+                _db.CaseAdditionalProperty_Definition_Translations.Remove(translation);
 
                 definition.LastUpdatedAtUtc = DateTime.UtcNow;
                 definition.LastUpdatedByUserId = actorUserId;
@@ -419,11 +419,11 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
                     throw new ArgumentException("The alias must contain at least one letter or digit", nameof(alias));
                 }
 
-                CaseAdditionalPropertyDefinitionEntityModel definition = await _db.WithinTenancy_CaseAdditionalProperty_Definitions
+                CaseAdditionalPropertyDefinitionEntityModel definition = await _db.CaseAdditionalProperty_Definitions
                     .FirstOrDefaultAsync(d => d.Id == definitionId, ct)
                     ?? throw new KeyNotFoundException($"Case additional property definition {definitionId} not found");
 
-                CaseAdditionalPropertyDefinitionAliasEntityModel existing = await _db.WithinTenancy_CaseAdditionalProperty_Definition_Aliases
+                CaseAdditionalPropertyDefinitionAliasEntityModel existing = await _db.CaseAdditionalProperty_Definition_Aliases
                     .Include(a => a.CaseAdditionalPropertyDefinition)
                     .FirstOrDefaultAsync(a => a.NormalisedAlias == normalisedAlias, ct);
 
@@ -443,7 +443,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
                 else
                 {
                     result = NewAlias(definitionId, alias, normalisedAlias, actorUserId, now);
-                    _db.WithinTenancy_CaseAdditionalProperty_Definition_Aliases.Add(result);
+                    _db.CaseAdditionalProperty_Definition_Aliases.Add(result);
 
                     definition.LastUpdatedAtUtc = now;
                     definition.LastUpdatedByUserId = actorUserId;
@@ -471,15 +471,15 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
         {
             try
             {
-                CaseAdditionalPropertyDefinitionEntityModel definition = await _db.WithinTenancy_CaseAdditionalProperty_Definitions
+                CaseAdditionalPropertyDefinitionEntityModel definition = await _db.CaseAdditionalProperty_Definitions
                     .FirstOrDefaultAsync(d => d.Id == definitionId, ct)
                     ?? throw new KeyNotFoundException($"Case additional property definition {definitionId} not found");
 
-                CaseAdditionalPropertyDefinitionAliasEntityModel alias = await _db.WithinTenancy_CaseAdditionalProperty_Definition_Aliases
+                CaseAdditionalPropertyDefinitionAliasEntityModel alias = await _db.CaseAdditionalProperty_Definition_Aliases
                     .FirstOrDefaultAsync(a => a.Id == aliasId && a.CaseAdditionalPropertyDefinitionId == definitionId, ct)
                     ?? throw new KeyNotFoundException($"Alias {aliasId} not found on case additional property definition {definitionId}");
 
-                _db.WithinTenancy_CaseAdditionalProperty_Definition_Aliases.Remove(alias);
+                _db.CaseAdditionalProperty_Definition_Aliases.Remove(alias);
 
                 definition.LastUpdatedAtUtc = DateTime.UtcNow;
                 definition.LastUpdatedByUserId = actorUserId;
@@ -503,12 +503,12 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
                 AdditionalPropertyDefinitionSeedResultDTO result = new();
                 DateTime now = DateTime.UtcNow;
 
-                List<CaseAdditionalPropertyDefinitionEntityModel> definitions = await _db.WithinTenancy_CaseAdditionalProperty_Definitions
+                List<CaseAdditionalPropertyDefinitionEntityModel> definitions = await _db.CaseAdditionalProperty_Definitions
                     .Include(d => d.Aliases)
                     .ToListAsync(ct);
                 Dictionary<string, CaseAdditionalPropertyDefinitionEntityModel> definitionsByName = definitions.ToDictionary(d => d.CanonicalName);
 
-                Dictionary<string, Guid> takenAliases = await _db.WithinTenancy_CaseAdditionalProperty_Definition_Aliases
+                Dictionary<string, Guid> takenAliases = await _db.CaseAdditionalProperty_Definition_Aliases
                     .ToDictionaryAsync(a => a.NormalisedAlias, a => a.CaseAdditionalPropertyDefinitionId, ct);
 
                 int nextSortOrder = definitions.Count == 0 ? 0 : definitions.Max(d => d.SortOrder) + 1;
@@ -520,7 +520,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
                     {
                         definition = new CaseAdditionalPropertyDefinitionEntityModel
                         {
-                            Id = UUIDUtilities.GenerateV5(DatabaseObjectTypeEnum.WithinTenancy_Case_AdditionalProperty_Definition),
+                            Id = UUIDUtilities.GenerateV5(DatabaseObjectTypeEnum.Case_AdditionalProperty_Definition),
                             CanonicalName = entry.CanonicalName,
                             Description = entry.Description,
                             DataType = entry.DataType,
@@ -534,7 +534,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
                         };
                         AddTranslations(definition, entry.Translations, actorUserId, now);
 
-                        _db.WithinTenancy_CaseAdditionalProperty_Definitions.Add(definition);
+                        _db.CaseAdditionalProperty_Definitions.Add(definition);
                         definitionsByName[entry.CanonicalName] = definition;
                         result.CreatedDefinitionCount++;
                     }
@@ -614,7 +614,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
                     throw new ArgumentException("A data enumerator is required for the DataEnumeratorValue data type", nameof(dataEnumeratorId));
                 }
 
-                if (!await _db.WithinTenancy_DataEnumerator_Enumerators.AnyAsync(e => e.Id == dataEnumeratorId && e.Scope == DataEnumeratorScopeEnum.AdditionalProperty, ct))
+                if (!await _db.DataEnumerator_Enumerators.AnyAsync(e => e.Id == dataEnumeratorId && e.Scope == DataEnumeratorScopeEnum.AdditionalProperty, ct))
                 {
                     throw new ArgumentException($"Data enumerator {dataEnumeratorId} not found, or isn't an additional property enumerator", nameof(dataEnumeratorId));
                 }
@@ -624,7 +624,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
                 throw new ArgumentException("A data enumerator can only be set for the DataEnumeratorValue data type", nameof(dataEnumeratorId));
             }
 
-            if (defaultGroupId != null && !await _db.WithinTenancy_CaseAdditionalProperty_Groups.AnyAsync(g => g.Id == defaultGroupId, ct))
+            if (defaultGroupId != null && !await _db.CaseAdditionalProperty_Groups.AnyAsync(g => g.Id == defaultGroupId, ct))
             {
                 throw new ArgumentException($"Case additional property group {defaultGroupId} not found", nameof(defaultGroupId));
             }
@@ -656,7 +656,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
                 return;
             }
 
-            var clash = await _db.WithinTenancy_CaseAdditionalProperty_Definition_Aliases
+            var clash = await _db.CaseAdditionalProperty_Definition_Aliases
                 .Include(a => a.CaseAdditionalPropertyDefinition)
                 .Where(a => keys.Contains(a.NormalisedAlias) && a.CaseAdditionalPropertyDefinitionId != exceptDefinitionId)
                 .FirstOrDefaultAsync(ct);
@@ -689,7 +689,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
 
                 definition.Translations.Add(new CaseAdditionalPropertyDefinitionTranslationEntityModel
                 {
-                    Id = UUIDUtilities.GenerateV5(DatabaseObjectTypeEnum.WithinTenancy_Case_AdditionalProperty_Definition_Translation),
+                    Id = UUIDUtilities.GenerateV5(DatabaseObjectTypeEnum.Case_AdditionalProperty_Definition_Translation),
                     CaseAdditionalPropertyDefinitionId = definition.Id,
                     LanguageCode = languageCode.Trim(),
                     Translation = translation.Trim(),
@@ -709,7 +709,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
         {
             return new CaseAdditionalPropertyDefinitionAliasEntityModel
             {
-                Id = UUIDUtilities.GenerateV5(DatabaseObjectTypeEnum.WithinTenancy_Case_AdditionalProperty_Definition_Alias),
+                Id = UUIDUtilities.GenerateV5(DatabaseObjectTypeEnum.Case_AdditionalProperty_Definition_Alias),
                 CaseAdditionalPropertyDefinitionId = definitionId,
                 Alias = alias,
                 NormalisedAlias = normalisedAlias,
@@ -731,7 +731,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
                 return 0;
             }
 
-            var candidates = await _db.WithinTenancy_CaseAdditionalProperties
+            var candidates = await _db.CaseAdditionalProperties
                 .Where(p => p.DefinitionId == null)
                 .Select(p => new { p.Id, p.DisplayName })
                 .ToListAsync(ct);
@@ -743,7 +743,7 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.Services.Implementations
 
             foreach (Guid[] batch in matchingIds.Chunk(LinkBatchSize))
             {
-                List<CaseAdditionalPropertyEntityModel> properties = await _db.WithinTenancy_CaseAdditionalProperties
+                List<CaseAdditionalPropertyEntityModel> properties = await _db.CaseAdditionalProperties
                     .Where(p => batch.Contains(p.Id))
                     .ToListAsync(ct);
 

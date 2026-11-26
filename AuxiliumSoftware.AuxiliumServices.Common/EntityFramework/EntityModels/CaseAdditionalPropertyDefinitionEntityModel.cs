@@ -3,7 +3,7 @@ using AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.Enumerators;
 
 namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
 {
-    public class CaseAdditionalPropertyDefinitionEntityModel : MutableTenantScopedEntityModelBase
+    public class CaseAdditionalPropertyDefinitionEntityModel : MutableEntityModelBase
     {
         public required string CanonicalName { get; set; }
         public string? Description { get; set; }

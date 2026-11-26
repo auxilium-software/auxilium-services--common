@@ -7,7 +7,7 @@ using System.Text;
 
 namespace AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels
 {
-    public class SystemBulletinEntryEntityModel : TenantScopedEntityModelBase
+    public class SystemBulletinEntryEntityModel : EntityModelBase
     {
         /// <summary>
         /// The unique identifier for the User who created the System Bulletin Entry.
