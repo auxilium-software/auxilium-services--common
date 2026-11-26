@@ -39,6 +39,9 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.DataTransferObjects
         [JsonPropertyName("groupId")]
         public Guid? GroupId { get; set; }
 
+        [JsonPropertyName("definitionId")]
+        public Guid? DefinitionId { get; set; }
+
 
 
 
@@ -53,3 +56,4 @@ namespace AuxiliumSoftware.AuxiliumServices.Common.DataTransferObjects
         public string? DataEnumeratorDisplayName { get; set; }
     }
 }
+

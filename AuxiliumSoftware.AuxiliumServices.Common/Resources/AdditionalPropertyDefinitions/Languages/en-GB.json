@@ -1,0 +1,41 @@
+{
+  "user": {
+    "/additional-property/builtin/full-address": {
+      "label": "Full Address",
+      "aliases": [
+        "Address",
+        "Home Address"
+      ]
+    },
+    "/additional-property/builtin/telephone-number": {
+      "label": "Telephone Number",
+      "aliases": [
+        "Telephone",
+        "Phone",
+        "Phone Number",
+        "Tel",
+        "Tel No"
+      ]
+    },
+    "/additional-property/builtin/gender": {
+      "label": "Gender"
+    },
+    "/additional-property/builtin/date-of-birth": {
+      "label": "Date of Birth",
+      "aliases": [
+        "DoB",
+        "Birth Date",
+        "Birthday"
+      ]
+    },
+    "/additional-property/builtin/referral-source": {
+      "label": "How did you find out about our service?",
+      "aliases": [
+        "How did you find out about us?",
+        "How did you hear about us?",
+        "Referral Source"
+      ]
+    }
+  },
+  "case": {}
+}

@@ -7,7 +7,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     
-    <Version>3.1.0.0-alpha2611252250</Version>
+    <Version>3.1.0.0-alpha2611261356</Version>
     <Company>Auxilium Software</Company>
     <Product>AuxiliumSoftware.AuxiliumServices.Common</Product>
     <Copyright>Copyright © 2026</Copyright>
@@ -63,6 +63,19 @@
 
     <PackageReference Include="Otp.NET" />
     <PackageReference Include="Cronos" />
+  </ItemGroup>
+
+
+  <ItemGroup>
+    <None Update="Resources\AdditionalPropertyDefinitions\definitions.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Resources\AdditionalPropertyDefinitions\Languages\cy-GB.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Resources\AdditionalPropertyDefinitions\Languages\en-GB.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>

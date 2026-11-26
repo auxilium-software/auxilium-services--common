@@ -3,6 +3,7 @@ using AuxiliumSoftware.AuxiliumServices.Common.EntityFramework;
 using AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.EntityModels;
 using AuxiliumSoftware.AuxiliumServices.Common.EntityFramework.Enumerators;
 using AuxiliumSoftware.AuxiliumServices.Common.Enumerators;
+using AuxiliumSoftware.AuxiliumServices.Common.Extensions;
 using AuxiliumSoftware.AuxiliumServices.Common.Services;
 using AuxiliumSoftware.AuxiliumServices.Common.Utilities;
 using Microsoft.EntityFrameworkCore;
@@ -95,6 +96,9 @@ public class UserDocumentService : IUserDocumentService
     {
         try
         {
+            var definition = await _db.ResolveUserAdditionalPropertyDefinitionAsync(additionalPropertyDisplayName);
+            groupId ??= definition?.DefaultGroupId;
+
             await EnsureGroupExistsAsync(groupId);
 
             var newProperty = new UserAdditionalPropertyEntityModel
@@ -102,6 +106,7 @@ public class UserDocumentService : IUserDocumentService
                 Id = UUIDUtilities.GenerateV5(DatabaseObjectTypeEnum.WithinTenancy_User_AdditionalProperty),
                 UserId = userId,
                 GroupId = groupId,
+                DefinitionId = definition?.Id,
                 ContentType = contentType ?? "text/plain",
                 CreatedByUserId = currentUser.Id,
                 CreatedAtUtc = DateTime.UtcNow,
